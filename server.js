@@ -4,7 +4,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cors = require("cors");
 const path = require("path");
-const multer = require("multer"); // Added for Media Uploads
+const multer = require("multer");
 const fs = require("fs");
 
 const connectDB = require("./config/db");
@@ -33,8 +33,8 @@ app.use(
     },
   })
 );
+
 /* --- MEDIA UPLOAD CONFIGURATION --- */
-// Ensure uploads folder exists
 const uploadDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
@@ -54,8 +54,11 @@ const upload = multer({ storage: storage });
 /* STATIC FILES */
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "public")));
+// Serving static files from views
+app.use(express.static(path.join(__dirname, "views/admin")));
+app.use(express.static(path.join(__dirname, "views/frontend")));
 
-/* ROUTES */
+/* API ROUTES */
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/sermons", require("./routes/sermonRoutes"));
 app.use("/api/events", require("./routes/eventRoutes"));
@@ -76,16 +79,27 @@ app.post("/api/media/upload", upload.array("media", 10), (req, res) => {
     }
 });
 
-app.use("/admin", express.static(path.join(__dirname, "views/admin")));
-app.use("/", express.static(path.join(__dirname, "views/frontend")));
+/* --- PAGE ROUTES (The Fix) --- */
 
-/* TEST ROUTE */
-app.get("/", (req, res) => {
-  res.send("POWER SANCTUARY AREA SERVER RUNNING 🚀");
+// 1. Admin Page Route
+app.get("/admin", (req, res) => {
+  // This looks for views/admin/index.html or views/Admin/index.html
+  const adminPath = path.join(__dirname, "views/admin/index.html");
+  const adminPathAlt = path.join(__dirname, "views/Admin/index.html");
+  
+  if (fs.existsSync(adminPath)) {
+    res.sendFile(adminPath);
+  } else {
+    res.sendFile(adminPathAlt);
+  }
 });
 
-const port = process.env.PORT || 10000; // Use Render's port
+// 2. Frontend Page Route
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "views/frontend/index.html"));
+});
 
+const port = process.env.PORT || 10000;
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running on port ${port}`);
 });
