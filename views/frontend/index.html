@@ -3,141 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RCCG Power Sanctuary | Area HQ</title>
+  <title>RCCG Power Sanctuary | Area Headquarters</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     :root {
       --primary: #0a0a1a;
       --gold: #d4af37;
-      --sidebar-width: 260px;
+      --text-muted: #a0a0a0;
+      --white: #ffffff;
     }
 
-    body { font-family: 'Montserrat', sans-serif; margin: 0; background: #fafafa; display: flex; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', sans-serif; line-height: 1.6; background: #fff; color: #333; }
 
-    /* --- SIDEBAR NAV --- */
-    .sidebar {
-      width: var(--sidebar-width);
+    /* --- TOP NAVIGATION --- */
+    nav {
       background: var(--primary);
-      height: 100vh;
-      position: fixed;
-      color: white;
+      padding: 15px 8%;
       display: flex;
-      flex-direction: column;
-      border-right: 3px solid var(--gold);
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 3px solid var(--gold);
     }
+    .logo-box { display: flex; align-items: center; gap: 12px; }
+    .logo-box img { width: 45px; }
+    .logo-text h1 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.2rem; margin: 0; }
+    .logo-text p { color: white; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; }
 
-    .brand { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .brand img { width: 60px; margin-bottom: 10px; }
-    .brand h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--gold); margin: 0; }
+    .nav-menu { display: flex; list-style: none; gap: 25px; }
+    .nav-menu a { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
+    .nav-menu a:hover { color: var(--gold); }
 
-    .nav-links { list-style: none; padding: 20px 0; flex-grow: 1; }
-    .nav-links li a {
-      display: block; padding: 15px 25px; color: rgba(255,255,255,0.7);
-      text-decoration: none; transition: 0.3s; font-weight: 600; font-size: 0.9rem;
-    }
-    .nav-links li a:hover, .nav-links li a.active {
-      background: rgba(212, 175, 55, 0.1); color: var(--gold); padding-left: 35px;
-    }
-    .nav-links i { margin-right: 15px; width: 20px; }
-
-    /* --- MAIN CONTENT --- */
-    .main-wrapper { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
-
-    section { padding: 80px 5%; min-height: 80vh; display: none; }
-    section.active { display: block; animation: fadeIn 0.5s; }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
+    /* --- HERO SECTION --- */
     .hero {
-      height: 60vh;
-      background: linear-gradient(rgba(10,10,26,0.8), rgba(10,10,26,0.8)), url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1200&q=80');
+      height: 80vh;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1510590337019-5ef8d3d32116?auto=format&fit=crop&w=1500&q=80');
       background-size: cover; background-position: center;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
-      color: white; text-align: center; border-radius: 0 0 50px 50px;
+      color: white; text-align: center; padding: 0 20px;
     }
+    .hero h2 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4.5rem); margin-bottom: 10px; }
+    .hero p { font-size: 1.2rem; color: var(--gold); letter-spacing: 3px; }
 
-    /* Cards */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
-    .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 4px solid var(--gold); }
+    /* --- SECTION STYLING --- */
+    section { padding: 80px 10%; }
+    .section-title { text-align: center; margin-bottom: 50px; }
+    .section-title h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; }
+    .line { width: 60px; height: 3px; background: var(--gold); margin: 15px auto; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .info-card { background: #f9f9f9; padding: 40px; border-radius: 10px; text-align: center; transition: 0.3s; border: 1px solid #eee; }
+    .info-card:hover { transform: translateY(-10px); border-color: var(--gold); }
+
+    /* --- GRAND FOOTER --- */
+    footer { background: var(--primary); color: white; padding: 80px 8% 30px; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 50px; }
     
-    /* Media Query for Mobile */
+    .footer-about h3 { color: var(--gold); margin-bottom: 20px; font-family: 'Playfair Display', serif; }
+    .footer-about p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
+    
+    .footer-links h4 { margin-bottom: 25px; font-size: 1.1rem; position: relative; }
+    .footer-links h4::after { content: ''; width: 30px; height: 2px; background: var(--gold); position: absolute; left: 0; bottom: -8px; }
+    .footer-links ul { list-style: none; }
+    .footer-links li { margin-bottom: 12px; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+    .footer-links a:hover { color: var(--gold); padding-left: 5px; }
+
+    .social-icons { display: flex; gap: 15px; margin-top: 20px; }
+    .social-icons a { background: rgba(255,255,255,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; transition: 0.3s; text-decoration: none; }
+    .social-icons a:hover { background: var(--gold); color: var(--primary); }
+
+    .copyright { text-align: center; padding-top: 30px; font-size: 0.8rem; color: var(--text-muted); }
+    .copyright b { color: var(--gold); }
+
+    /* Mobile */
     @media (max-width: 768px) {
-      .sidebar { width: 70px; }
-      .sidebar h2, .sidebar span { display: none; }
-      .main-wrapper { margin-left: 70px; width: calc(100% - 70px); }
+      nav { padding: 15px 5%; }
+      .nav-menu { display: none; } /* Add a hamburger menu here later if needed */
     }
   </style>
 </head>
 <body>
 
-<aside class="sidebar">
-  <div class="brand">
+<nav>
+  <div class="logo-box">
     <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG">
-    <h2>SANCTUARY</h2>
+    <div class="logo-text">
+      <h1>POWER SANCTUARY</h1>
+      <p>RCCG Area Headquarters</p>
+    </div>
   </div>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showSection('home')" class="active"><i class="fa fa-home"></i> <span>Home</span></a></li>
-    <li><a href="#" onclick="showSection('sermons')"><i class="fa fa-microphone"></i> <span>Sermons</span></a></li>
-    <li><a href="#" onclick="showSection('events')"><i class="fa fa-calendar"></i> <span>Events</span></a></li>
-    <li><a href="#" onclick="showSection('gallery')"><i class="fa fa-images"></i> <span>Gallery</span></a></li>
-    <li><a href="#" onclick="showSection('prayer')"><i class="fa fa-hands-praying"></i> <span>Prayer Request</span></a></li>
-    <li><a href="#" onclick="showSection('give')"><i class="fa fa-heart"></i> <span>Give</span></a></li>
+  <ul class="nav-menu">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#sermons">Sermons</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#prayer">Prayer</a></li>
+    <li><a href="/admin">Portal</a></li>
   </ul>
-</aside>
+</nav>
 
-<div class="main-wrapper">
-  
-  <section id="home" class="active">
-    <div class="hero">
-      <h1>Welcome to Power Sanctuary</h1>
-      <p>A Place of Encounter, Prayer, and Power</p>
+<header class="hero" id="home">
+  <p>WELCOME TO THE HOUSE OF GOD</p>
+  <h2>Encounter the Power <br> of His Presence</h2>
+  <a href="#prayer" style="margin-top:20px; background:var(--gold); color:black; padding:15px 35px; text-decoration:none; font-weight:800; border-radius:5px;">REQUEST PRAYER</a>
+</header>
+
+<section id="events">
+  <div class="section-title">
+    <h2>Weekly Services</h2>
+    <div class="line"></div>
+  </div>
+  <div class="grid">
+    <div class="info-card">
+      <i class="fa fa-fire-alt" style="font-size: 2.5rem; color: var(--gold); margin-bottom: 20px;"></i>
+      <h3>Digging Deep</h3>
+      <p>Tuesdays | 5:30 PM</p>
     </div>
-    <div class="grid">
-        <div class="card"><h3>Today's Word</h3><p>"The Lord is my shepherd..."</p></div>
-        <div class="card"><h3>Announcements</h3><p>Area Convention starts this Friday!</p></div>
+    <div class="info-card">
+      <i class="fa fa-heart-pulse" style="font-size: 2.5rem; color: var(--gold); margin-bottom: 20px;"></i>
+      <h3>Faith Clinic</h3>
+      <p>Thursdays | 5:30 PM</p>
     </div>
-  </section>
-
-  <section id="sermons">
-    <h2><i class="fa fa-microphone"></i> Latest Sermons</h2>
-    <div class="grid" id="sermon-list">
-      <div class="card"><h4>Faith Over Fear</h4><p>Pastor Sunday T.</p></div>
+    <div class="info-card">
+      <i class="fa fa-sun" style="font-size: 2.5rem; color: var(--gold); margin-bottom: 20px;"></i>
+      <h3>Glorious Service</h3>
+      <p>Sundays | 8:00 AM</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="gallery">
-    <h2><i class="fa fa-images"></i> Sanctuary Gallery</h2>
-    <div class="grid" id="gallery-grid">
-      <p>Loading beautiful moments...</p>
+<footer>
+  <div class="footer-grid">
+    <div class="footer-about">
+      <h3>Power Sanctuary</h3>
+      <p>We are a community of believers dedicated to spreading the gospel of Jesus Christ, making disciples of all nations, and living a life of holiness and power.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
     </div>
-  </section>
 
-  <section id="prayer">
-    <h2><i class="fa fa-hands-praying"></i> Send a Prayer Request</h2>
-    <form id="prayerForm" style="max-width: 500px; background: white; padding: 30px; border-radius: 15px;">
-        <input type="text" placeholder="Your Name" style="width:100%; padding:10px; margin-bottom:15px;">
-        <textarea placeholder="Your Request" style="width:100%; padding:10px; height:150px; margin-bottom:15px;"></textarea>
-        <button type="submit" style="background:var(--gold); border:none; padding:15px 30px; font-weight:bold; cursor:pointer;">SUBMIT REQUEST</button>
-    </form>
-  </section>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Our Church</a></li>
+        <li><a href="#sermons">Recent Sermons</a></li>
+        <li><a href="#events">Service Times</a></li>
+        <li><a href="#prayer">Submit Prayer Request</a></li>
+      </ul>
+    </div>
 
-</div>
+    <div class="footer-links">
+      <h4>Contact Us</h4>
+      <ul>
+        <li><a href="#"><i class="fa fa-map-marker-alt" style="color:var(--gold); margin-right:10px;"></i> Power Sanctuary Area HQ</a></li>
+        <li><a href="tel:+09024301199"><i class="fa fa-phone" style="color:var(--gold); margin-right:10px;"></i> +234 9024301199</a></li>
+        <li><a href="mailto:sundayoluwarotimi1@gmail.com"><i class="fa fa-envelope" style="color:var(--gold); margin-right:10px;"></i> info@sundayoluwarotimi1@.com</a></li>
+      </ul>
+    </div>
+  </div>
 
-<script>
-  function showSection(id) {
-    // Hide all sections
-    document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
-    // Show clicked section
-    document.getElementById(id).classList.add('active');
-    
-    // Update active link styling
-    document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-  }
-</script>
+  <div class="copyright">
+    <p>&copy; 2025 RCCG Power Sanctuary Area. All Rights Reserved.</p>
+    <p style="margin-top: 10px;">Magnificently Crafted by <b>Oluwarotimi Sunday Temitope</b></p>
+  </div>
+</footer>
 
 </body>
 </html>
