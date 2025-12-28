@@ -3,218 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Power Sanctuary Area | RCCG</title>
+  <title>RCCG Power Sanctuary | Area HQ</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
+  
   <style>
     :root {
       --primary: #0a0a1a;
       --gold: #d4af37;
-      --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f2d388 100%);
-      --white: #ffffff;
-      --bg: #fafafa;
-      --shadow: 0 15px 35px rgba(0,0,0,0.1);
+      --sidebar-width: 260px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-    body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: #2d3436; line-height: 1.7; }
+    body { font-family: 'Montserrat', sans-serif; margin: 0; background: #fafafa; display: flex; }
 
-    /* --- NAVIGATION --- */
-    nav {
-      background: rgba(10, 10, 26, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 12px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    /* --- SIDEBAR NAV --- */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--primary);
+      height: 100vh;
       position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 3000;
-      border-bottom: 2px solid var(--gold);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      border-right: 3px solid var(--gold);
     }
-    .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .logo-area img { width: 40px; }
-    .logo-text h2 { color: var(--white); font-size: 1rem; font-family: 'Playfair Display', serif; }
-    .logo-text span { font-size: 0.6rem; color: var(--gold); display: block; font-weight: 600; text-transform: uppercase; }
 
-    .nav-links { display: flex; list-style: none; gap: 20px; align-items: center; }
-    .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
-    .nav-links a:hover { color: var(--gold); }
-    .btn-join { background: var(--gold-gradient); color: var(--primary) !important; padding: 10px 20px; border-radius: 50px; font-weight: 800 !important; }
+    .brand { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .brand img { width: 60px; margin-bottom: 10px; }
+    .brand h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--gold); margin: 0; }
 
-    /* --- HERO --- */
-    header {
-      height: 90vh;
-      background: linear-gradient(rgba(10,10,26,0.7), rgba(10,10,26,0.7)), 
-                  url('https://images.unsplash.com/photo-1510590337019-5ef8d3d32116?auto=format&fit=crop&w=1500&q=80');
+    .nav-links { list-style: none; padding: 20px 0; flex-grow: 1; }
+    .nav-links li a {
+      display: block; padding: 15px 25px; color: rgba(255,255,255,0.7);
+      text-decoration: none; transition: 0.3s; font-weight: 600; font-size: 0.9rem;
+    }
+    .nav-links li a:hover, .nav-links li a.active {
+      background: rgba(212, 175, 55, 0.1); color: var(--gold); padding-left: 35px;
+    }
+    .nav-links i { margin-right: 15px; width: 20px; }
+
+    /* --- MAIN CONTENT --- */
+    .main-wrapper { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+
+    section { padding: 80px 5%; min-height: 80vh; display: none; }
+    section.active { display: block; animation: fadeIn 0.5s; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .hero {
+      height: 60vh;
+      background: linear-gradient(rgba(10,10,26,0.8), rgba(10,10,26,0.8)), url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1200&q=80');
       background-size: cover; background-position: center;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
-      color: white; text-align: center; padding: 20px;
-    }
-    header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 7vw, 4rem); margin-bottom: 10px; }
-    header p { color: var(--gold); letter-spacing: 4px; font-size: 0.9rem; margin-bottom: 25px; }
-
-    /* --- CARDS & SECTIONS --- */
-    .section-padding { padding: 80px 5%; }
-    .title-box { text-align: center; margin-bottom: 50px; }
-    .title-box h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); }
-    .underline { width: 50px; height: 3px; background: var(--gold); margin: 10px auto; }
-
-    .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-    .event-card { background: white; padding: 40px 20px; border-radius: 15px; text-align: center; box-shadow: var(--shadow); border-top: 4px solid var(--gold); transition: 0.3s; }
-    .event-card:hover { transform: translateY(-5px); }
-
-    /* --- PRAYER & MAP SECTION --- */
-    .contact-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      background: var(--primary);
-      color: white;
-      border-radius: 20px;
-      overflow: hidden;
-    }
-    .prayer-form { padding: 40px; background: rgba(255,255,255,0.05); }
-    .prayer-form input, .prayer-form textarea {
-      width: 100%; padding: 12px; margin-bottom: 15px; 
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-      color: white; border-radius: 8px;
-    }
-    .submit-btn {
-      width: 100%; padding: 15px; background: var(--gold-gradient);
-      border: none; border-radius: 8px; font-weight: 800; cursor: pointer;
+      color: white; text-align: center; border-radius: 0 0 50px 50px;
     }
 
-    .map-box { min-height: 400px; position: relative; }
-    iframe { width: 100%; height: 100%; border: none; }
-
-    /* --- MOBILE --- */
+    /* Cards */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+    .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 4px solid var(--gold); }
+    
+    /* Media Query for Mobile */
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .contact-container { grid-template-columns: 1fr; }
-      header { height: 70vh; }
+      .sidebar { width: 70px; }
+      .sidebar h2, .sidebar span { display: none; }
+      .main-wrapper { margin-left: 70px; width: calc(100% - 70px); }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="/" class="logo-area">
-    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG Logo">
-    <div class="logo-text">
-        <h2>POWER SANCTUARY</h2>
-        <span>RCCG AREA HEADQUARTERS</span>
-    </div>
-  </a>
+<aside class="sidebar">
+  <div class="brand">
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG">
+    <h2>SANCTUARY</h2>
+  </div>
   <ul class="nav-links">
-    <li><a href="/">Home</a></li>
-    <li><a href="/admin">Portal</a></li>
-    <li><a href="#prayer" class="btn-join">Pray For Me</a></li>
+    <li><a href="#" onclick="showSection('home')" class="active"><i class="fa fa-home"></i> <span>Home</span></a></li>
+    <li><a href="#" onclick="showSection('sermons')"><i class="fa fa-microphone"></i> <span>Sermons</span></a></li>
+    <li><a href="#" onclick="showSection('events')"><i class="fa fa-calendar"></i> <span>Events</span></a></li>
+    <li><a href="#" onclick="showSection('gallery')"><i class="fa fa-images"></i> <span>Gallery</span></a></li>
+    <li><a href="#" onclick="showSection('prayer')"><i class="fa fa-hands-praying"></i> <span>Prayer Request</span></a></li>
+    <li><a href="#" onclick="showSection('give')"><i class="fa fa-heart"></i> <span>Give</span></a></li>
   </ul>
-</nav>
+</aside>
 
-<header>
-  <p class="animate__animated animate__fadeIn">Redeemed Christian Church of God</p>
-  <h1 class="animate__animated animate__zoomIn">Power Sanctuary Area</h1>
-  <a href="#schedule" style="text-decoration:none; color:white; border:2px solid var(--gold); padding:12px 30px; border-radius:50px; font-weight:700;">Join Our Service</a>
-</header>
+<div class="main-wrapper">
+  
+  <section id="home" class="active">
+    <div class="hero">
+      <h1>Welcome to Power Sanctuary</h1>
+      <p>A Place of Encounter, Prayer, and Power</p>
+    </div>
+    <div class="grid">
+        <div class="card"><h3>Today's Word</h3><p>"The Lord is my shepherd..."</p></div>
+        <div class="card"><h3>Announcements</h3><p>Area Convention starts this Friday!</p></div>
+    </div>
+  </section>
 
-<section class="section-padding" id="schedule">
-  <div class="title-box">
-    <h2>Weekly Fellowship</h2>
-    <div class="underline"></div>
-  </div>
-  <div class="schedule-grid">
-    <div class="event-card">
-      <i class="fa fa-book-open" style="font-size: 2rem; color: var(--gold);"></i>
-      <h3 style="margin-top:15px">Digging Deep</h3>
-      <p>Tuesdays: 5:30pm</p>
+  <section id="sermons">
+    <h2><i class="fa fa-microphone"></i> Latest Sermons</h2>
+    <div class="grid" id="sermon-list">
+      <div class="card"><h4>Faith Over Fear</h4><p>Pastor Sunday T.</p></div>
     </div>
-    <div class="event-card">
-      <i class="fa fa-hands-praying" style="font-size: 2rem; color: var(--gold);"></i>
-      <h3 style="margin-top:15px">Faith Clinic</h3>
-      <p>Thursdays: 5:30pm</p>
-    </div>
-    <div class="event-card">
-      <i class="fa fa-church" style="font-size: 2rem; color: var(--gold);"></i>
-      <h3 style="margin-top:15px">Glorious Service</h3>
-      <p>Sundays: 8:00am</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section class="section-padding" id="prayer">
-  <div class="contact-container">
-    <div class="prayer-form">
-      <h2>Prayer Request</h2>
-      <p style="margin-bottom: 20px; color: var(--gold);">We believe in the power of prayer. Send yours today.</p>
-      <form id="prayerForm">
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Email Address">
-        <textarea rows="4" placeholder="How can we pray for you?" required></textarea>
-        <button type="submit" class="submit-btn">SEND REQUEST</button>
-      </form>
+  <section id="gallery">
+    <h2><i class="fa fa-images"></i> Sanctuary Gallery</h2>
+    <div class="grid" id="gallery-grid">
+      <p>Loading beautiful moments...</p>
     </div>
-    <div class="map-box">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.33089456382!2d5.2185!3d7.6214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzcnMTcuMCJOIDXCsDEzJzA2LjYiRQ!5e0!3m2!1sen!2sng!4v1625000000000!5m2!1sen!2sng" allowfullscreen="" loading="lazy"></iframe>
-    </div>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <p>&copy; 2025 RCCG Power Sanctuary Area. <br> Built by <b>Oluwarotimi Sunday Temitope</b></p>
-</footer>
+  <section id="prayer">
+    <h2><i class="fa fa-hands-praying"></i> Send a Prayer Request</h2>
+    <form id="prayerForm" style="max-width: 500px; background: white; padding: 30px; border-radius: 15px;">
+        <input type="text" placeholder="Your Name" style="width:100%; padding:10px; margin-bottom:15px;">
+        <textarea placeholder="Your Request" style="width:100%; padding:10px; height:150px; margin-bottom:15px;"></textarea>
+        <button type="submit" style="background:var(--gold); border:none; padding:15px 30px; font-weight:bold; cursor:pointer;">SUBMIT REQUEST</button>
+    </form>
+  </section>
+
+</div>
 
 <script>
-  // Mobile Menu Logic
-  const menu = document.querySelector('#mobile-menu');
-  const navList = document.querySelector('#nav-list');
-  if(menu) {
-      menu.addEventListener('click', () => {
-        navList.classList.toggle('active');
-      });
-  }
-
-  // Prayer Form Database Connection
-  document.getElementById('prayerForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+  function showSection(id) {
+    // Hide all sections
+    document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+    // Show clicked section
+    document.getElementById(id).classList.add('active');
     
-    const submitBtn = document.getElementById('submitButton');
-    const name = document.getElementById('prayerName').value;
-    const email = document.getElementById('prayerEmail').value;
-    const message = document.getElementById('prayerMessage').value;
-
-    // Change button text to show it's working
-    submitBtn.innerText = "SENDING...";
-    submitBtn.disabled = true;
-
-    try {
-      const response = await fetch('/api/prayers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, message }),
-      });
-
-      if (response.ok) {
-        alert('God bless you! Your prayer request has been received by the Sanctuary Team.');
-        this.reset();
-      } else {
-        alert('Something went wrong. Please try again or contact us directly.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Connection error. Please check your internet.');
-    } finally {
-      submitBtn.innerText = "SEND REQUEST";
-      submitBtn.disabled = false;
-    }
-  });
+    // Update active link styling
+    document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  }
 </script>
 
 </body>
