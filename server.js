@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
-const MongoStore = require("connect-mongo"); // Removed .default as it often causes issues in newer versions
+const MongoStore = require("connect-mongo").default;
 const cors = require("cors");
 const path = require("path");
 const multer = require("multer"); // Added for Media Uploads
