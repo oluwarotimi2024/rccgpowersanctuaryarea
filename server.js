@@ -51,12 +51,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-/* STATIC FILES (Assets like CSS/JS) */
+/* STATIC FILES */
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "public")));
-// Serve assets from these folders
 app.use("/admin", express.static(path.join(__dirname, "views/admin")));
-app.use("/admin", express.static(path.join(__dirname, "views/Admin")));
 app.use(express.static(path.join(__dirname, "views/frontend")));
 
 /* API ROUTES */
@@ -67,40 +65,32 @@ app.use("/api/members", require("./routes/memberRoutes"));
 app.use("/api/prayers", require("./routes/prayerRoutes"));
 app.use("/api/messages", require("./routes/messageRoutes"));
 
-// Upload Route
-app.post("/api/media/upload", upload.array("media", 10), (req, res) => {
-    try {
-        const files = req.files.map(file => ({
-            url: `/uploads/${file.filename}`,
-            name: file.originalname
-        }));
-        res.status(200).json({ message: "Upload successful", files });
-    } catch (error) {
-        res.status(500).json({ message: "Upload failed" });
-    }
-});
+/* --- PAGE ROUTES --- */
 
-/* --- PAGE ROUTES (The Final Fix) --- */
-
-// Admin Page Route with robust check
+// 1. ADMIN LOGIN PAGE
 app.get("/admin", (req, res) => {
-  const possiblePaths = [
-    path.join(__dirname, "views/admin/index.html"),
-    path.join(__dirname, "views/Admin/index.html"),
-    path.join(__dirname, "admin/index.html")
-  ];
-
-  for (let p of possiblePaths) {
-    if (fs.existsSync(p)) {
-      return res.sendFile(p);
-    }
-  }
+  // Matches your GitHub filename: login.html
+  const loginPath = path.join(__dirname, "views/admin/login.html");
   
-  // If nothing is found, show a helpful message
-  res.status(404).send("Admin page not found. Check if index.html exists in your admin folder.");
+  if (fs.existsSync(loginPath)) {
+    res.sendFile(loginPath);
+  } else {
+    res.status(404).send("Admin Login file (login.html) not found in views/admin.");
+  }
 });
 
-// Frontend Route
+// 2. ADMIN DASHBOARD PAGE
+app.get("/admin/dashboard", (req, res) => {
+  // Matches your GitHub filename: dashboard.html
+  const dashboardPath = path.join(__dirname, "views/admin/dashboard.html");
+  if (fs.existsSync(dashboardPath)) {
+    res.sendFile(dashboardPath);
+  } else {
+    res.status(404).send("Dashboard file (dashboard.html) not found.");
+  }
+});
+
+// 3. HOME PAGE
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views/frontend/index.html"));
 });
