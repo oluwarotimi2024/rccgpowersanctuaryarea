@@ -85,7 +85,7 @@ app.get("/", (req, res) => {
   res.send("POWER SANCTUARY AREA SERVER RUNNING 🚀");
 });
 
-/const port = process.env.PORT || 10000; // Use Render's port
+const port = process.env.PORT || 10000; // Use Render's port
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running on port ${port}`);
