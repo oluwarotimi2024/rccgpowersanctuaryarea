@@ -4,102 +4,107 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Power Sanctuary Area | RCCG</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
   <style>
     :root {
       --primary: #0a0a1a;
-      --secondary: #1a1a2e;
-      --gold: #c5a059;
-      --gold-light: #e6c27a;
+      --gold: #d4af37;
+      --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f2d388 100%);
       --white: #ffffff;
-      --bg: #f4f7f9;
+      --bg: #fafafa;
+      --shadow: 0 15px 35px rgba(0,0,0,0.1);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: #333; line-height: 1.6; }
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: #2d3436; line-height: 1.7; }
 
     /* --- NAVIGATION --- */
     nav {
-      background: var(--primary);
-      padding: 0.8rem 5%;
+      background: rgba(10, 10, 26, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 12px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
+      position: fixed;
+      width: 100%;
       top: 0;
-      z-index: 2000;
-      border-bottom: 3px solid var(--gold);
+      z-index: 3000;
+      border-bottom: 2px solid var(--gold);
     }
-    .logo-area { display: flex; align-items: center; gap: 15px; text-decoration: none; }
-    .logo-area img { width: 50px; height: 50px; object-fit: contain; }
-    .logo-text h2 { color: var(--white); font-size: 1.2rem; letter-spacing: 1px; font-family: 'Playfair Display', serif; line-height: 1.1; }
-    .logo-text span { font-size: 0.7rem; color: var(--gold-light); display: block; font-family: 'Inter', sans-serif; }
+    .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-area img { width: 40px; }
+    .logo-text h2 { color: var(--white); font-size: 1rem; font-family: 'Playfair Display', serif; }
+    .logo-text span { font-size: 0.6rem; color: var(--gold); display: block; font-weight: 600; text-transform: uppercase; }
 
     .nav-links { display: flex; list-style: none; gap: 20px; align-items: center; }
-    .nav-links a { color: #ccc; text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
+    .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
     .nav-links a:hover { color: var(--gold); }
-    .btn-join { background: var(--gold); color: var(--primary) !important; padding: 10px 22px; border-radius: 4px; font-weight: 700 !important; }
+    .btn-join { background: var(--gold-gradient); color: var(--primary) !important; padding: 10px 20px; border-radius: 50px; font-weight: 800 !important; }
 
     /* --- HERO --- */
     header {
-      height: 70vh;
-      background: linear-gradient(rgba(10,10,26,0.85), rgba(10,10,26,0.85)), 
-                  url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1350&q=80');
+      height: 90vh;
+      background: linear-gradient(rgba(10,10,26,0.7), rgba(10,10,26,0.7)), 
+                  url('https://images.unsplash.com/photo-1510590337019-5ef8d3d32116?auto=format&fit=crop&w=1500&q=80');
       background-size: cover; background-position: center;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       color: white; text-align: center; padding: 20px;
     }
-    .hero-logo { width: 100px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
-    header h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 10px; }
-    header p { font-size: 1.2rem; color: var(--gold-light); text-transform: uppercase; letter-spacing: 4px; font-weight: 300; }
+    header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 7vw, 4rem); margin-bottom: 10px; }
+    header p { color: var(--gold); letter-spacing: 4px; font-size: 0.9rem; margin-bottom: 25px; }
 
-    /* --- WEEKLY ACTIVITIES --- */
-    .section-padding { padding: 80px 8%; }
+    /* --- CARDS & SECTIONS --- */
+    .section-padding { padding: 80px 5%; }
     .title-box { text-align: center; margin-bottom: 50px; }
-    .title-box h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); margin-bottom: 15px; }
-    .title-box hr { width: 80px; height: 4px; background: var(--gold); border: none; margin: 0 auto; }
+    .title-box h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); }
+    .underline { width: 50px; height: 3px; background: var(--gold); margin: 10px auto; }
 
-    .schedule-grid {
+    .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .event-card { background: white; padding: 40px 20px; border-radius: 15px; text-align: center; box-shadow: var(--shadow); border-top: 4px solid var(--gold); transition: 0.3s; }
+    .event-card:hover { transform: translateY(-5px); }
+
+    /* --- PRAYER & MAP SECTION --- */
+    .contact-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .prayer-form { padding: 40px; background: rgba(255,255,255,0.05); }
+    .prayer-form input, .prayer-form textarea {
+      width: 100%; padding: 12px; margin-bottom: 15px; 
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: white; border-radius: 8px;
+    }
+    .submit-btn {
+      width: 100%; padding: 15px; background: var(--gold-gradient);
+      border: none; border-radius: 8px; font-weight: 800; cursor: pointer;
     }
 
-    .event-card {
-      background: var(--white);
-      padding: 40px 30px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      border-top: 5px solid var(--gold);
-      transition: all 0.4s ease;
-      text-align: center;
-    }
-    .event-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.12); }
-    .event-card .icon-circle { width: 60px; height: 60px; background: var(--bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: var(--gold); font-size: 1.5rem; }
-    .event-card .day { color: var(--gold); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-    .event-card h3 { margin: 12px 0; font-size: 1.4rem; color: var(--primary); font-family: 'Playfair Display', serif; }
-    .event-card .time { font-size: 1rem; color: #555; font-weight: 500; }
+    .map-box { min-height: 400px; position: relative; }
+    iframe { width: 100%; height: 100%; border: none; }
 
-    /* --- MOBILE STYLES --- */
+    /* --- MOBILE --- */
     @media (max-width: 768px) {
-      header h1 { font-size: 2.2rem; }
-      header p { font-size: 0.9rem; letter-spacing: 2px; }
-      .nav-links { display: none; } 
-      .section-padding { padding: 50px 20px; }
-      .hero-logo { width: 80px; }
+      .nav-links { display: none; }
+      .contact-container { grid-template-columns: 1fr; }
+      header { height: 70vh; }
     }
-
-    footer { background: var(--primary); color: #aaa; text-align: center; padding: 50px 20px; border-top: 5px solid var(--gold); }
-    .dev-name { color: var(--gold); font-weight: 600; text-decoration: none; }
   </style>
 </head>
 <body>
 
 <nav>
   <a href="/" class="logo-area">
-    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG Official Logo">
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG Logo">
     <div class="logo-text">
         <h2>POWER SANCTUARY</h2>
         <span>RCCG AREA HEADQUARTERS</span>
@@ -108,60 +113,109 @@
   <ul class="nav-links">
     <li><a href="/">Home</a></li>
     <li><a href="/admin">Portal</a></li>
-    <li><a href="/membership" class="btn-join">Register</a></li>
+    <li><a href="#prayer" class="btn-join">Pray For Me</a></li>
   </ul>
 </nav>
 
 <header>
-  <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" class="hero-logo" alt="RCCG Logo">
-  <p>The Redeemed Christian Church of God</p>
-  <h1>Power Sanctuary Area</h1>
-  <a href="#schedule" style="color: white; text-decoration: none; background: transparent; border: 2px solid var(--gold); padding: 12px 30px; margin-top: 25px; font-weight: 600; transition: 0.3s;" onmouseover="this.style.background='var(--gold)'; this.style.color='var(--primary)'" onmouseout="this.style.background='transparent'; this.style.color='white'">VIEW WEEKLY SERVICES</a>
+  <p class="animate__animated animate__fadeIn">Redeemed Christian Church of God</p>
+  <h1 class="animate__animated animate__zoomIn">Power Sanctuary Area</h1>
+  <a href="#schedule" style="text-decoration:none; color:white; border:2px solid var(--gold); padding:12px 30px; border-radius:50px; font-weight:700;">Join Our Service</a>
 </header>
 
 <section class="section-padding" id="schedule">
   <div class="title-box">
-    <h2>Weekly Service Schedule</h2>
-    <p style="color: #777; margin-bottom: 10px;">Join us as we fellowship together in His presence</p>
-    <hr>
+    <h2>Weekly Fellowship</h2>
+    <div class="underline"></div>
   </div>
-
   <div class="schedule-grid">
     <div class="event-card">
-      <div class="icon-circle"><i class="fa-solid fa-book-open"></i></div>
-      <div class="day">Tuesday</div>
-      <h3>Digging Deep</h3>
-      <div class="time">5:30pm — 6:30pm</div>
+      <i class="fa fa-book-open" style="font-size: 2rem; color: var(--gold);"></i>
+      <h3 style="margin-top:15px">Digging Deep</h3>
+      <p>Tuesdays: 5:30pm</p>
     </div>
-
     <div class="event-card">
-      <div class="icon-circle"><i class="fa-solid fa-hands-praying"></i></div>
-      <div class="day">Thursday</div>
-      <h3>Faith Clinic</h3>
-      <div class="time">5:30pm — 6:30pm</div>
+      <i class="fa fa-hands-praying" style="font-size: 2rem; color: var(--gold);"></i>
+      <h3 style="margin-top:15px">Faith Clinic</h3>
+      <p>Thursdays: 5:30pm</p>
     </div>
-
     <div class="event-card">
-      <div class="icon-circle"><i class="fa-solid fa-graduation-cap"></i></div>
-      <div class="day">Sunday Morning</div>
-      <h3>Sunday School</h3>
-      <div class="time">8:00am — 9:00am</div>
+      <i class="fa fa-church" style="font-size: 2rem; color: var(--gold);"></i>
+      <h3 style="margin-top:15px">Glorious Service</h3>
+      <p>Sundays: 8:00am</p>
     </div>
+  </div>
+</section>
 
-    <div class="event-card">
-      <div class="icon-circle"><i class="fa-solid fa-church"></i></div>
-      <div class="day">Sunday Morning</div>
-      <h3>Glorious Service</h3>
-      <div class="time">9:00am — 11:00am</div>
+<section class="section-padding" id="prayer">
+  <div class="contact-container">
+    <div class="prayer-form">
+      <h2>Prayer Request</h2>
+      <p style="margin-bottom: 20px; color: var(--gold);">We believe in the power of prayer. Send yours today.</p>
+      <form id="prayerForm">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Email Address">
+        <textarea rows="4" placeholder="How can we pray for you?" required></textarea>
+        <button type="submit" class="submit-btn">SEND REQUEST</button>
+      </form>
+    </div>
+    <div class="map-box">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.33089456382!2d5.2185!3d7.6214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzcnMTcuMCJOIDXCsDEzJzA2LjYiRQ!5e0!3m2!1sen!2sng!4v1625000000000!5m2!1sen!2sng" allowfullscreen="" loading="lazy"></iframe>
     </div>
   </div>
 </section>
 
 <footer>
-  <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" width="40" style="margin-bottom: 15px;" alt="RCCG">
-  <p>&copy; 2025 RCCG Power Sanctuary Area. <br>Building a People of Power, Praise, and Purpose.</p>
-  <p style="font-size: 0.85rem; margin-top: 20px; border-top: 1px solid #333; pt-20">Designed with excellence by <span class="dev-name">Oluwarotimi Sunday Temitope</span></p>
+  <p>&copy; 2025 RCCG Power Sanctuary Area. <br> Built by <b>Oluwarotimi Sunday Temitope</b></p>
 </footer>
+
+<script>
+  // Mobile Menu Logic
+  const menu = document.querySelector('#mobile-menu');
+  const navList = document.querySelector('#nav-list');
+  if(menu) {
+      menu.addEventListener('click', () => {
+        navList.classList.toggle('active');
+      });
+  }
+
+  // Prayer Form Database Connection
+  document.getElementById('prayerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitButton');
+    const name = document.getElementById('prayerName').value;
+    const email = document.getElementById('prayerEmail').value;
+    const message = document.getElementById('prayerMessage').value;
+
+    // Change button text to show it's working
+    submitBtn.innerText = "SENDING...";
+    submitBtn.disabled = true;
+
+    try {
+      const response = await fetch('/api/prayers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (response.ok) {
+        alert('God bless you! Your prayer request has been received by the Sanctuary Team.');
+        this.reset();
+      } else {
+        alert('Something went wrong. Please try again or contact us directly.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Connection error. Please check your internet.');
+    } finally {
+      submitBtn.innerText = "SEND REQUEST";
+      submitBtn.disabled = false;
+    }
+  });
+</script>
 
 </body>
 </html>
