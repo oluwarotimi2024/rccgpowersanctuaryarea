@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
-const MongoStore = require("connect-mongo").default;
+const MongoStore = require("connect-mongo");
 const cors = require("cors");
 const path = require("path");
 const multer = require("multer"); // Added for Media Uploads
@@ -24,7 +24,7 @@ app.use(
     secret: process.env.SESSION_SECRET || 'church_secret_key',
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
+    store: new MongoStore({
       mongoUrl: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/power_sanctuary',
     }),
     cookie: { 
@@ -33,7 +33,6 @@ app.use(
     },
   })
 );
-
 /* --- MEDIA UPLOAD CONFIGURATION --- */
 // Ensure uploads folder exists
 const uploadDir = path.join(__dirname, "uploads");
