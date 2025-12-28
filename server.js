@@ -48,10 +48,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-/* STATIC ASSETS */
-// We serve the uploads and public folders
+/* STATIC FILES & ASSETS */
+// Serve uploads and public assets
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "public")));
+
+// IMPORTANT: We do NOT use app.use("/admin", static) here anymore.
+// This allows our custom routes below to handle the /admin URL properly.
 
 /* API ROUTES */
 app.use("/api/auth", require("./routes/authRoutes"));
@@ -63,46 +66,45 @@ app.use("/api/messages", require("./routes/messageRoutes"));
 
 /* --- SMART PAGE ROUTING --- */
 
-/**
- * HELPER: Find files in multiple possible locations
- * This prevents 404s if folder names are capitalized differently on GitHub
- */
-const findFile = (subPath) => {
-  const possibleLocations = [
-    path.join(__dirname, "views", subPath),
-    path.join(__dirname, "Views", subPath),
-    path.join(__dirname, subPath)
+// Helper to find files regardless of folder casing (views/admin vs views/Admin)
+const getSafePath = (subPath) => {
+  const root = __dirname;
+  const checks = [
+    path.join(root, "views", subPath),
+    path.join(root, "Views", subPath),
+    path.join(root, subPath)
   ];
-  return possibleLocations.find(p => fs.existsSync(p));
+  return checks.find(p => fs.existsSync(p));
 };
 
 // 1. ADMIN LOGIN PAGE (URL: /admin)
 app.get("/admin", (req, res) => {
-  const filePath = findFile("admin/login.html");
+  const filePath = getSafePath("admin/login.html");
   if (filePath) return res.sendFile(filePath);
-  
-  // Debug helper if file is missing
-  res.status(404).send("Admin Login file not found. Ensure views/admin/login.html exists.");
+  res.status(404).send("<h2>Admin Login File Not Found</h2>");
 });
 
 // 2. ADMIN DASHBOARD PAGE (URL: /admin/dashboard)
-app.get("/admin/dashboard", (req, res) => {
-  const filePath = findFile("admin/dashboard.html");
+// We add '*' to handle /admin/dashboard.html automatically
+app.get("/admin/dashboard*", (req, res) => {
+  const filePath = getSafePath("admin/dashboard.html");
   if (filePath) return res.sendFile(filePath);
-  
-  res.status(404).send("Dashboard file not found. Ensure views/admin/dashboard.html exists.");
+  res.status(404).send("<h2>Dashboard File Not Found</h2>");
 });
 
 // 3. HOME PAGE (URL: /)
 app.get("/", (req, res) => {
-  const filePath = findFile("frontend/index.html");
+  const filePath = getSafePath("frontend/index.html");
   if (filePath) return res.sendFile(filePath);
-  
-  res.status(404).send("Frontend Home page not found.");
+  // Fallback to static serving if custom route fails
+  res.sendFile(path.join(__dirname, "views/frontend/index.html"));
 });
+
+// 4. CATCH-ALL FOR OTHER FRONTEND FILES
+app.use(express.static(path.join(__dirname, "views/frontend")));
 
 /* SERVER START */
 const port = process.env.PORT || 10000;
 app.listen(port, '0.0.0.0', () => {
-  console.log(`🚀 Server running at http://localhost:${port}`);
+  console.log(`Server is running on port ${port}`);
 });
