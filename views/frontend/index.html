@@ -5,93 +5,287 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RCCG Power Sanctuary | Area Headquarters</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     :root {
-      --primary: #0a0a1a;
-      --gold: #d4af37;
-      --light-bg: #fdfdfd;
+      --primary: #050a18; /* Deeper Navy */
+      --accent: #c5a059;  /* Sophisticated Gold */
+      --text-dark: #2d3436;
+      --text-light: #636e72;
       --white: #ffffff;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-    body { font-family: 'Montserrat', sans-serif; line-height: 1.6; background: var(--white); color: #333; }
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      line-height: 1.7; 
+      color: var(--text-dark);
+      background-color: #fcfcfc;
+    }
 
     /* --- NAVIGATION --- */
     nav {
-      background: var(--primary);
-      padding: 15px 8%;
+      background: rgba(5, 10, 24, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 18px 8%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
+      position: fixed;
+      width: 100%;
       top: 0;
       z-index: 1000;
-      border-bottom: 3px solid var(--gold);
+      border-bottom: 2px solid var(--accent);
     }
-    .logo-box { display: flex; align-items: center; gap: 12px; }
-    .logo-box img { width: 45px; }
-    .logo-text h1 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.2rem; margin: 0; }
 
-    .nav-menu { display: flex; list-style: none; gap: 25px; }
-    .nav-menu a { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
-    .nav-menu a:hover { color: var(--gold); }
+    .logo-box { display: flex; align-items: center; gap: 15px; }
+    .logo-box img { width: 42px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+    .logo-text h1 { 
+      font-family: 'Playfair Display', serif; 
+      color: var(--accent); 
+      font-size: 1.3rem; 
+      letter-spacing: 1px;
+      margin: 0; 
+    }
+
+    .nav-menu { display: flex; list-style: none; gap: 30px; }
+    .nav-menu a { 
+      color: #e0e0e0; 
+      text-decoration: none; 
+      font-size: 0.85rem; 
+      font-weight: 500; 
+      text-transform: uppercase; 
+      letter-spacing: 1px;
+      transition: var(--transition);
+    }
+    .nav-menu a:hover { color: var(--accent); }
 
     /* --- HERO --- */
     .hero {
-      height: 80vh;
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1500&q=80');
-      background-size: cover; background-position: center;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      color: white; text-align: center;
+      height: 90vh;
+      background: linear-gradient(rgba(5, 10, 24, 0.75), rgba(5, 10, 24, 0.75)), 
+                  url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1500&q=80');
+      background-size: cover; 
+      background-position: center;
+      background-attachment: fixed;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center;
+      color: white; 
+      text-align: center;
+      padding: 0 20px;
     }
-    .hero h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 15px; }
+    .hero h2 { 
+      font-family: 'Playfair Display', serif; 
+      font-size: clamp(2.5rem, 6vw, 4.5rem); 
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
+    .hero p {
+        font-size: 1.1rem;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        font-weight: 600;
+    }
 
     /* --- SECTIONS --- */
-    section { padding: 100px 10%; }
-    .section-title { text-align: center; margin-bottom: 50px; }
-    .section-title h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); }
-    .line { width: 50px; height: 3px; background: var(--gold); margin: 15px auto; }
+    section { padding: 120px 10%; }
+    .section-title { text-align: center; margin-bottom: 60px; }
+    .section-title h2 { 
+      font-family: 'Playfair Display', serif; 
+      font-size: 2.8rem; 
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .line { width: 60px; height: 3px; background: var(--accent); margin: 0 auto; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-    .card { background: var(--light-bg); padding: 40px; border-radius: 10px; text-align: center; border: 1px solid #eee; transition: 0.3s; }
-    .card:hover { transform: translateY(-5px); border-color: var(--gold); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+    /* --- CARDS & GRID --- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+    
+    .card { 
+      background: var(--white); 
+      padding: 50px 30px; 
+      border-radius: 4px; 
+      text-align: center; 
+      border: 1px solid #f0f0f0; 
+      transition: var(--transition);
+      position: relative;
+    }
+    .card:hover { 
+      transform: translateY(-10px); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08); 
+    }
+    .card h3 { margin-bottom: 15px; font-family: 'Playfair Display', serif; }
 
-    /* --- PRAYER FORM --- */
-    #prayer { background: #f4f4f4; }
-    .prayer-container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    .prayer-container input, .prayer-container textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit; }
-    .submit-btn { width: 100%; padding: 15px; background: var(--primary); color: var(--gold); border: none; font-weight: 800; cursor: pointer; border-radius: 5px; transition: 0.3s; }
-    .submit-btn:hover { background: var(--gold); color: var(--primary); }
+    /* --- FORM --- */
+    .prayer-container { 
+      max-width: 700px; 
+      margin: 0 auto; 
+      background: white; 
+      padding: 50px; 
+      border-top: 4px solid var(--accent);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.05); 
+    }
+    .prayer-container input, .prayer-container textarea { 
+      width: 100%; padding: 15px; margin-bottom: 25px; 
+      border: 1px solid #e1e1e1; border-radius: 0; 
+      background: #fafafa;
+      font-family: inherit; 
+    }
+    .submit-btn { 
+      width: 100%; padding: 18px; 
+      background: var(--primary); 
+      color: var(--accent); 
+      border: none; 
+      font-weight: 700; 
+      letter-spacing: 2px;
+      cursor: pointer; 
+      transition: var(--transition); 
+    }
+    .submit-btn:hover { background: var(--accent); color: var(--primary); }
 
     /* --- FOOTER --- */
-    footer { background: var(--primary); color: white; padding: 60px 8% 20px; }
-    .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 40px; }
-    .footer-col { flex: 1; min-width: 250px; }
-    .footer-col h3 { color: var(--gold); margin-bottom: 20px; }
-    .footer-col p, .footer-col li { color: #ccc; font-size: 0.9rem; margin-bottom: 10px; list-style: none; }
-    .footer-col a { color: #ccc; text-decoration: none; transition: 0.3s; }
-    .footer-col a:hover { color: var(--gold); }
-    .bottom-bar { text-align: center; padding-top: 20px; font-size: 0.8rem; color: #777; }
+    footer { background: var(--primary); color: white; padding: 80px 8% 30px; }
+    .footer-content { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+      gap: 50px; 
+      padding-bottom: 50px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer-col h3 { color: var(--accent); margin-bottom: 25px; font-family: 'Playfair Display', serif; font-size: 1.4rem;}
+    .footer-col p, .footer-col li { color: #a0a0a0; font-size: 0.95rem; margin-bottom: 12px; list-style: none; }
+    .footer-col a { color: inherit; text-decoration: none; transition: 0.3s; }
+    .footer-col a:hover { color: var(--accent); padding-left: 5px; }
+    
+    .bottom-bar { 
+      text-align: center; 
+      padding-top: 30px; 
+      font-size: 0.85rem; 
+      color: #666; 
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu { display: none; } /* Add a hamburger menu later if needed */
+      section { padding: 80px 5%; }
+    }
   </style>
 </head>
 <body>
 
 <nav>
   <div class="logo-box">
-    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG">
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG Logo">
     <div class="logo-text">
       <h1>POWER SANCTUARY</h1>
     </div>
   </div>
   <ul class="nav-menu">
     <li><a href="#home">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#sermons">Sermons</a></li>
+    <li><a href="#live">Live</a></li>
+    <li><a href="#membership">Membership</a></li>
     <li><a href="#events">Events</a></li>
     <li><a href="#prayer">Prayer</a></li>
+    <li><a href="#media">Media</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="home">
+  <p>RCCG Area Headquarters</p>
+  <h2>Transforming Lives <br> Through Power & Grace</h2>
+  <a href="#live" class="submit-btn" style="width:auto; padding: 15px 40px; text-decoration: none; margin-top: 20px;">WATCH LIVE</a>
+</header>
+
+<section id="membership">
+  <div class="section-title">
+    <h2>Become a Member</h2>
+    <div class="line"></div>
+    <p style="max-width: 700px; margin: 20px auto; color: var(--text-light);">Step into a community where you are valued. Discover your spiritual gifts and find your place in the family of God.</p>
+  </div>
+</section>
+
+<section id="media" style="background:#f4f4f4;">
+  <div class="section-title">
+    <h2>Media Library</h2>
+    <div class="line"></div>
+  </div>
+  <div class="grid">
+    <div class="card">
+        <i class="fa fa-microphone" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 20px;"></i>
+        <h3>Faith in Crisis</h3>
+        <p>Sunday Service - Dec 2025</p>
+    </div>
+    <div class="card">
+        <i class="fa fa-video" style="font-size: 2.5rem; color: var(--accent); margin-bottom: 20px;"></i>
+        <h3>Divine Encounter</h3>
+        <p>Mid-week Service</p>
+    </div>
+  </div>
+</section>
+
+<section id="prayer">
+  <div class="section-title">
+    <h2>Prayer Request</h2>
+    <div class="line"></div>
+    <p>We believe in the power of intercession. Send us your request.</p>
+  </div>
+  <div class="prayer-container">
+    <form id="prayerForm">
+      <input type="text" placeholder="Full Name" required>
+      <input type="email" placeholder="Email Address">
+      <textarea rows="5" placeholder="How can we pray for you?" required></textarea>
+      <button type="submit" class="submit-btn">SUBMIT REQUEST</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-col">
+      <h3>Power Sanctuary</h3>
+      <p>Building a generation of people filled with power and the Holy Spirit. Join us for a life-changing experience at the Area Headquarters.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <li><a href="#membership">Membership</a></li>
+      <li><a href="#live">Live Stream</a></li>
+      <li><a href="#events">Service Times</a></li>
+      <li><a href="#media">Sermons</a></li>
+    </div>
+    <div class="footer-col">
+      <h3>Contact Us</h3>
+      <p><i class="fa fa-map-marker-alt" style="color:var(--accent)"></i> Area HQ, Ekiti State, Nigeria</p>
+      <p><i class="fa fa-phone" style="color:var(--accent)"></i> +234 902 430 1199</p>
+      <p><i class="fa fa-envelope" style="color:var(--accent)"></i> sundayoluwarotimi1@gmail.com</p>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    &copy; 2025 RCCG Power Sanctuary. All Rights Reserved. <br>
+    Designed by <strong>Oluwarotimi Sunday Temitope</strong>
+  </div>
+</footer>
+
+<script>
+  // Smooth Scroll
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
+</script>
+
+</body>
+  </html>    <li><a href="#prayer">Prayer</a></li>
     <li><a href="/admin">Portal</a></li>
   </ul>
 </nav>
@@ -193,3 +387,4 @@
 
 </body>
 </html>
+
