@@ -51,11 +51,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-/* STATIC FILES */
+/* STATIC FILES (Assets like CSS/JS) */
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "public")));
-// Serving static files from views
-app.use(express.static(path.join(__dirname, "views/admin")));
+// Serve assets from these folders
+app.use("/admin", express.static(path.join(__dirname, "views/admin")));
+app.use("/admin", express.static(path.join(__dirname, "views/Admin")));
 app.use(express.static(path.join(__dirname, "views/frontend")));
 
 /* API ROUTES */
@@ -66,7 +67,7 @@ app.use("/api/members", require("./routes/memberRoutes"));
 app.use("/api/prayers", require("./routes/prayerRoutes"));
 app.use("/api/messages", require("./routes/messageRoutes"));
 
-// Dedicated Media Upload Route
+// Upload Route
 app.post("/api/media/upload", upload.array("media", 10), (req, res) => {
     try {
         const files = req.files.map(file => ({
@@ -79,22 +80,27 @@ app.post("/api/media/upload", upload.array("media", 10), (req, res) => {
     }
 });
 
-/* --- PAGE ROUTES (The Fix) --- */
+/* --- PAGE ROUTES (The Final Fix) --- */
 
-// 1. Admin Page Route
+// Admin Page Route with robust check
 app.get("/admin", (req, res) => {
-  // This looks for views/admin/index.html or views/Admin/index.html
-  const adminPath = path.join(__dirname, "views/admin/index.html");
-  const adminPathAlt = path.join(__dirname, "views/Admin/index.html");
-  
-  if (fs.existsSync(adminPath)) {
-    res.sendFile(adminPath);
-  } else {
-    res.sendFile(adminPathAlt);
+  const possiblePaths = [
+    path.join(__dirname, "views/admin/index.html"),
+    path.join(__dirname, "views/Admin/index.html"),
+    path.join(__dirname, "admin/index.html")
+  ];
+
+  for (let p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      return res.sendFile(p);
+    }
   }
+  
+  // If nothing is found, show a helpful message
+  res.status(404).send("Admin page not found. Check if index.html exists in your admin folder.");
 });
 
-// 2. Frontend Page Route
+// Frontend Route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views/frontend/index.html"));
 });
