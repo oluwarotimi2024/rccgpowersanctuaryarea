@@ -67,29 +67,48 @@ app.use("/api/messages", require("./routes/messageRoutes"));
 
 /* --- PAGE ROUTES --- */
 
+/* --- PAGE ROUTES --- */
+
 // 1. ADMIN LOGIN PAGE
 app.get("/admin", (req, res) => {
-  // Matches your GitHub filename: login.html
-  const loginPath = path.join(__dirname, "views/admin/login.html");
+  // We check for both "admin" and "Admin" folders
+  const paths = [
+    path.join(__dirname, "views/admin/login.html"),
+    path.join(__dirname, "views/Admin/login.html"),
+    path.join(__dirname, "admin/login.html")
+  ];
+
+  const loginPath = paths.find(p => fs.existsSync(p));
   
-  if (fs.existsSync(loginPath)) {
+  if (loginPath) {
     res.sendFile(loginPath);
   } else {
-    res.status(404).send("Admin Login file (login.html) not found in views/admin.");
+    // This part helps us see exactly what is on your server if it fails
+    let existingFiles = "";
+    try {
+        const baseDir = path.join(__dirname, "views");
+        existingFiles = fs.readdirSync(baseDir).join(", ");
+    } catch(e) { existingFiles = "Could not read views folder"; }
+
+    res.status(404).send(`
+      <h2>Admin Login (login.html) not found.</h2>
+      <p>The server looked in: <b>views/admin/</b> and <b>views/Admin/</b></p>
+      <p>Folders found in 'views': <b>${existingFiles}</b></p>
+      <p>Please ensure your folder is named <b>admin</b> and contains <b>login.html</b>.</p>
+    `);
   }
 });
 
 // 2. ADMIN DASHBOARD PAGE
 app.get("/admin/dashboard", (req, res) => {
-  // Matches your GitHub filename: dashboard.html
-  const dashboardPath = path.join(__dirname, "views/admin/dashboard.html");
-  if (fs.existsSync(dashboardPath)) {
-    res.sendFile(dashboardPath);
-  } else {
-    res.status(404).send("Dashboard file (dashboard.html) not found.");
-  }
+  const paths = [
+    path.join(__dirname, "views/admin/dashboard.html"),
+    path.join(__dirname, "views/Admin/dashboard.html")
+  ];
+  const dashPath = paths.find(p => fs.existsSync(p));
+  if (dashPath) res.sendFile(dashPath);
+  else res.status(404).send("Dashboard file not found.");
 });
-
 // 3. HOME PAGE
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views/frontend/index.html"));
