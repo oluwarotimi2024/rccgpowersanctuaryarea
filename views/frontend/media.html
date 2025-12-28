@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sermons | Power Sanctuary Area</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: #f4f7f6; 
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navigation */
+    nav {
+      background: #1e1e2f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav .logo { color: #fff; font-weight: 700; font-size: 1.2rem; }
+    nav ul { list-style: none; display: flex; }
+    nav ul li { margin-left: 20px; }
+    nav ul li a { color: #fff; text-decoration: none; font-size: 0.85rem; transition: 0.3s; }
+    nav ul li a:hover { color: #ffd700; }
+
+    header {
+      background: linear-gradient(rgba(30,30,47,0.9), rgba(30,30,47,0.9)), 
+                  url('https://images.unsplash.com/photo-1510531704581-5b2870972060?auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      color: white;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .container { padding: 40px 8%; flex: 1; }
+
+    .section-title { 
+      margin: 40px 0 25px; 
+      font-size: 1.8rem;
+      color: #1e1e2f;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::before {
+      content: "";
+      width: 6px;
+      height: 35px;
+      background: #ffd700;
+      border-radius: 3px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      transition: 0.3s ease;
+      animation: fadeInUp 0.6s ease-out both;
+    }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+    .video-container {
+      width: 100%;
+      height: 180px;
+      background: #000;
+      border-radius: 10px;
+      margin: 15px 0;
+      overflow: hidden;
+    }
+    video, audio { width: 100%; }
+
+    .tag {
+      background: #1e1e2f;
+      color: #ffd700;
+      padding: 4px 12px;
+      border-radius: 5px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .download-btn {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      padding: 10px;
+      background: #f1f1f1;
+      color: #1e1e2f;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: 0.3s;
+    }
+    .download-btn:hover { background: #ffd700; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      background: #1e1e2f;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+      margin-top: 60px;
+    }
+    .dev-name { color: #ffd700; font-weight: 600; border-bottom: 1px solid #ffd700; }
+
+    @media (max-width: 600px) {
+      .container { padding: 20px 5%; }
+      header h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">RCCG POWER SANCTUARY</div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="media.html">Sermons</a></li>
+    <li><a href="live.html">Live</a></li>
+    <li><a href="prayer.html">Prayers</a></li>
+  </ul>
+</nav>
+
+<header>
+  <h1>Spiritual Library</h1>
+  <p>10 Special Messages from the Holy Ghost Congress & Pastor E.A. Adeboye</p>
+</header>
+
+<div class="container">
+  
+  <h2 class="section-title">Special Congress & Adeboye Series</h2>
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Congress Message 1</span>
+      <h3>The Overcomer</h3>
+      <p><b>Preacher:</b> Pastor E.A. Adeboye</p>
+      <video controls class="video-container" src="/uploads/adeboye1.mp4"></video>
+      <a href="/uploads/adeboye1.mp4" class="download-btn" download>Download MP4</a>
+    </div>
+
+    <div class="card">
+      <span class="tag">Congress Message 2</span>
+      <h3>Divine Visitation</h3>
+      <p><b>Preacher:</b> Pastor E.A. Adeboye</p>
+      <audio controls src="/uploads/adeboye2.mp3"></audio>
+      <a href="/uploads/adeboye2.mp3" class="download-btn" download>Download MP3</a>
+    </div>
+
+    <div class="card">
+      <span class="tag">Congress Message 3</span>
+      <h3>Shield of Faith</h3>
+      <p><b>Preacher:</b> Pastor E.A. Adeboye</p>
+      <video controls class="video-container" src="/uploads/adeboye3.mp4"></video>
+      <a href="/uploads/adeboye3.mp4" class="download-btn" download>Download MP4</a>
+    </div>
+
+    <div class="card"><h3>Message 4: Fullness of Joy</h3><p>Pastor E.A. Adeboye</p><audio controls src="/uploads/adeboye4.mp3"></audio></div>
+    <div class="card"><h3>Message 5: Overflowing Grace</h3><p>Pastor E.A. Adeboye</p><video controls src="/uploads/adeboye5.mp4"></video></div>
+    <div class="card"><h3>Message 6: Peace Like a River</h3><p>Pastor E.A. Adeboye</p><audio controls src="/uploads/adeboye6.mp3"></audio></div>
+    <div class="card"><h3>Message 7: Great Expectations</h3><p>Pastor E.A. Adeboye</p><video controls src="/uploads/adeboye7.mp4"></video></div>
+    <div class="card"><h3>Message 8: New Beginnings</h3><p>Pastor E.A. Adeboye</p><audio controls src="/uploads/adeboye8.mp3"></audio></div>
+    <div class="card"><h3>Message 9: Unstoppable Power</h3><p>Pastor E.A. Adeboye</p><video controls src="/uploads/adeboye9.mp4"></video></div>
+    <div class="card"><h3>Message 10: Kingdom Advancement</h3><p>Pastor E.A. Adeboye</p><audio controls src="/uploads/adeboye10.mp3"></audio></div>
+  </div>
+
+  <h2 class="section-title">Sanctuary Latest Messages</h2>
+  <div class="grid" id="sermons">
+    </div>
+
+</div>
+
+<footer>
+  <p>&copy; 2025 Power Sanctuary Area.</p>
+  <p>Developed by <span class="dev-name">Oluwarotimi Sunday Temitope</span></p>
+</footer>
+
+<script>
+function loadSermons() {
+  // Pulls from Admin 'church_sermons'
+  const data = JSON.parse(localStorage.getItem('church_sermons')) || [];
+  const sermonsDiv = document.getElementById("sermons");
+  if(data.length > 0) {
+    sermonsDiv.innerHTML = data.map(s => `
+      <div class="card">
+        <span class="tag">Sanctuary Message</span>
+        <h3>${s.title}</h3>
+        <p><b>Preacher:</b> ${s.preacher}</p>
+        <video controls style="width:100%"><source src="${s.file}"></video>
+      </div>
+    `).join("");
+  } else {
+    sermonsDiv.innerHTML = "<p>New sermons being uploaded soon.</p>";
+  }
+}
+window.onload = loadSermons;
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+body {
+  font-family: "Segoe UI", Arial;
+}
+
+a {
+  color: #f5b400;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+a:hover {
+  text-decoration: underline;
+}

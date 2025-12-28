@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Church Events | Power Sanctuary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #f4f7f6; }
+    nav { background: #1e1e2f; padding: 15px 50px; display: flex; justify-content: space-between; color: white; }
+    nav a { color: white; text-decoration: none; margin-left: 20px; font-size: 0.9rem; }
+    
+    header { background: #1e1e2f; color: white; padding: 80px 20px; text-align: center; }
+    header h1 { color: #ffd700; margin-bottom: 10px; }
+
+    .event-list { padding: 50px 15%; }
+    .event-row {
+      background: white;
+      margin-bottom: 20px;
+      padding: 30px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border-left: 6px solid #ffd700;
+    }
+    .date-box { text-align: center; background: #1e1e2f; color: white; padding: 15px; border-radius: 10px; min-width: 100px; }
+    .date-box h2 { font-size: 1.8rem; color: #ffd700; }
+    .event-info h3 { color: #1e1e2f; margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div style="font-weight: 700;">POWER SANCTUARY</div>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="events.html" style="color: #ffd700;">Events</a>
+  </div>
+</nav>
+
+<header>
+  <h1>Upcoming Events</h1>
+  <p>Join us in our upcoming programs and services</p>
+</header>
+
+<div class="event-list" id="fullEventList">
+  <p style="text-align: center;">Checking the church calendar...</p>
+</div>
+
+<script>
+function displayEvents() {
+    const events = JSON.parse(localStorage.getItem('church_events')) || [];
+    const container = document.getElementById('eventsContainer'); // Make sure your HTML has this ID
+
+    if(events.length === 0) {
+        container.innerHTML = "<p>No upcoming events at the moment. Stay tuned!</p>";
+        return;
+    }
+
+    container.innerHTML = events.map(ev => `
+        <div class="event-card">
+            <h3>${ev.name}</h3>
+            <p class="date">📅 ${ev.date}</p>
+            <p>${ev.description}</p>
+        </div>
+    `).join('');
+}
+window.onload = displayEvents;
+</script>
+</body>
+</html>

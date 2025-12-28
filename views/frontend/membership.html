@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membership | Power Sanctuary Area</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #f0f2f5; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* Navigation */
+    nav { background: #1e1e2f; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    nav .logo { color: white; font-weight: 700; font-size: 1.2rem; }
+    nav ul { list-style: none; display: flex; }
+    nav ul li { margin-left: 20px; }
+    nav ul li a { color: white; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+    nav ul li a:hover { color: #ffd700; }
+
+    /* Form Container */
+    .reg-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+    .reg-card { background: white; width: 100%; max-width: 450px; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; }
+    .reg-card h2 { color: #1e1e2f; margin-bottom: 10px; font-size: 1.8rem; text-align: center; }
+    .reg-card p { color: #666; text-align: center; margin-bottom: 30px; font-size: 0.9rem; }
+
+    .input-group { margin-bottom: 20px; }
+    .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 0.85rem; }
+    
+    input { width: 100%; padding: 14px 18px; border: 2px solid #e1e1e1; border-radius: 10px; font-family: inherit; font-size: 1rem; transition: all 0.3s; }
+    input:focus { outline: none; border-color: #1e1e2f; background: #fafafa; }
+
+    .submit-btn { width: 100%; padding: 16px; background: #1e1e2f; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
+    .submit-btn:hover { background: #ffd700; color: #1e1e2f; transform: translateY(-2px); }
+
+    /* Success Overlay */
+    #success-box { display: none; text-align: center; }
+    .success-icon { font-size: 4rem; color: #28a745; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">RCCG POWER SANCTUARY</div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="admin-panel.html">Admin</a></li>
+  </ul>
+</nav>
+
+<div class="reg-wrapper">
+  <div class="reg-card">
+    <div id="form-container">
+      <h2>Join the Family</h2>
+      <p>Become a registered member of RCCG Power Sanctuary Area today.</p>
+
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" id="fullName" placeholder="e.g. John Sunday">
+      </div>
+
+      <div class="input-group">
+        <label>Phone Number</label>
+        <input type="tel" id="phone" placeholder="e.g. 08012345678">
+      </div>
+
+      <button class="submit-btn" id="subBtn" onclick="handleRegistration()">Register Membership</button>
+    </div>
+
+    <div id="success-box">
+      <i class="fa-solid fa-circle-check success-icon"></i>
+      <h2>Welcome!</h2>
+      <p>Your registration was successful. God bless you!</p>
+      <button class="submit-btn" onclick="location.reload()">Back to Form</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function handleRegistration() {
+  const nameVal = document.getElementById("fullName").value.trim();
+  const phoneVal = document.getElementById("phone").value.trim();
+  const btn = document.getElementById("subBtn");
+
+  // 1. Validation
+  if (!nameVal || !phoneVal) {
+    alert("Please enter both your name and phone number.");
+    return;
+  }
+
+  // 2. Change button status
+  btn.innerText = "Processing...";
+  btn.disabled = true;
+
+  // 3. THE FIX: Save to LocalStorage instead of a server
+  try {
+    // Get existing members or start an empty list
+    let members = JSON.parse(localStorage.getItem('church_members_list')) || [];
+
+    // Add new member
+    const newMember = {
+      fullName: nameVal,
+      phone: phoneVal,
+      regDate: new Date().toLocaleString()
+    };
+
+    members.push(newMember);
+
+    // Save back to memory
+    localStorage.setItem('church_members_list', JSON.stringify(members));
+
+    // 4. Show Success UI
+    setTimeout(() => {
+        document.getElementById('form-container').style.display = 'none';
+        document.getElementById('success-box').style.display = 'block';
+    }, 1000);
+
+  } catch (err) {
+    alert("An error occurred. Please try again.");
+    btn.innerText = "Register Membership";
+    btn.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>

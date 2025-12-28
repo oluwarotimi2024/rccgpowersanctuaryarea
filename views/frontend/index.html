@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power Sanctuary Area | RCCG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary: #1e1e2f;
+      --gold: #ffd700;
+      --accent: #b8860b;
+      --glass: rgba(255, 255, 255, 0.95);
+      --shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #f8fafb; color: #333; scroll-behavior: smooth; }
+
+    /* --- NAVIGATION --- */
+    nav {
+      background: var(--primary);
+      padding: 15px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .logo-area { display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; }
+    .logo-area img { width: 45px; filter: drop-shadow(0 0 5px rgba(255,215,0,0.3)); }
+    .logo-text h2 { font-size: 1.2rem; letter-spacing: 1px; }
+
+    .nav-links { display: flex; list-style: none; gap: 25px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: 0.3s; text-transform: uppercase; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .btn-join { background: var(--gold); color: var(--primary) !important; padding: 8px 20px; border-radius: 50px; font-weight: 700 !important; }
+
+    /* --- HERO --- */
+    header {
+      height: 70vh;
+      background: linear-gradient(rgba(30,30,47,0.7), rgba(30,30,47,0.7)), 
+                  url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1350&q=80');
+      background-size: cover; background-position: center;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      color: white; text-align: center; padding: 20px;
+    }
+    header h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 10px; animation: fadeInUp 1s; }
+    header p { font-size: 1.3rem; color: var(--gold); letter-spacing: 2px; }
+
+    /* --- ANNOUNCEMENT BAR --- */
+    .announcement-ticker {
+      background: var(--gold); color: var(--primary); padding: 12px; font-weight: 600;
+      text-align: center; box-shadow: var(--shadow);
+    }
+
+    section { padding: 80px 10%; }
+    .title-box { text-align: center; margin-bottom: 60px; }
+    .title-box h2 { font-size: 2.2rem; color: var(--primary); position: relative; display: inline-block; }
+    .title-box h2::after { content: ''; width: 50%; height: 4px; background: var(--gold); position: absolute; bottom: -10px; left: 25%; }
+
+    /* --- GRID STYLES --- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .glass-card {
+      background: white; padding: 40px 30px; border-radius: 20px;
+      text-align: center; transition: 0.4s; box-shadow: var(--shadow); border-bottom: 5px solid transparent;
+    }
+    .glass-card:hover { transform: translateY(-10px); border-bottom: 5px solid var(--gold); }
+    .glass-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
+    .glass-card h3 { margin-bottom: 15px; color: var(--primary); }
+
+    /* --- FOOTER --- */
+    footer { background: var(--primary); color: #888; text-align: center; padding: 60px 20px; }
+    .dev-credit { color: var(--gold); font-weight: 600; text-decoration: none; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 2.2rem; }
+      .nav-links { display: none; } /* Add hamburger for mobile if needed */
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-area" style="display:flex; align-items:center; gap:10px; color:white; text-decoration:none;">
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" width="40">
+    <div class="logo-text"><h2 style="font-size:1.1rem;">POWER SANCTUARY</h2></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="media.html">Sermons</a></li>
+    <li><a href="live.html">Live</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="prayer.html">Prayers</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="membership.html" class="btn-join"> membership register </a></li>
+  </ul>
+</nav>
+<header>
+  <h1>Welcome to the Sanctuary</h1>
+  <p>Building a People of Power, Praise, and Purpose</p>
+  <a href="#activities" class="btn-join" style="margin-top: 30px; text-decoration: none; display: inline-block;">View Schedule</a>
+</header>
+
+<div class="announcement-ticker" id="live-ann">
+  Loading latest announcements...
+</div>
+
+<section id="activities">
+  <div class="title-box">
+    <h2>Weekly Activities</h2>
+  </div>
+  <div class="grid" id="activities-grid">
+    <div class="glass-card">
+      <i class="fa-solid fa-clock"></i>
+      <h3>Syncing...</h3>
+      <p>Updating service times from Admin Panel.</p>
+    </div>
+  </div>
+</section>
+
+<section style="background: #fff; text-align: center;">
+  <div class="title-box">
+    <h2>New Here?</h2>
+    <p style="margin-top: 15px; color: #666;">We would love to know you better. Join our growing family today.</p>
+    <a href="membership.html" class="btn-join" style="margin-top: 25px; display: inline-block; text-decoration: none;">Register Membership</a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Power Sanctuary Area.</p>
+  <p>Developed by <span class="dev-name">Oluwarotimi Sunday Temitope</span></p>
+</footer>
+
+
+<script>
+  function syncHomeContent() {
+    // 1. Get Activities from Admin
+    const activities = JSON.parse(localStorage.getItem('church_activities')) || [];
+    const activitiesGrid = document.getElementById('activities-grid');
+    
+    if(activities.length > 0) {
+      activitiesGrid.innerHTML = activities.map(act => `
+        <div class="glass-card">
+          <i class="fa-solid fa-calendar-day"></i>
+          <h3>${act.day}</h3>
+          <p><strong>${act.title}</strong></p>
+          <p style="color: #666; font-size: 0.9rem;">${act.time}</p>
+        </div>
+      `).join('');
+    }
+
+    // 2. Get Latest Announcement for Ticker
+    const announces = JSON.parse(localStorage.getItem('church_announcements')) || [];
+    const ticker = document.getElementById('live-ann');
+    
+    if(announces.length > 0) {
+      const latest = announces[announces.length - 1]; // Get newest
+      ticker.innerHTML = `<i class="fa fa-bullhorn"></i> LATEST: ${latest.title} - ${latest.message}`;
+    } else {
+      ticker.innerHTML = `<i class="fa fa-heart"></i> Welcome to Power Sanctuary Area - Shalom!`;
+    }
+  }
+
+  // Load on start and listen for Admin updates
+  window.onload = syncHomeContent;
+  window.addEventListener('storage', syncHomeContent);
+</script>
+
+</body>
+</html>

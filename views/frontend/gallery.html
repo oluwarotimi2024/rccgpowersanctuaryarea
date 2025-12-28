@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Church Gallery | Power Sanctuary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #f4f7f6; }
+    
+    /* Navigation (Keep same as index) */
+    nav { background: #1e1e2f; display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; color: white; }
+    nav ul { list-style: none; display: flex; gap: 20px; }
+    nav a { color: white; text-decoration: none; font-size: 0.85rem; }
+
+    header { background: #1e1e2f; color: white; padding: 60px 20px; text-align: center; }
+    header h1 { color: #ffd700; margin-bottom: 10px; }
+
+    .gallery-container {
+      padding: 50px 10%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .gallery-item:hover { transform: scale(1.03); }
+    .gallery-item img { width: 100%; height: 200px; object-fit: cover; }
+    .gallery-info { padding: 15px; text-align: center; font-weight: 600; font-size: 0.9rem; }
+
+    footer { background: #1e1e2f; color: #888; text-align: center; padding: 40px; margin-top: 50px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo-text">POWER SANCTUARY</div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html" style="color:#ffd700">Gallery</a></li>
+    <li><a href="events.html">Events</a></li>
+  </ul>
+</nav>
+
+<header>
+  <h1>Photo Gallery</h1>
+  <p>Capturing the Move of God in our Sanctuary</p>
+</header>
+
+<div class="gallery-container" id="galleryGrid">
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1544427920-c49ccfb85579" alt="Service">
+    <div class="gallery-info">Sunday Worship</div>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Power Sanctuary Area.</p>
+</footer>
+
+<script>
+  function loadGallery() {
+    // Looks for 'church_gallery' in Admin
+    const images = JSON.parse(localStorage.getItem('church_gallery')) || [
+      {url: 'https://images.unsplash.com/photo-1544427920-c49ccfb85579', name: 'Sunday Worship'}
+    ];
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = images.map(img => `
+      <div class="gallery-item">
+        <img src="${img.url}" alt="Church Photo">
+        <div class="gallery-info">${img.name || 'Sanctuary Moment'}</div>
+      </div>
+    `).join('');
+  }
+  window.onload = loadGallery;
+</script></body>
+</html>
