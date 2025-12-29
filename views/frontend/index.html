@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <meta name="google-site-verification" content="mQV2CTrrvVIrAv-UYeyhv2BdrBkfnzxaGejXAWTIdzA" />
+  <meta name="description" content="RCCG Power Sanctuary Area Headquarters, Ado-Ekiti. A House of Liberty and prayer. Join our Sunday Celebration, Bible Study, and Faith Clinic.">
+  <meta name="keywords" content="RCCG, Power Sanctuary, Church in Ado Ekiti, Oke Ureje, Prayer, Christianity, Nigeria">
+  
   <title>RCCG Power Sanctuary | Official Website</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
@@ -191,15 +196,13 @@
       sessionStorage.setItem('ps_user_id', sessionId);
 
       let visitors = JSON.parse(localStorage.getItem('online_visitors')) || {};
-      visitors[sessionId] = Date.now(); // Update last seen time
+      visitors[sessionId] = Date.now(); 
       localStorage.setItem('online_visitors', JSON.stringify(visitors));
   }
   
-  // Send pulse every 5 seconds while they stay on the page
   sendPulse();
   setInterval(sendPulse, 5000);
 
-  // Mobile UI Helper
   window.addEventListener('scroll', () => {
     const nav = document.querySelector('nav');
     if (window.scrollY > 50) nav.style.boxShadow = "0 5px 20px rgba(0,0,0,0.5)";
@@ -208,4 +211,4 @@
 </script>
 
 </body>
-</html>
+                                              </html>
