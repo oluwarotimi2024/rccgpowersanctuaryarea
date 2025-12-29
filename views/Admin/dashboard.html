@@ -2,81 +2,171 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Dashboard | Power Sanctuary</title>
+  <title>Executive Admin | Power Sanctuary</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    :root { --nav-width: 260px; --primary: #050a18; --accent: #c5a059; }
-    body { font-family: 'Inter', sans-serif; margin: 0; display: flex; background: #f0f2f5; }
-    
-    /* Sidebar */
-    .sidebar { width: var(--nav-width); background: var(--primary); height: 100vh; color: white; position: fixed; }
-    .sidebar-header { padding: 30px; text-align: center; border-bottom: 1px solid #1a2238; }
-    .nav-links { list-style: none; padding: 20px; }
-    .nav-links li { padding: 15px; transition: 0.3s; cursor: pointer; border-radius: 8px; margin-bottom: 5px; }
-    .nav-links li:hover { background: var(--accent); color: var(--primary); }
-    .nav-links a { color: inherit; text-decoration: none; display: block; width: 100%; }
+    :root { 
+      --nav-width: 280px; 
+      --primary: #050a18; 
+      --accent: #c5a059; 
+      --bg: #f4f7fa;
+      --success: #25D366;
+    }
 
-    /* Main Content */
-    .main-content { margin-left: var(--nav-width); flex: 1; padding: 40px; }
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-    .stat-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; }
+
+    /* --- SIDEBAR --- */
+    .sidebar { width: var(--nav-width); background: var(--primary); height: 100vh; color: white; position: fixed; box-shadow: 4px 0 10px rgba(0,0,0,0.1); }
+    .sidebar-header { padding: 40px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .sidebar-header h3 { color: var(--accent); letter-spacing: 1px; font-size: 1.4rem; }
     
-    /* Broadcast Box */
-    .broadcast-section { background: white; margin-top: 40px; padding: 30px; border-radius: 12px; }
-    textarea { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin: 15px 0; }
-    .btn-wa { background: #25D366; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    .nav-links { list-style: none; padding: 20px; }
+    .nav-links li { padding: 15px 20px; margin-bottom: 8px; border-radius: 10px; transition: 0.3s; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+    .nav-links li:hover { background: rgba(197, 160, 89, 0.1); color: var(--accent); }
+    .nav-links a { color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100%; }
+    .nav-links i { width: 20px; font-size: 1.1rem; }
+
+    /* --- MAIN CONTENT --- */
+    .main-content { margin-left: var(--nav-width); flex: 1; padding: 50px; }
+    .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
     
-    /* Notification Bell */
-    .notif-badge { position: relative; font-size: 1.5rem; color: var(--primary); }
-    .badge { position: absolute; top: -5px; right: -5px; background: red; color: white; font-size: 0.7rem; padding: 3px 6px; border-radius: 50%; }
+    /* --- NOTIFICATION CENTER --- */
+    .notif-bell { 
+      position: relative; 
+      background: white; 
+      width: 50px; height: 50px; 
+      border-radius: 12px; 
+      display: flex; align-items: center; justify-content: center; 
+      cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .badge { position: absolute; top: -5px; right: -5px; background: #ff4757; color: white; font-size: 0.7rem; padding: 4px 7px; border-radius: 50%; border: 2px solid var(--bg); }
+
+    /* --- DASHBOARD CARDS --- */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; }
+    .stat-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); border-bottom: 4px solid transparent; transition: 0.3s; }
+    .stat-card:hover { border-bottom-color: var(--accent); transform: translateY(-5px); }
+    .stat-card h4 { color: #888; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; }
+    .stat-card h2 { font-size: 2rem; color: var(--primary); }
+
+    /* --- ACTION SECTIONS --- */
+    .action-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px; margin-top: 40px; }
+    .panel { background: white; padding: 35px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); }
+    .panel h3 { margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-size: 1.2rem; }
+
+    textarea { width: 100%; padding: 20px; border: 1px solid #eee; border-radius: 12px; background: #fafafa; font-family: inherit; margin: 15px 0; resize: none; }
+    
+    .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .btn-wa { background: var(--success); color: white; }
+    .btn-wa:hover { opacity: 0.9; }
+    .btn-push { background: var(--primary); color: var(--accent); margin-top: 10px; }
+
+    /* --- RECENT ALERTS LIST --- */
+    .alert-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #f8f9fa; }
+    .alert-icon { width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
   </style>
 </head>
 <body>
 
 <aside class="sidebar">
   <div class="sidebar-header">
-    <h3>ADMIN PORTAL</h3>
-    <p style="font-size: 0.7rem; color: var(--accent);">Power Sanctuary HQ</p>
+    <h3>POWER HQ</h3>
+    <p style="font-size: 0.75rem; color: #666; margin-top: 5px;">ADMINISTRATIVE PORTAL</p>
   </div>
   <ul class="nav-links">
-    <li><a href="index.html"><i class="fa fa-home"></i> View Website</a></li>
-    <li><i class="fa fa-video"></i> Manage Live Stream</li>
-    <li><i class="fa fa-users"></i> Member Database</li>
-    <li><i class="fa fa-calendar"></i> Update Events</li>
-    <li><i class="fa fa-sign-out-alt"></i> Logout</li>
+    <li><a href="index.html"><i class="fa fa-globe"></i> Visit Website</a></li>
+    <li><i class="fa fa-video"></i> Live Stream Control</li>
+    <li><i class="fa fa-users"></i> Membership Vault</li>
+    <li><i class="fa fa-calendar-check"></i> Event Scheduler</li>
+    <li style="margin-top: 50px; color: #ff4757;"><i class="fa fa-power-off"></i> Sign Out</li>
   </ul>
 </aside>
 
 <main class="main-content">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-    <h2>Executive Overview</h2>
-    <div class="notif-badge">
+  <div class="header-flex">
+    <div>
+      <h2 style="font-size: 1.8rem; color: var(--primary);">Shalom, Administrator</h2>
+      <p style="color: #888;">Here is what's happening at Power Sanctuary today.</p>
+    </div>
+    <div class="notif-bell" onclick="toggleNotifPanel()">
       <i class="fa fa-bell"></i>
-      <span class="badge">3</span>
+      <span class="badge" id="notifCount">3</span>
     </div>
   </div>
 
   <div class="stats-grid">
-    <div class="stat-card"><h4>New Members</h4><h2 style="color:var(--accent)">124</h2></div>
-    <div class="stat-card"><h4>Prayer Requests</h4><h2 style="color:var(--accent)">18</h2></div>
-    <div class="stat-card"><h4>Live Viewers</h4><h2 style="color:var(--accent)">450</h2></div>
+    <div class="stat-card"><h4>Active Members</h4><h2>1,240</h2></div>
+    <div class="stat-card"><h4>Prayer Requests</h4><h2 style="color: #ff4757;">14</h2></div>
+    <div class="stat-card"><h4>Online Now</h4><h2 style="color: var(--success);">85</h2></div>
   </div>
 
-  <div class="broadcast-section">
-    <h3><i class="fab fa-whatsapp"></i> Broadcast to Congregation</h3>
-    <p>This will send a message to your WhatsApp group or contact list.</p>
-    <textarea id="waMessage" rows="4" placeholder="Enter message to broadcast... (e.g. Join us for Digging Deep today by 5:30 PM)"></textarea>
-    <button class="btn-wa" onclick="sendWhatsApp()">SEND TO WHATSAPP</button>
+  <div class="action-grid">
+    <div class="panel">
+      <h3><i class="fab fa-whatsapp" style="color: var(--success);"></i> Congregation Broadcast</h3>
+      <p style="font-size: 0.9rem; color: #666;">Send an instant update to the church WhatsApp list.</p>
+      <textarea id="waMessage" rows="5" placeholder="Write your announcement here..."></textarea>
+      <button class="btn btn-wa" onclick="sendWhatsApp()">
+        <i class="fab fa-whatsapp"></i> SEND TO WHATSAPP
+      </button>
+      
+      <button class="btn btn-push" onclick="pushToSite()">
+        <i class="fa fa-bullhorn"></i> PUSH TO WEBSITE HEADER
+      </button>
+    </div>
+
+    <div class="panel">
+      <h3><i class="fa fa-bolt" style="color: var(--accent);"></i> Recent Alerts</h3>
+      <div id="alertList">
+        <div class="alert-item">
+          <div class="alert-icon" style="background: #e1f5fe; color: #03a9f4;"><i class="fa fa-user"></i></div>
+          <div>
+            <p style="font-size: 0.85rem; font-weight: 600;">New Member Registered</p>
+            <small style="color: #bbb;">2 minutes ago</small>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-icon" style="background: #fff3e0; color: #ff9800;"><i class="fa fa-hands-praying"></i></div>
+          <div>
+            <p style="font-size: 0.85rem; font-weight: 600;">Urgent Prayer Request</p>
+            <small style="color: #bbb;">15 minutes ago</small>
+          </div>
+        </div>
+        <div class="alert-item">
+            <div class="alert-icon" style="background: #e8f5e9; color: #4caf50;"><i class="fa fa-comment"></i></div>
+            <div>
+              <p style="font-size: 0.85rem; font-weight: 600;">New Media Comment</p>
+              <small style="color: #bbb;">1 hour ago</small>
+            </div>
+          </div>
+      </div>
+    </div>
   </div>
 </main>
 
 <script>
   function sendWhatsApp() {
     const msg = document.getElementById('waMessage').value;
-    const phone = "2349024301199"; // Your number
+    if(!msg) return alert("Please enter a message");
+    const phone = "2349024301199"; 
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  function pushToSite() {
+    const msg = document.getElementById('waMessage').value;
+    if(!msg) return alert("Enter content to push to website notification bar");
+    
+    // In a real app, this would update a database. 
+    // For now, we simulate the success.
+    alert("SUCCESS: Website notification bar updated with: " + msg);
+  }
+
+  function toggleNotifPanel() {
+    alert("Opening Detailed Notification Logs...");
+    document.getElementById('notifCount').innerText = "0";
   }
 </script>
 
 </body>
-</html>
+            </html>
