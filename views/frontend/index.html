@@ -87,13 +87,13 @@
     <li><a href="membership.html">Membership</a></li>
     <li><a href="gallery.html">Gallery</a></li>
     <li><a href="prayer.html" style="color:var(--accent)">Prayer</a></li>
-  <li><a href="admin.html" class="admin-btn">ADMIN</a></li>
+    <li><a href="admin.html" class="admin-btn">ADMIN</a></li>
   </ul>
 </nav>
 
 <header class="hero">
   <h2>WELCOME TO RCCG POWER SANCTUARY</h2>
-<p> A House of Liberty</p>
+  <p>A House of Liberty</p>
   <p>RCCG Area Headquarters | Ado-Ekiti</p>
 </header>
 
@@ -116,7 +116,8 @@
   <h3 class="section-head">Weekly Activities</h3>
   <div class="schedule-grid">
     
-    <div class="activitadmindiv class="day-circle">SUN</div>
+    <div class="activity-item">
+      <div class="day-circle">SUN</div>
       <div class="act-detail">
         <h4>Sunday Celebration Service</h4>
         <p>8:00 AM — Word, Worship & Wonders</p>
@@ -184,6 +185,20 @@
 </footer>
 
 <script>
+  // --- VISITOR PULSE SYSTEM ---
+  function sendPulse() {
+      const sessionId = sessionStorage.getItem('ps_user_id') || 'User-' + Math.floor(Math.random() * 10000);
+      sessionStorage.setItem('ps_user_id', sessionId);
+
+      let visitors = JSON.parse(localStorage.getItem('online_visitors')) || {};
+      visitors[sessionId] = Date.now(); // Update last seen time
+      localStorage.setItem('online_visitors', JSON.stringify(visitors));
+  }
+  
+  // Send pulse every 5 seconds while they stay on the page
+  sendPulse();
+  setInterval(sendPulse, 5000);
+
   // Mobile UI Helper
   window.addEventListener('scroll', () => {
     const nav = document.querySelector('nav');
@@ -193,10 +208,4 @@
 </script>
 
 </body>
-      </html>
-
-
-
-
-
-
+</html>
