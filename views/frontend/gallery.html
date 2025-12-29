@@ -115,8 +115,8 @@
 </head>
 <body>
 
-<div class="top-announcement">
-  <i class="fa fa-camera"></i> CAPTURING MOMENTS: View photos from our last Anniversary Celebration below!
+<div class="top-announcement" id="galleryBanner">
+  <i class="fa fa-camera"></i> CAPTURING MOMENTS: View photos from our last Celebration below!
 </div>
 
 <nav>
@@ -188,13 +188,37 @@
 </footer>
 
 <script>
-  // Show toast after 3 seconds
+  // 1. VISITOR PULSE: Notifies Admin Dashboard that user is here
+  function sendPulse() {
+      if (!sessionStorage.getItem('visitor_id')) {
+          sessionStorage.setItem('visitor_id', 'user_' + Math.random().toString(36).substr(2, 9));
+      }
+      const vID = sessionStorage.getItem('visitor_id');
+      let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
+      visitorData[vID] = Date.now(); 
+      localStorage.setItem('online_visitors', JSON.stringify(visitorData));
+  }
+  setInterval(sendPulse, 5000);
+  sendPulse();
+
+  // 2. BANNER SYNC: Updates announcement from Dashboard
+  function syncAnnouncement() {
+      const banner = document.getElementById('galleryBanner');
+      const msg = localStorage.getItem('live_announcement');
+      if (msg && banner) {
+          banner.innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
+      }
+  }
+  setInterval(syncAnnouncement, 3000);
+
+  // 3. TOAST & INITIALIZERS
   window.addEventListener('load', () => {
     setTimeout(() => {
       document.getElementById('toast-notification').classList.add('show');
     }, 3000);
+    syncAnnouncement();
   });
 </script>
 
 </body>
-</html></html>
+</html>
