@@ -3,105 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Church Events | Power Sanctuary</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>Sanctuary Schedule | Power Sanctuary</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     :root {
-      --bg: #020617;
-      --card: #0b0f1a;
-      --accent: #c5a059;
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #f8fafc;
+      --primary: #050a18; 
+      --accent: #c5a059;  
+      --accent-soft: rgba(197, 160, 89, 0.1);
+      --white: #ffffff;
+      --text-muted: #94a3b8;
+      --bg: #f8fafc;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--primary); line-height: 1.6; }
 
     /* --- NAVIGATION --- */
-    nav {
-      background: var(--card);
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
+    nav { 
+      background: var(--primary); padding: 18px 6%; display: flex; 
+      justify-content: space-between; align-items: center; 
+      border-bottom: 2px solid var(--accent); position: sticky; top:0; z-index: 1000; 
     }
-    .logo { font-weight: 800; color: var(--accent); font-size: 0.9rem; }
-    .nav-links a { color: white; text-decoration: none; font-size: 0.8rem; margin-left: 15px; font-weight: 600; }
+    .logo-text h1 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.1rem; margin: 0; letter-spacing: 1px; }
+    .nav-menu { display: flex; list-style: none; gap: 15px; align-items: center; }
+    .nav-menu a { color: white; text-decoration: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+    .admin-link { border: 1px solid var(--accent); padding: 6px 14px; border-radius: 4px; color: var(--accent) !important; }
 
-    /* --- CONTENT --- */
-    .container { flex: 1; padding: 20px; }
-    h2 { font-size: 1.5rem; margin-bottom: 20px; color: var(--accent); }
-
-    .event-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 15px;
-      display: flex;
-      gap: 15px;
-    }
-    .date-box {
-      background: var(--accent);
-      color: #000;
-      padding: 10px;
-      border-radius: 10px;
+    /* --- PAGE HEADER --- */
+    .page-header {
+      background: var(--primary);
+      padding: 60px 8% 40px;
       text-align: center;
-      min-width: 60px;
-      height: 60px;
+      color: white;
+      clip-path: ellipse(150% 100% at 50% 0%);
+    }
+    .page-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; }
+    .page-header p { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
+
+    /* --- WEEKLY TIMELINE --- */
+    .schedule-container { padding: 40px 6%; max-width: 900px; margin: -30px auto 0; }
+    
+    .timeline-item {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 20px;
+      box-shadow: 0 10px 30px rgba(5, 10, 24, 0.04);
+      border: 1px solid rgba(0,0,0,0.03);
+      position: relative;
+      overflow: hidden;
+      transition: 0.3s ease;
+    }
+    .timeline-item:hover { transform: translateY(-3px); border-color: var(--accent); }
+
+    .day-marker {
+      background: var(--primary);
+      color: var(--accent);
+      min-width: 65px;
+      height: 65px;
+      border-radius: 12px;
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
-    .date-box b { font-size: 1.2rem; display: block; line-height: 1; }
-    .date-box span { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+    .day-marker span { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
+    .day-marker b { font-size: 1.3rem; font-family: 'Playfair Display', serif; }
 
-    .event-info h3 { font-size: 1rem; margin-bottom: 5px; }
-    .event-info p { font-size: 0.8rem; color: #94a3b8; line-height: 1.4; }
+    .content-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 5px; color: var(--primary); }
+    .content-box .time { color: var(--accent); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+    .content-box p { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* --- SPECIAL PROGRAMS BANNER --- */
+    .special-banner {
+      background: linear-gradient(rgba(5, 10, 24, 0.9), rgba(5, 10, 24, 0.9)), url('https://images.unsplash.com/photo-1510133760520-21390469035e?auto=format&fit=crop&w=800&q=80');
+      background-size: cover; padding: 40px; margin: 40px 6%; border-radius: 20px; color: white; text-align: center; border: 1px solid var(--accent);
+    }
+    .special-banner h4 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.5rem; margin-bottom: 10px; }
 
     /* --- FOOTER --- */
-    footer { padding: 30px 20px; background: #000; text-align: center; border-top: 1px solid var(--border); margin-top: auto; }
-    .footer-text { font-size: 0.65rem; color: #475569; }
-    .architect { color: var(--accent); font-weight: 700; display: block; margin-top: 5px; font-size: 0.75rem; }
+    footer { 
+      background: var(--primary); color: white; padding: 60px 8% 30px; margin-top: 60px; text-align: center;
+      border-top: 4px solid var(--accent);
+    }
+    .f-logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.4rem; margin-bottom: 20px; display: block; }
+    .copyright { font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; }
+    .dev-tag { font-size: 0.8rem; margin-top: 10px; color: var(--text-muted); }
+    .dev-tag b { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .timeline-item { padding: 20px; }
+      .day-marker { min-width: 55px; height: 55px; }
+      .page-header h2 { font-size: 2rem; }
+    }
   </style>
 </head>
 <body>
 
   <nav>
-    <div class="logo">POWER SANCTUARY</div>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="live.html">Live</a>
+    <div class="logo-box">
+      <div class="logo-text"><h1>POWER SANCTUARY</h1></div>
     </div>
+    <ul class="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="live.html">Live</a></li>
+      <li><a href="login.html" class="admin-link">Admin Access</a></li>
+    </ul>
   </nav>
 
-  <div class="container">
-    <h2>Upcoming Events</h2>
+  <header class="page-header">
+    <p>The Divine Calendar</p>
+    <h2>Weekly Activities</h2>
+  </header>
 
-    <div class="event-card">
-      <div class="date-box"><b>31</b><span>DEC</span></div>
-      <div class="event-info">
-        <h3>Crossover Night Service</h3>
-        <p><i class="fa fa-clock"></i> 9:00 PM - 12:15 AM</p>
-        <p><i class="fa fa-map-marker-alt"></i> Area Headquarters Main Auditorium</p>
+  <main class="schedule-container">
+    
+    <div class="timeline-item">
+      <div class="day-marker">
+        <span>Lord's Day</span>
+        <b>SUN</b>
+      </div>
+      <div class="content-box">
+        <div class="time"><i class="fa fa-clock"></i> 8:00 AM — 11:30 AM</div>
+        <h3>Sunday Celebration Service</h3>
+        <p>A transformative encounter with the Word and high-energy praise.</p>
       </div>
     </div>
 
-    <div class="event-card">
-      <div class="date-box"><b>05</b><span>JAN</span></div>
-      <div class="event-info">
-        <h3>Thanksgiving Service</h3>
-        <p><i class="fa fa-clock"></i> 8:00 AM Sharp</p>
-        <p><i class="fa fa-map-marker-alt"></i> Power Sanctuary Cathedral</p>
+    <div class="timeline-item">
+      <div class="day-marker">
+        <span>Study</span>
+        <b>TUE</b>
+      </div>
+      <div class="content-box">
+        <div class="time"><i class="fa fa-clock"></i> 5:30 PM — 7:00 PM</div>
+        <h3>Digging Deep</h3>
+        <p>Systematic Bible study for spiritual maturity and doctrinal clarity.</p>
       </div>
     </div>
-  </div>
+
+    <div class="timeline-item">
+      <div class="day-marker">
+        <span>Warfare</span>
+        <b>THU</b>
+      </div>
+      <div class="content-box">
+        <div class="time"><i class="fa fa-clock"></i> 5:30 PM — 7:00 PM</div>
+        <h3>Faith Clinic</h3>
+        <p>A specialized prayer meeting for deliverance, healing, and breakthroughs.</p>
+      </div>
+    </div>
+
+    <div class="special-banner">
+      <h4>Power Night (Vigil)</h4>
+      <p style="font-size: 0.85rem; opacity: 0.9;">Every Last Friday of the Month | 10:00 PM Sharp</p>
+      <hr style="width: 40px; border: 1px solid var(--accent); margin: 15px auto;">
+      <p style="font-size: 0.8rem; color: var(--accent);">Join us for a night of intense apostolic prayers.</p>
+    </div>
+
+  </main>
 
   <footer>
-    <p class="footer-text">&copy; 2025 RCCG POWER SANCTUARY AREA HQ</p>
-    <span class="architect">System Architect: Oluwarotimi Sunday Temitope</span>
+    <span class="f-logo">Power Sanctuary HQ</span>
+    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px;">Raising a generation of liberated and empowered believers.</p>
+    
+    <div class="copyright">
+      &copy; 2025 RCCG Power Sanctuary Area HQ. All Rights Reserved.
+      <div class="dev-tag">System Architect: <b>Oluwarotimi Sunday Temitope</b></div>
+    </div>
   </footer>
 
 </body>
