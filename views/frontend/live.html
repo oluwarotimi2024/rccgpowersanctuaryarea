@@ -2,157 +2,215 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Live Experience | Power Sanctuary</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Hub | Power Sanctuary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root { --primary: #050a18; --accent: #c5a059; --glass: rgba(255, 255, 255, 0.05); }
-    body { background: #02060f; color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
-    
-    /* Announcement Bar */
-    .top-announcement {
-      background: var(--accent); color: var(--primary);
-      padding: 10px 5%; text-align: center; font-weight: 700; font-size: 0.85rem;
+    :root { --primary: #050a18; --accent: #c5a059; --glass: rgba(255, 255, 255, 0.05); --online: #2ecc71; }
+    body { background: #01040a; color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
+
+    /* Main Layout: 3 Columns (Members | Stream & Call | Chat) */
+    .app-container {
+      display: grid;
+      grid-template-columns: 260px 1fr 320px;
+      height: 100vh;
     }
 
-    .nav-simple { padding: 20px 8%; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(197, 160, 89, 0.3); background: var(--primary); }
-    .nav-simple a { color: white; text-decoration: none; font-weight: 600; font-size: 0.8rem; }
+    /* Column 1: Member Directory */
+    .member-sidebar {
+      background: #020817;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-header { padding: 20px; border-bottom: 1px solid var(--glass); }
+    .member-list { flex: 1; overflow-y: auto; padding: 10px; }
+    .member-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.3s;
+    }
+    .member-item:hover { background: var(--glass); }
+    .avatar { 
+      width: 35px; height: 35px; background: #334155; 
+      border-radius: 50%; position: relative; display: flex;
+      align-items: center; justify-content: center; font-weight: bold;
+    }
+    .status-dot { 
+      width: 10px; height: 10px; background: var(--online); 
+      border-radius: 50%; position: absolute; bottom: 0; right: 0; border: 2px solid #020817;
+    }
 
-    .live-header { text-align: center; padding: 40px 20px; }
-    .live-header h2 { font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--accent); margin-bottom: 5px; }
-
-    .stream-box { 
-      max-width: 1000px; margin: 0 auto; background: black; 
-      border: 2px solid var(--accent); position: relative;
-      box-shadow: 0 0 50px rgba(197, 160, 89, 0.2);
+    /* Column 2: Center (Stream & Calls) */
+    .main-stage {
+      padding: 20px;
+      overflow-y: auto;
+      background: radial-gradient(circle at center, #0a132e 0%, #01040a 100%);
+      display: flex;
+      flex-direction: column;
+    }
+    .stream-window {
+      width: 100%; border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--accent); background: black;
     }
     .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
-    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-container iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:none; }
 
-    .live-indicator { 
-      display: inline-block; background: #ff0000; 
-      padding: 4px 12px; border-radius: 4px; font-weight: 800; font-size: 0.7rem;
-      margin-bottom: 15px; animation: pulse 1.5s infinite;
+    .call-lobby {
+      margin-top: 20px; background: var(--glass);
+      padding: 20px; border-radius: 12px; text-align: center;
+      border: 1px solid rgba(197, 160, 89, 0.2);
     }
-    @keyframes pulse { 0% {opacity: 1;} 50% {opacity: 0.4;} 100% {opacity: 1;} }
+    .call-controls { display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
+    .btn-circle {
+      width: 55px; height: 55px; border-radius: 50%; border: none;
+      cursor: pointer; font-size: 1.2rem; display: flex; align-items: center;
+      justify-content: center; transition: 0.3s; color: white;
+    }
+    .btn-video { background: #2ecc71; }
+    .btn-audio { background: #3498db; }
+    .btn-hangup { background: #e74c3c; display: none; }
 
-    .live-meta { padding: 40px 8%; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+    /* Column 3: Chat */
+    .chat-sidebar { background: #020817; border-left: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; }
+    .chat-messages { flex: 1; padding: 15px; overflow-y: auto; }
+    .chat-bubble { background: var(--glass); padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 0.9rem; }
+    .chat-bubble b { color: var(--accent); display: block; font-size: 0.75rem; }
     
-    /* Sermon Notes Box */
-    .notes-box { 
-      background: var(--glass); padding: 25px; border-radius: 12px; 
-      border-left: 4px solid var(--accent); margin-bottom: 20px;
-    }
-    .notes-content { color: #ccc; line-height: 1.8; font-size: 1.1rem; }
+    .chat-input-area { padding: 15px; border-top: 1px solid var(--glass); display: flex; gap: 10px; }
+    .chat-input-area input { flex: 1; background: transparent; border: 1px solid #333; color: white; padding: 10px; border-radius: 5px; outline: none; }
+    .chat-input-area button { background: var(--accent); border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
 
-    .chat-box { background: var(--glass); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); height: fit-content; }
-    
-    .channel-card {
-      background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;
-      margin-top: 15px; cursor: pointer; border: 1px solid #333; transition: 0.3s;
+    /* Registration Modal */
+    #regOverlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+      display: flex; align-items: center; justify-content: center; z-index: 9999;
     }
-    .channel-card:hover { background: var(--accent); color: var(--primary); }
-
-    footer { padding: 40px; text-align: center; color: #555; border-top: 1px solid #111; font-size: 0.8rem; }
+    .reg-card { background: var(--primary); padding: 40px; border-radius: 15px; border: 1px solid var(--accent); width: 350px; text-align: center; }
+    .reg-card input { width: 100%; padding: 12px; margin: 10px 0; background: #0a132e; border: 1px solid #333; color: white; border-radius: 5px; }
   </style>
 </head>
 <body>
 
-  <div class="top-announcement" id="liveBanner">
-    <i class="fa fa-broadcast-tower"></i> CONNECTING TO THE ATMOSPHERE OF MIRACLES...
+<div id="regOverlay">
+  <div class="reg-card">
+    <h2 style="color:var(--accent); font-family:'Playfair Display';">Join the Family</h2>
+    <p style="font-size: 0.8rem; color:#888;">Enter your name to see who's in the sanctuary</p>
+    <input type="text" id="userName" placeholder="Your Display Name">
+    <button onclick="enterCommunity()" style="width:100%; padding:12px; background:var(--accent); border:none; border-radius:5px; font-weight:700; margin-top:10px; cursor:pointer;">ENTER HUB</button>
   </div>
+</div>
 
-  <nav class="nav-simple">
-    <a href="index.html"><i class="fa fa-arrow-left"></i> BACK TO HOME</a>
-    <span style="color:var(--accent)">POWER SANCTUARY TV</span>
-  </nav>
-
-  <header class="live-header">
-    <div class="live-indicator">LIVE NOW</div>
-    <h2 id="serviceTitle">The Arena of Liberty</h2>
-    <p>Join believers worldwide in this life-transforming encounter.</p>
-  </header>
-
-  <div class="stream-box">
-    <div class="video-container">
-      <iframe id="mainStream" src="https://www.youtube.com/embed/live_stream?channel=UC8pAnVToO8R_jS2M7OidG8A" allowfullscreen></iframe>
+<div class="app-container">
+  
+  <aside class="member-sidebar">
+    <div class="sidebar-header">
+      <h4 style="margin:0;"><i class="fa fa-users"></i> Online Family</h4>
+      <small style="color:var(--accent)" id="groupLabel">Group 1 (492/500)</small>
     </div>
-  </div>
+    <div class="member-list" id="memberList">
+      <div class="member-item"><div class="avatar">P<div class="status-dot"></div></div> <span>Pastor Sunday</span></div>
+      <div class="member-item"><div class="avatar">M<div class="status-dot"></div></div> <span>Minister Segun</span></div>
+    </div>
+  </aside>
 
-  <div class="live-meta">
-    <div class="main-content">
-      <div class="notes-box">
-        <h3 style="color:var(--accent); margin-bottom:15px;"><i class="fa fa-edit"></i> Live Sermon Notes</h3>
-        <div id="sermonDisplay" class="notes-content">
-          The preacher's points will appear here during the service...
-        </div>
+  <main class="main-stage">
+    <div class="stream-window">
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/live_stream?channel=UC8pAnVToO8R_jS2M7OidG8A" allowfullscreen></iframe>
       </div>
-      
-      <h3>About this Service</h3>
-      <p style="color:#aaa; margin-top:10px;">Welcome to our Sanctuary stream. Be expectant and stay connected. Do not forget to use the "Join Prayer Room" button if you need to speak with a minister.</p>
     </div>
 
-    <div class="side-content">
-      <div class="chat-box">
-        <h4>Minister Connect</h4>
-        <p style="font-size:0.8rem; color:var(--accent); margin-bottom:15px;">Live intercession is available</p>
-        <a href="https://wa.me/2349024301199" target="_blank" style="background:#25D366; color:white; padding:12px 20px; text-decoration:none; border-radius:5px; display:block; text-align:center; font-weight:700;">JOIN PRAYER ROOM</a>
-        
-        <h4 style="margin-top:30px;">Switch Channel</h4>
-        <div class="channel-card" onclick="changeChannel('UC8pAnVToO8R_jS2M7OidG8A')">
-          <i class="fa fa-church"></i> Main Sanctuary
-        </div>
-        <div class="channel-card" onclick="changeChannel('LIVE_ID_2')">
-          <i class="fa fa-microphone"></i> Overflow Room
+    <div class="call-lobby">
+      <h3 id="callStatus">Call Lobby</h3>
+      <p style="font-size:0.8rem; color:#888;">Start a group video or audio call with the family</p>
+      <div class="call-controls">
+        <button class="btn-circle btn-video" onclick="toggleCall('Video')"><i class="fa fa-video"></i></button>
+        <button class="btn-circle btn-audio" onclick="toggleCall('Audio')"><i class="fa fa-microphone"></i></button>
+        <button class="btn-circle btn-hangup" id="hangup" onclick="endCall()"><i class="fa fa-phone-slash"></i></button>
+      </div>
+      <div id="localVideoArea" style="margin-top:15px; display:none;">
+        <div style="width:150px; height:100px; background:#000; border-radius:8px; margin:auto; display:flex; align-items:center; justify-content:center;">
+            <small>Your Camera ON</small>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
-  <footer>
-    &copy; 2025 Power Sanctuary. Developed by <span style="color:var(--accent)">Oluwarotimi Sunday Temitope</span>
-  </footer>
+  <aside class="chat-sidebar">
+    <div class="sidebar-header"><h4><i class="fa fa-comment-dots"></i> Family Chat</h4></div>
+    <div class="chat-messages" id="chatWindow">
+      <div class="chat-bubble"><b>System</b> Welcome to the fellowship group!</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Message family...">
+      <button onclick="sendChat()"><i class="fa fa-paper-plane"></i></button>
+    </div>
+  </aside>
 
-  <script>
-    // 1. VISITOR PULSE: Let Admin see active viewer count
-    function sendPulse() {
-        if (!sessionStorage.getItem('visitor_id')) {
-            sessionStorage.setItem('visitor_id', 'live_user_' + Math.random().toString(36).substr(2, 9));
-        }
-        const vID = sessionStorage.getItem('visitor_id');
-        let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
-        visitorData[vID] = Date.now(); 
-        localStorage.setItem('online_visitors', JSON.stringify(visitorData));
-    }
-    setInterval(sendPulse, 5000);
-    sendPulse();
+</div>
 
-    // 2. LIVE SYNC: Receives Notes & Announcements from Dashboard
-    function syncLiveContent() {
-        // Sync Banner
-        const banner = document.getElementById('liveBanner');
-        const msg = localStorage.getItem('live_announcement');
-        if (msg) banner.innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
+<script>
+  let myName = "";
 
-        // Sync Sermon Notes
-        const sermonDisplay = document.getElementById('sermonDisplay');
-        const activeNotes = localStorage.getItem('live_sermon_notes');
-        if (activeNotes) {
-            sermonDisplay.innerHTML = activeNotes;
-        }
+  // ENTER COMMUNITY
+  function enterCommunity() {
+    const nameInput = document.getElementById('userName');
+    if(!nameInput.value) return alert("Please enter your name");
+    
+    myName = nameInput.value;
+    document.getElementById('regOverlay').style.display = 'none';
+    
+    // Add me to list
+    const list = document.getElementById('memberList');
+    const item = document.createElement('div');
+    item.className = 'member-item';
+    item.innerHTML = `<div class="avatar" style="background:var(--accent); color:black">${myName[0]}<div class="status-dot"></div></div> <span>${myName} (You)</span>`;
+    list.prepend(item);
 
-        // Sync Service Title
-        const title = localStorage.getItem('live_service_title');
-        if (title) document.getElementById('serviceTitle').innerText = title;
-    }
-    setInterval(syncLiveContent, 2000);
+    // Alert Group
+    addChatMessage("System", `${myName} has joined the sanctuary family!`);
+  }
 
-    // 3. CHANNEL SWITCHER
-    function changeChannel(id) {
-        document.getElementById('mainStream').src = `https://www.youtube.com/embed/live_stream?channel=${id}`;
-    }
+  // CHAT LOGIC
+  function sendChat() {
+    const input = document.getElementById('chatInput');
+    if(!input.value) return;
+    addChatMessage(myName, input.value);
+    input.value = "";
+  }
 
-    window.onload = syncLiveContent;
-  </script>
+  function addChatMessage(user, msg) {
+    const win = document.getElementById('chatWindow');
+    const div = document.createElement('div');
+    div.className = 'chat-bubble';
+    div.innerHTML = `<b>${user}</b> ${msg}`;
+    win.appendChild(div);
+    win.scrollTop = win.scrollHeight;
+  }
+
+  // CALL LOGIC (UI Simulation)
+  function toggleCall(type) {
+    document.getElementById('callStatus').innerText = `${type} Call Active...`;
+    document.getElementById('callStatus').style.color = "#2ecc71";
+    document.getElementById('hangup').style.display = "flex";
+    if(type === 'Video') document.getElementById('localVideoArea').style.display = "block";
+    
+    addChatMessage("System", `${myName} started a ${type} call.`);
+  }
+
+  function endCall() {
+    document.getElementById('callStatus').innerText = "Call Lobby";
+    document.getElementById('callStatus').style.color = "white";
+    document.getElementById('hangup').style.display = "none";
+    document.getElementById('localVideoArea').style.display = "none";
+  }
+
+  // ENTER KEY
+  document.getElementById('chatInput').addEventListener("keyup", (e) => {
+    if(e.key === "Enter") sendChat();
+  });
+</script>
+
 </body>
-      </html>
+</html>
