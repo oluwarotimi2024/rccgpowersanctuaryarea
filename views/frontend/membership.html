@@ -4,47 +4,131 @@
   <meta charset="UTF-8">
   <title>Membership Portal | Power Sanctuary</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     :root { --primary: #050a18; --accent: #c5a059; }
     body { background: #fdfdfd; font-family: 'Inter', sans-serif; margin:0; }
+    
     .hero-side { 
       background: linear-gradient(rgba(5, 10, 24, 0.9), rgba(5, 10, 24, 0.9)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80'); 
       background-size: cover; color: white; padding: 100px 8%; text-align: center;
     }
+    
     .form-section { max-width: 600px; margin: -50px auto 100px; background: white; padding: 50px; border-radius: 4px; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
     .form-group { margin-bottom: 25px; }
     label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; color: var(--primary); }
-    input, select { width: 100%; padding: 15px; border: 1px solid #eee; background: #fafafa; border-radius: 4px; }
-    .submit-btn { width: 100%; padding: 18px; background: var(--primary); color: var(--accent); border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
+    input, select { width: 100%; padding: 15px; border: 1px solid #eee; background: #fafafa; border-radius: 4px; font-family: inherit; }
+    
+    .submit-btn { width: 100%; padding: 18px; background: var(--primary); color: var(--accent); border: none; font-weight: 800; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
     .submit-btn:hover { background: var(--accent); color: var(--primary); }
+    
+    /* Toast Notification Style */
+    #toast-notification {
+      position: fixed; bottom: 20px; right: 20px; background: white; padding: 20px;
+      border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      display: flex; align-items: center; gap: 15px; z-index: 3000;
+      border-left: 5px solid #25D366; transform: translateX(150%);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    #toast-notification.show { transform: translateX(0); }
   </style>
 </head>
 <body>
+
   <div class="hero-side">
     <h1 style="font-family: 'Playfair Display'; font-size: 3rem;">Become a Part of Us</h1>
     <p style="color:var(--accent)">STEP INTO YOUR DIVINE ASSIGNMENT</p>
   </div>
 
   <div class="form-section">
-    <form>
-      <div class="form-group"><label>FULL NAME</label><input type="text" placeholder="John Doe"></div>
-      <div class="form-group"><label>PHONE NUMBER</label><input type="tel" placeholder="+234..."></div>
-      <div class="form-group"><label>AREA OF INTEREST (DEPARTMENT)</label>
-        <select>
+    <form id="membershipForm">
+      <div class="form-group">
+        <label>FULL NAME</label>
+        <input type="text" id="mName" placeholder="John Doe" required>
+      </div>
+      <div class="form-group">
+        <label>PHONE NUMBER</label>
+        <input type="tel" id="mPhone" placeholder="+234..." required>
+      </div>
+      <div class="form-group">
+        <label>AREA OF INTEREST (DEPARTMENT)</label>
+        <select id="mDept">
           <option>Media & Technical</option>
           <option>The Voices (Choir)</option>
           <option>Protocol & Ushering</option>
           <option>Sanctuary Keepers</option>
         </select>
       </div>
-      <div class="form-group"><label>ARE YOU BAPTIZED?</label>
+      <div class="form-group">
+        <label>ARE YOU BAPTIZED?</label>
         <div style="display:flex; gap:20px;">
-          <label style="font-weight:400"><input type="radio" name="bap" style="width:auto"> Yes</label>
-          <label style="font-weight:400"><input type="radio" name="bap" style="width:auto"> No</label>
+          <label style="font-weight:400"><input type="radio" name="bap" value="Yes" checked style="width:auto"> Yes</label>
+          <label style="font-weight:400"><input type="radio" name="bap" value="No" style="width:auto"> No</label>
         </div>
       </div>
-      <button class="submit-btn">SUBMIT REGISTRATION</button>
+      <button type="submit" class="submit-btn" id="subBtn">SUBMIT REGISTRATION</button>
     </form>
   </div>
+
+  <div id="toast-notification">
+    <div style="background: #25D366; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+        <i class="fa fa-check"></i>
+    </div>
+    <div>
+        <strong style="display:block;">Registration Received!</strong>
+        <small style="color:#666;">Welcome to Power Sanctuary family.</small>
+    </div>
+  </div>
+
+  <script>
+    // 1. VISITOR PULSE: Keeps you visible on the Admin Dashboard
+    function sendPulse() {
+        if (!sessionStorage.getItem('visitor_id')) {
+            sessionStorage.setItem('visitor_id', 'user_' + Math.random().toString(36).substr(2, 9));
+        }
+        const vID = sessionStorage.getItem('visitor_id');
+        let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
+        visitorData[vID] = Date.now(); 
+        localStorage.setItem('online_visitors', JSON.stringify(visitorData));
+    }
+    setInterval(sendPulse, 5000);
+    sendPulse();
+
+    // 2. FORM SUBMISSION: Sends data to Dashboard
+    document.getElementById('membershipForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('subBtn');
+      btn.innerText = "PROCESSING...";
+      btn.disabled = true;
+
+      // Prepare data for Admin Dashboard
+      const newMember = {
+        type: 'Member',
+        name: document.getElementById('mName').value,
+        message: `Wants to join ${document.getElementById('mDept').value} department.`,
+        time: new Date().toLocaleTimeString()
+      };
+
+      // Save to shared storage
+      let alerts = JSON.parse(localStorage.getItem('church_alerts')) || [];
+      alerts.push(newMember);
+      localStorage.setItem('church_alerts', JSON.stringify(alerts));
+
+      // Show success message
+      setTimeout(() => {
+        document.getElementById('toast-notification').classList.add('show');
+        btn.innerText = "SUBMIT REGISTRATION";
+        btn.disabled = false;
+        this.reset();
+        
+        // Hide toast after 5 seconds
+        setTimeout(() => {
+          document.getElementById('toast-notification').classList.remove('show');
+        }, 5000);
+      }, 1500);
+    });
+  </script>
 </body>
-</html></html>
+</html>
