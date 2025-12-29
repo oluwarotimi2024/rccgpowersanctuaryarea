@@ -17,7 +17,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background-color: var(--bg); line-height: 1.6; }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
 
     /* --- NOTIFICATION SYSTEM --- */
     .top-announcement {
@@ -31,24 +31,6 @@
       top: 0;
       z-index: 2000;
     }
-
-    #toast-notification {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      z-index: 3000;
-      border-left: 5px solid #25D366; /* Green for success */
-      transform: translateX(150%);
-      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    #toast-notification.show { transform: translateX(0); }
 
     /* --- NAVIGATION --- */
     nav {
@@ -66,7 +48,7 @@
 
     /* --- PRAYER CONTENT --- */
     .prayer-container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 60px auto;
       background: white;
       border-radius: 15px;
@@ -84,6 +66,7 @@
       padding: 50px;
     }
     .prayer-info h2 { font-family: 'Playfair Display', serif; color: var(--accent); margin-bottom: 20px; font-size: 2rem; }
+    .prayer-info p { margin-bottom: 15px; font-size: 0.95rem; opacity: 0.9; }
 
     .prayer-form {
       flex: 1.5;
@@ -99,27 +82,48 @@
       background: #fcfcfc;
       border-radius: 5px;
       font-family: inherit;
+      font-size: 0.95rem;
     }
     .btn-submit {
       background: var(--primary);
       color: var(--accent);
       width: 100%;
-      padding: 15px;
+      padding: 18px;
       border: none;
-      font-weight: 700;
+      font-weight: 800;
       border-radius: 5px;
       cursor: pointer;
       transition: 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
-    .btn-submit:hover { background: var(--accent); color: var(--primary); }
+    .btn-submit:hover { background: var(--accent); color: var(--primary); transform: translateY(-2px); }
 
-    footer { text-align: center; padding: 40px; color: #888; font-size: 0.9rem; }
+    /* Toast Notification Style */
+    #toast-notification {
+      position: fixed; bottom: 20px; right: 20px; background: white; padding: 20px;
+      border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      display: flex; align-items: center; gap: 15px; z-index: 3000;
+      border-left: 5px solid #25D366; transform: translateX(150%);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    #toast-notification.show { transform: translateX(0); }
+
+    footer { 
+      background: #1e1e2f; 
+      color: #aaa; 
+      text-align: center; 
+      padding: 40px 20px; 
+      margin-top: auto; 
+    }
+    .dev-credit { color: white; margin-top: 10px; font-size: 0.9rem; }
+    .dev-name { color: var(--accent); font-weight: 600; }
   </style>
 </head>
 <body>
 
-<div class="top-announcement">
-  <i class="fa fa-pray"></i> "For where two or three are gathered in my name, there am I among them." - Matthew 18:20
+<div class="top-announcement" id="prayerBanner">
+  <i class="fa fa-pray"></i> "The effective, fervent prayer of a righteous man avails much." - James 5:16
 </div>
 
 <nav>
@@ -136,8 +140,8 @@
 
 <div class="prayer-container">
   <div class="prayer-info">
-    <h2>We Are Standing With You</h2>
-    <p>Your requests are handled with absolute confidentiality and care by our intercessory team.</p>
+    <h2>Altar of Prayer</h2>
+    <p>Our intercessors are ready to stand in the gap for you. Your requests are handled with absolute confidentiality.</p>
     <div style="margin-top: 40px;">
         <p><i class="fa fa-check-circle" style="color:var(--accent)"></i> Confidential Support</p>
         <p><i class="fa fa-check-circle" style="color:var(--accent)"></i> 24/7 Prayer Team</p>
@@ -148,8 +152,8 @@
   <div class="prayer-form">
     <form id="prayerForm">
       <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" id="pName" placeholder="Enter your name" required>
+        <label>Full Name (Optional)</label>
+        <input type="text" id="pName" placeholder="Enter your name">
       </div>
       <div class="form-group">
         <label>Urgency Level</label>
@@ -161,9 +165,9 @@
       </div>
       <div class="form-group">
         <label>Your Prayer Request</label>
-        <textarea id="pMessage" rows="5" placeholder="Tell us how we can pray for you..." required></textarea>
+        <textarea id="pMessage" rows="5" placeholder="Write your request here..." required></textarea>
       </div>
-      <button type="submit" class="btn-submit">SUBMIT PRAYER POINT</button>
+      <button type="submit" class="btn-submit" id="submitBtn">Submit Prayer Request</button>
     </form>
   </div>
 </div>
@@ -173,115 +177,76 @@
         <i class="fa fa-check"></i>
     </div>
     <div>
-        <strong style="display:block;">Received!</strong>
+        <strong style="display:block;">Sent to Altar!</strong>
         <small style="color:#666;">Our ministers have received your request.</small>
     </div>
-    <button onclick="this.parentElement.classList.remove('show')" style="border:none; background:none; cursor:pointer; font-size:1.2rem; margin-left:10px;">&times;</button>
 </div>
 
 <footer>
-  &copy; 2025 Power Sanctuary Area HQ. A House of Prayer for all Nations.
+  <p>&copy; 2025 Power Sanctuary Area HQ. A House of Prayer for all Nations.</p>
+  <p class="dev-credit">Developed by <span class="dev-name">Oluwarotimi Sunday Temitope</span></p>
 </footer>
 
 <script>
-  // Handle form submission and show notification
+  // 1. VISITOR PULSE: Tracks active users on Admin Dashboard
+  function sendPulse() {
+      if (!sessionStorage.getItem('visitor_id')) {
+          sessionStorage.setItem('visitor_id', 'user_' + Math.random().toString(36).substr(2, 9));
+      }
+      const vID = sessionStorage.getItem('visitor_id');
+      let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
+      visitorData[vID] = Date.now(); 
+      localStorage.setItem('online_visitors', JSON.stringify(visitorData));
+  }
+  setInterval(sendPulse, 5000);
+  sendPulse();
+
+  // 2. BANNER SYNC: Syncs top announcement from Admin Dashboard
+  function syncAnnouncement() {
+      const banner = document.getElementById('prayerBanner');
+      const msg = localStorage.getItem('live_announcement');
+      if (msg && banner) {
+          banner.innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
+      }
+  }
+  setInterval(syncAnnouncement, 3000);
+
+  // 3. PRAYER SUBMISSION: Sends data to Admin Dashboard Alerts
   document.getElementById('prayerForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    // Simulate sending data
-    const btn = document.querySelector('.btn-submit');
-    btn.innerText = "SENDING...";
+    const btn = document.getElementById('submitBtn');
+    btn.innerText = "SENDING TO ALTAR...";
     btn.disabled = true;
 
+    // Data for Admin Dashboard
+    const prayerData = {
+      type: 'Prayer',
+      name: document.getElementById('pName').value || "Anonymous",
+      message: `[${document.getElementById('pUrgency').value}] ${document.getElementById('pMessage').value}`,
+      time: new Date().toLocaleTimeString()
+    };
+
+    // Push to church_alerts (which Admin Dashboard listens to)
+    let alerts = JSON.parse(localStorage.getItem('church_alerts')) || [];
+    alerts.push(prayerData);
+    localStorage.setItem('church_alerts', JSON.stringify(alerts));
+
+    // Show visual feedback
     setTimeout(() => {
         document.getElementById('toast-notification').classList.add('show');
-        btn.innerText = "SUBMIT PRAYER POINT";
+        btn.innerText = "SUBMIT PRAYER REQUEST";
         btn.disabled = false;
         this.reset();
         
-        // Hide notification after 5 seconds
         setTimeout(() => {
             document.getElementById('toast-notification').classList.remove('show');
         }, 5000);
     }, 1500);
   });
+
+  window.onload = syncAnnouncement;
 </script>
 
 </body>
-</html>
-    /* Footer */
-    footer {
-      background: #1e1e2f;
-      color: #aaa;
-      text-align: center;
-      padding: 40px 20px;
-      margin-top: auto;
-    }
-    .dev-credit { color: white; margin-top: 10px; font-size: 0.9rem; }
-    .dev-name { color: #ffd700; font-weight: 600; }
-  </style>
-</head>
-<body>
-
-<nav>
-  <a href="index.html" class="logo">RCCG POWER SANCTUARY</a>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="media.html">Sermons</a></li>
-    <li><a href="membership.html">Membership</a></li>
-  </ul>
-</nav>
-
-<div class="prayer-header">
-  <h1>Altar of Prayer</h1>
-  <p>The effective, fervent prayer of a righteous man avails much.</p>
-</div>
-
-<div class="form-container">
-  <h2>Submit Your Request</h2>
-  <p class="subtitle">Our intercessors are ready to stand in the gap for you.</p>
-
-  <div class="input-group">
-    <label>Full Name (Optional)</label>
-    <input type="text" id="senderName" placeholder="Enter your name">
-  </div>
-
-  <div class="input-group">
-    <label>Your Prayer Request</label>
-    <textarea id="prayerText" placeholder="Write your request here..."></textarea>
-  </div>
-
-  <button class="btn-submit" id="submitBtn" onclick="send()">Submit Prayer Request</button>
-</div>
-
-<footer>
-  <p>&copy; 2025 Power Sanctuary Area. God bless you.</p>
-  <p class="dev-credit">Developed by <span class="dev-name">Oluwarotimi Sunday Temitope</span></p>
-</footer>
-
-<script>
-function send() {
-  const nameInput = document.getElementById(document.getElementById("senderName") ? "senderName" : "userName");
-  const msgInput = document.getElementById(document.getElementById("prayerText") ? "prayerText" : "userMsg");
-  
-  // Decide if it's a Prayer or a Contact Message
-  const storageKey = document.getElementById("prayerText") ? 'church_prayers' : 'church_contacts';
-
-  if (!msgInput.value.trim()) return alert("Please enter your message.");
-
-  let messages = JSON.parse(localStorage.getItem(storageKey)) || [];
-  messages.push({
-    name: nameInput.value || "Anonymous",
-    message: msgInput.value,
-    date: new Date().toLocaleString()
-  });
-
-  localStorage.setItem(storageKey, JSON.stringify(messages));
-  alert("Received! Your message has been sent to the Sanctuary.");
-  nameInput.value = "";
-  msgInput.value = "";
-}
-</script>
-</body>
-
-</html>
+      </html>
