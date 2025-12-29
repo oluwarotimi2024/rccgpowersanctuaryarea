@@ -211,7 +211,7 @@
   }
   setInterval(syncAnnouncement, 3000);
 
-  // 3. PRAYER SUBMISSION: Sends data to Admin Dashboard Alerts
+  // 3. PRAYER SUBMISSION: Sends data to Admin Dashboard 
   document.getElementById('prayerForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -219,18 +219,35 @@
     btn.innerText = "SENDING TO ALTAR...";
     btn.disabled = true;
 
-    // Data for Admin Dashboard
-    const prayerData = {
+    const nameVal = document.getElementById('pName').value || "Anonymous";
+    const urgencyVal = document.getElementById('pUrgency').value;
+    const messageVal = document.getElementById('pMessage').value;
+    const timeVal = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString();
+
+    // Data for "Live Alerts" feed
+    const alertData = {
       type: 'Prayer',
-      name: document.getElementById('pName').value || "Anonymous",
-      message: `[${document.getElementById('pUrgency').value}] ${document.getElementById('pMessage').value}`,
+      name: nameVal,
+      message: `[${urgencyVal}] ${messageVal}`,
       time: new Date().toLocaleTimeString()
     };
 
-    // Push to church_alerts (which Admin Dashboard listens to)
+    // Data for the permanent "Prayer Inbox" table
+    const fullPrayerEntry = {
+      name: nameVal,
+      request: `(${urgencyVal}) ${messageVal}`,
+      date: timeVal
+    };
+
+    // Push to church_alerts (for the sidebar notification feed)
     let alerts = JSON.parse(localStorage.getItem('church_alerts')) || [];
-    alerts.push(prayerData);
+    alerts.push(alertData);
     localStorage.setItem('church_alerts', JSON.stringify(alerts));
+
+    // Push to church_prayers (for the dashboard table)
+    let prayers = JSON.parse(localStorage.getItem('church_prayers')) || [];
+    prayers.unshift(fullPrayerEntry); // Add to top
+    localStorage.setItem('church_prayers', JSON.stringify(prayers));
 
     // Show visual feedback
     setTimeout(() => {
@@ -249,4 +266,4 @@
 </script>
 
 </body>
-      </html>
+</html>
