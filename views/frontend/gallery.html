@@ -2,223 +2,60 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Photo Gallery | Power Sanctuary</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+  <title>Gallery | Power Sanctuary</title>
   <style>
-    :root {
-      --primary: #050a18; 
-      --accent: #c5a059;  
-      --white: #ffffff;
-      --bg: #fdfdfd;
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px;
     }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background-color: var(--bg); overflow-x: hidden; }
-
-    /* --- NOTIFICATION SYSTEM --- */
-    .top-announcement {
-      background: var(--accent);
-      color: var(--primary);
-      padding: 10px 5%;
-      text-align: center;
-      font-weight: 700;
-      font-size: 0.85rem;
-      position: sticky;
-      top: 0;
-      z-index: 2000;
-    }
-
-    #toast-notification {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      z-index: 3000;
-      border-left: 5px solid var(--accent);
-      transform: translateX(150%);
-      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    #toast-notification.show { transform: translateX(0); }
-
-    /* --- NAVIGATION --- */
-    nav {
-      background: var(--primary);
-      padding: 20px 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--accent);
-    }
-    .logo-text h1 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.2rem; }
-    .nav-menu { display: flex; list-style: none; gap: 15px; }
-    .nav-menu a { color: white; text-decoration: none; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
-    .nav-menu a:hover { color: var(--accent); }
-
-    /* --- GALLERY HEADER --- */
-    .gallery-header {
-      text-align: center;
-      padding: 80px 10% 40px;
-    }
-    .gallery-header h2 { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--primary); margin-bottom: 10px; }
-    .gold-line { width: 60px; height: 3px; background: var(--accent); margin: 0 auto 20px; }
-
-    /* --- PHOTO GRID --- */
-    .gallery-container {
-      padding: 20px 8% 80px;
-      column-count: 3;
-      column-gap: 20px;
-    }
-    @media (max-width: 900px) { .gallery-container { column-count: 2; } }
-    @media (max-width: 600px) { .gallery-container { column-count: 1; } }
-
     .gallery-item {
-      display: inline-block;
-      width: 100%;
-      margin-bottom: 20px;
+      background: white;
       border-radius: 10px;
       overflow: hidden;
-      position: relative;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     .gallery-item img {
       width: 100%;
-      display: block;
-      transition: transform 0.5s ease;
+      height: 200px;
+      object-fit: cover;
     }
-    .gallery-item:hover img { transform: scale(1.1); }
-
-    .overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(5, 10, 24, 0.7);
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      opacity: 0; transition: 0.3s;
-      color: var(--accent);
+    .gallery-item p {
+      padding: 15px;
+      text-align: center;
+      font-weight: 600;
+      color: #050a18;
     }
-    .gallery-item:hover .overlay { opacity: 1; }
-
-    /* --- FOOTER --- */
-    footer { background: var(--primary); color: white; padding: 60px 8% 20px; text-align: center; }
   </style>
 </head>
 <body>
 
-<div class="top-announcement" id="galleryBanner">
-  <i class="fa fa-camera"></i> CAPTURING MOMENTS: View photos from our last Celebration below!
-</div>
-
-<nav>
-  <div class="logo-text"><h1>POWER SANCTUARY</h1></div>
-  <ul class="nav-menu">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="live.html">Live</a></li>
-    <li><a href="membership.html">Membership</a></li>
-    <li><a href="event.html">Events</a></li>
-    <li><a href="gallery.html" style="color:var(--accent)">Gallery</a></li>
-    <li><a href="media.html">Media</a></li>
-  </ul>
-</nav>
-
-<header class="gallery-header">
-  <h2>Our Moments</h2>
-  <div class="gold-line"></div>
-  <p>Witness the move of God through our community and services.</p>
-</header>
-
-<div class="gallery-container">
-  <div class="gallery-item">
-    <img src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=600&q=80" alt="Worship">
-    <div class="overlay">
-      <i class="fa fa-search-plus"></i>
-      <p style="margin-top:10px; font-weight:bold;">Worship Night</p>
+  <h2 style="text-align:center; margin-top:40px;">Church Gallery</h2>
+  <div class="gallery-grid" id="galleryContainer">
     </div>
-  </div>
 
-  <div class="gallery-item">
-    <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=600&q=80" alt="Youth">
-    <div class="overlay"><p>Youth Outreach</p></div>
-  </div>
+  <script>
+    function loadGallery() {
+      const container = document.getElementById('galleryContainer');
+      // Get the list of links from the Admin Dashboard
+      const photos = JSON.parse(localStorage.getItem('church_gallery')) || [];
 
-  <div class="gallery-item">
-    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=600&q=80" alt="Service">
-    <div class="overlay"><p>Glorious Service</p></div>
-  </div>
-
-  <div class="gallery-item">
-    <img src="https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=600&q=80" alt="Choir">
-    <div class="overlay"><p>Choir Ministration</p></div>
-  </div>
-
-  <div class="gallery-item">
-    <img src="https://images.unsplash.com/photo-1510590337019-5ef8d3d32116?auto=format&fit=crop&w=600&q=80" alt="Sanctuary">
-    <div class="overlay"><p>Main Sanctuary</p></div>
-  </div>
-
-  <div class="gallery-item">
-    <img src="https://images.unsplash.com/photo-1475483768296-6163e08872a1?auto=format&fit=crop&w=600&q=80" alt="Event">
-    <div class="overlay"><p>Convention 2025</p></div>
-  </div>
-</div>
-
-<div id="toast-notification">
-    <div style="background: var(--primary); color: var(--accent); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <i class="fa fa-image"></i>
-    </div>
-    <div>
-        <strong style="display:block;">New Photos!</strong>
-        <small style="color:#666;">Worker's Retreat photos are now live.</small>
-    </div>
-    <button onclick="this.parentElement.classList.remove('show')" style="border:none; background:none; cursor:pointer; font-size:1.2rem; margin-left:10px;">&times;</button>
-</div>
-
-<footer>
-  <p>&copy; 2025 Power Sanctuary. Capturing Grace in Every Frame.</p>
-</footer>
-
-<script>
-  // 1. VISITOR PULSE: Notifies Admin Dashboard that user is here
-  function sendPulse() {
-      if (!sessionStorage.getItem('visitor_id')) {
-          sessionStorage.setItem('visitor_id', 'user_' + Math.random().toString(36).substr(2, 9));
+      if(photos.length === 0) {
+        container.innerHTML = "<p>No photos uploaded yet.</p>";
+        return;
       }
-      const vID = sessionStorage.getItem('visitor_id');
-      let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
-      visitorData[vID] = Date.now(); 
-      localStorage.setItem('online_visitors', JSON.stringify(visitorData));
-  }
-  setInterval(sendPulse, 5000);
-  sendPulse();
 
-  // 2. BANNER SYNC: Updates announcement from Dashboard
-  function syncAnnouncement() {
-      const banner = document.getElementById('galleryBanner');
-      const msg = localStorage.getItem('live_announcement');
-      if (msg && banner) {
-          banner.innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
-      }
-  }
-  setInterval(syncAnnouncement, 3000);
+      container.innerHTML = photos.map(photo => `
+        <div class="gallery-item">
+          <img src="${photo.url}" alt="Church Photo">
+          <p>${photo.cap}</p>
+        </div>
+      `).join('');
+    }
 
-  // 3. TOAST & INITIALIZERS
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('toast-notification').classList.add('show');
-    }, 3000);
-    syncAnnouncement();
-  });
-</script>
-
+    // Load photos when the page opens
+    window.onload = loadGallery;
+  </script>
 </body>
 </html>
