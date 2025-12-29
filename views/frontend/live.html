@@ -7,13 +7,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root { --primary: #050a18; --accent: #c5a059; --glass: rgba(255, 255, 255, 0.05); }
-    body { background: #02060f; color: white; font-family: 'Inter', sans-serif; margin: 0; }
+    body { background: #02060f; color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
     
-    .nav-simple { padding: 20px 8%; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(197, 160, 89, 0.3); }
+    /* Announcement Bar */
+    .top-announcement {
+      background: var(--accent); color: var(--primary);
+      padding: 10px 5%; text-align: center; font-weight: 700; font-size: 0.85rem;
+    }
+
+    .nav-simple { padding: 20px 8%; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(197, 160, 89, 0.3); background: var(--primary); }
     .nav-simple a { color: white; text-decoration: none; font-weight: 600; font-size: 0.8rem; }
 
-    .live-header { text-align: center; padding: 60px 20px; }
-    .live-header h2 { font-family: 'Playfair Display'; font-size: 3rem; color: var(--accent); }
+    .live-header { text-align: center; padding: 40px 20px; }
+    .live-header h2 { font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--accent); margin-bottom: 5px; }
 
     .stream-box { 
       max-width: 1000px; margin: 0 auto; background: black; 
@@ -21,20 +27,41 @@
       box-shadow: 0 0 50px rgba(197, 160, 89, 0.2);
     }
     .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
-    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
     .live-indicator { 
-      position: absolute; top: 20px; left: 20px; background: #ff0000; 
-      padding: 5px 15px; border-radius: 4px; font-weight: 800; font-size: 0.7rem;
-      animation: pulse 1.5s infinite;
+      display: inline-block; background: #ff0000; 
+      padding: 4px 12px; border-radius: 4px; font-weight: 800; font-size: 0.7rem;
+      margin-bottom: 15px; animation: pulse 1.5s infinite;
     }
     @keyframes pulse { 0% {opacity: 1;} 50% {opacity: 0.4;} 100% {opacity: 1;} }
 
-    .live-meta { padding: 40px 10%; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
-    .chat-box { background: var(--glass); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+    .live-meta { padding: 40px 8%; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+    
+    /* Sermon Notes Box */
+    .notes-box { 
+      background: var(--glass); padding: 25px; border-radius: 12px; 
+      border-left: 4px solid var(--accent); margin-bottom: 20px;
+    }
+    .notes-content { color: #ccc; line-height: 1.8; font-size: 1.1rem; }
+
+    .chat-box { background: var(--glass); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); height: fit-content; }
+    
+    .channel-card {
+      background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;
+      margin-top: 15px; cursor: pointer; border: 1px solid #333; transition: 0.3s;
+    }
+    .channel-card:hover { background: var(--accent); color: var(--primary); }
+
+    footer { padding: 40px; text-align: center; color: #555; border-top: 1px solid #111; font-size: 0.8rem; }
   </style>
 </head>
 <body>
+
+  <div class="top-announcement" id="liveBanner">
+    <i class="fa fa-broadcast-tower"></i> CONNECTING TO THE ATMOSPHERE OF MIRACLES...
+  </div>
+
   <nav class="nav-simple">
     <a href="index.html"><i class="fa fa-arrow-left"></i> BACK TO HOME</a>
     <span style="color:var(--accent)">POWER SANCTUARY TV</span>
@@ -42,109 +69,90 @@
 
   <header class="live-header">
     <div class="live-indicator">LIVE NOW</div>
-    <h2>The Arena of Liberty</h2>
-    <p>Join thousands of believers worldwide in worship</p>
+    <h2 id="serviceTitle">The Arena of Liberty</h2>
+    <p>Join believers worldwide in this life-transforming encounter.</p>
   </header>
 
   <div class="stream-box">
     <div class="video-container">
-      <iframe src="https://www.youtube.com/embed/live_stream?channel=YOUR_ID" frameborder="0" allowfullscreen></iframe>
+      <iframe id="mainStream" src="https://www.youtube.com/embed/live_stream?channel=UC8pAnVToO8R_jS2M7OidG8A" allowfullscreen></iframe>
     </div>
   </div>
 
   <div class="live-meta">
-    <div>
+    <div class="main-content">
+      <div class="notes-box">
+        <h3 style="color:var(--accent); margin-bottom:15px;"><i class="fa fa-edit"></i> Live Sermon Notes</h3>
+        <div id="sermonDisplay" class="notes-content">
+          The preacher's points will appear here during the service...
+        </div>
+      </div>
+      
       <h3>About this Service</h3>
-      <p style="color:#aaa; margin-top:10px;">Welcome to our weekly service. Today we are exploring "The Mystery of Divine Grace." Be expectant and stay connected for a life-changing encounter.</p>
+      <p style="color:#aaa; margin-top:10px;">Welcome to our Sanctuary stream. Be expectant and stay connected. Do not forget to use the "Join Prayer Room" button if you need to speak with a minister.</p>
     </div>
-    <div class="chat-box">
-      <h4>Online Community</h4>
-      <p style="font-size:0.8rem; color:var(--accent); margin-bottom:15px;">Connect with us on WhatsApp</p>
-      <a href="https://wa.me/2349024301199" style="background:#25D366; color:white; padding:10px 20px; text-decoration:none; border-radius:5px; display:inline-block;">JOIN PRAYER ROOM</a>
+
+    <div class="side-content">
+      <div class="chat-box">
+        <h4>Minister Connect</h4>
+        <p style="font-size:0.8rem; color:var(--accent); margin-bottom:15px;">Live intercession is available</p>
+        <a href="https://wa.me/2349024301199" target="_blank" style="background:#25D366; color:white; padding:12px 20px; text-decoration:none; border-radius:5px; display:block; text-align:center; font-weight:700;">JOIN PRAYER ROOM</a>
+        
+        <h4 style="margin-top:30px;">Switch Channel</h4>
+        <div class="channel-card" onclick="changeChannel('UC8pAnVToO8R_jS2M7OidG8A')">
+          <i class="fa fa-church"></i> Main Sanctuary
+        </div>
+        <div class="channel-card" onclick="changeChannel('LIVE_ID_2')">
+          <i class="fa fa-microphone"></i> Overflow Room
+        </div>
+      </div>
     </div>
   </div>
+
+  <footer>
+    &copy; 2025 Power Sanctuary. Developed by <span style="color:var(--accent)">Oluwarotimi Sunday Temitope</span>
+  </footer>
+
+  <script>
+    // 1. VISITOR PULSE: Let Admin see active viewer count
+    function sendPulse() {
+        if (!sessionStorage.getItem('visitor_id')) {
+            sessionStorage.setItem('visitor_id', 'live_user_' + Math.random().toString(36).substr(2, 9));
+        }
+        const vID = sessionStorage.getItem('visitor_id');
+        let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
+        visitorData[vID] = Date.now(); 
+        localStorage.setItem('online_visitors', JSON.stringify(visitorData));
+    }
+    setInterval(sendPulse, 5000);
+    sendPulse();
+
+    // 2. LIVE SYNC: Receives Notes & Announcements from Dashboard
+    function syncLiveContent() {
+        // Sync Banner
+        const banner = document.getElementById('liveBanner');
+        const msg = localStorage.getItem('live_announcement');
+        if (msg) banner.innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
+
+        // Sync Sermon Notes
+        const sermonDisplay = document.getElementById('sermonDisplay');
+        const activeNotes = localStorage.getItem('live_sermon_notes');
+        if (activeNotes) {
+            sermonDisplay.innerHTML = activeNotes;
+        }
+
+        // Sync Service Title
+        const title = localStorage.getItem('live_service_title');
+        if (title) document.getElementById('serviceTitle').innerText = title;
+    }
+    setInterval(syncLiveContent, 2000);
+
+    // 3. CHANNEL SWITCHER
+    function changeChannel(id) {
+        document.getElementById('mainStream').src = `https://www.youtube.com/embed/live_stream?channel=${id}`;
+    }
+
+    window.onload = syncLiveContent;
+  </script>
 </body>
-</html>      padding: 15px;
-      border-radius: 10px;
-      cursor: pointer;
-      text-align: center;
-      transition: 0.3s;
-      border: 1px solid #333;
-    }
-    .channel-card:hover { 
-      background: #ffd700; 
-      color: #1e1e2f;
-      transform: scale(1.05);
-    }
-    .channel-card i { font-size: 1.5rem; display: block; margin-bottom: 5px; }
-
-    footer {
-      background: #1e1e2f;
-      color: #999;
-      text-align: center;
-      padding: 30px;
-      margin-top: auto;
-    }
-    .dev-name { color: #ffd700; font-weight: 600; }
-  </style>
-</head>
-<body>
-
-<nav>
-  <div class="logo">RCCG POWER SANCTUARY</div>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="media.html">Sermons</a></li>
-    <li><a href="live.html" style="color:#ffd700">Live</a></li>
-    <li><a href="prayer.html">Prayers</a></li>
-  </ul>
-</nav>
-
-<header>
-  <h1><span class="live-indicator">LIVE</span>Gospel Television & Sanctuary Stream</h1>
-  <p>Connecting you to the atmosphere of miracles</p>
-</header>
-
-<div class="video-section">
-  <div class="main-player">
-    <iframe id="videoPlayer" src="https://www.youtube.com/embed/live_stream?channel=UC8pAnVToO8R_jS2M7OidG8A" allowfullscreen></iframe>
-  </div>
-</div>
-
-<div class="channel-list">
-  <h2>Switch Channel</h2>
-  <div class="grid">
-    <div class="channel-card" onclick="changeChannel('UC8pAnVToO8R_jS2M7OidG8A')">
-      <strong>Dove TV (RCCG)</strong>
-    </div>
-    <div class="channel-card" onclick="changeChannel('UCvK4bN_tD5unVSuEOfDks_w')">
-      <strong>Mount Zion TV</strong>
-    </div>
-    <div class="channel-card" onclick="changeChannel('UCu_it_u890fP9v9zNq6v2Xg')">
-      <strong>Dunamis TV</strong>
-    </div>
-    <div class="channel-card" onclick="changeChannel('UC4p-N5_0p8jG2nB9Xm_V_Yw')">
-      <strong>DCLM Live</strong>
-    </div>
-    <div class="channel-card" onclick="changeChannel('UCG6T18C9W_7mI1uM8pXnU0Q')">
-      <strong>Winners Chapel</strong>
-    </div>
-  </div>
-</div>
-
-<footer>
-  <p>&copy; 2025 Power Sanctuary Area.</p>
-  <p>Developed by <span class="dev-name">Oluwarotimi Sunday Temitope</span></p>
-</footer>
-
-<script>
-  function changeChannel(channelId) {
-    const player = document.getElementById('videoPlayer');
-    player.src = `https://www.youtube.com/embed/live_stream?channel=${channelId}`;
-    window.scrollTo({ top: 100, behavior: 'smooth' });
-  }
-</script>
-
-</body>
-
-</html>
+      </html>
