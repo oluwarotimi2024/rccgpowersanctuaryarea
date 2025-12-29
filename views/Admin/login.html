@@ -6,107 +6,107 @@
   <title>Admin Login | Power Sanctuary Area</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    /* I kept all your beautiful styling exactly as you had it */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1e1e2f 0%, #12121c 100%);
+      background: linear-gradient(135deg, #050a18 0%, #12121c 100%);
       display: flex; justify-content: center; align-items: center;
       height: 100vh; color: #fff; overflow: hidden;
     }
     .login-container {
-      background: rgba(44, 44, 68, 0.5);
-      backdrop-filter: blur(10px);
-      padding: 50px 40px; width: 100%; max-width: 420px;
-      border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.1); text-align: center;
+      background: rgba(44, 44, 68, 0.4);
+      backdrop-filter: blur(15px);
+      padding: 50px 40px; width: 90%; max-width: 420px;
+      border-radius: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(197, 160, 89, 0.2); text-align: center;
       animation: fadeIn 0.8s ease-out;
     }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .rccg-logo { width: 80px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3)); }
-    h2 { font-size: 1.8rem; font-weight: 600; margin-bottom: 10px; color: #fff; }
-    p.subtitle { color: #adb5bd; font-size: 0.9rem; margin-bottom: 30px; }
-    .form-group { margin-bottom: 20px; text-align: left; }
+    .rccg-logo { width: 70px; margin-bottom: 20px; filter: drop-shadow(0 0 8px rgba(197, 160, 89, 0.4)); }
+    h2 { font-size: 1.6rem; font-weight: 600; margin-bottom: 5px; color: #ffd700; letter-spacing: 1px; }
+    p.subtitle { color: #adb5bd; font-size: 0.85rem; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
+    .form-group { margin-bottom: 18px; text-align: left; }
     input {
-      width: 100%; padding: 14px 18px; background: rgba(30, 30, 47, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px;
+      width: 100%; padding: 15px 18px; background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
       color: #fff; font-size: 0.95rem; transition: all 0.3s ease;
     }
-    input:focus { outline: none; border-color: #ffd700; background: rgba(30, 30, 47, 1); box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); }
+    input:focus { outline: none; border-color: #ffd700; background: rgba(0, 0, 0, 0.5); box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); }
     button {
-      width: 100%; padding: 14px; background: linear-gradient(45deg, #ffd700, #ffae00);
-      color: #1e1e2f; border: none; border-radius: 10px; cursor: pointer;
-      font-weight: 700; font-size: 1rem; text-transform: uppercase;
-      letter-spacing: 1px; transition: all 0.3s ease; margin-top: 10px;
+      width: 100%; padding: 15px; background: linear-gradient(45deg, #c5a059, #ffd700);
+      color: #050a18; border: none; border-radius: 12px; cursor: pointer;
+      font-weight: 800; font-size: 0.9rem; text-transform: uppercase;
+      letter-spacing: 1.5px; transition: 0.3s; margin-top: 10px;
     }
-    button:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4); background: linear-gradient(45deg, #fff, #ffd700); }
-    #msg { margin-top: 20px; font-size: 0.85rem; min-height: 20px; font-weight: 500; }
-    .footer-text { margin-top: 35px; font-size: 0.75rem; color: #6c757d; }
-    .footer-text b { color: #ffd700; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(197, 160, 89, 0.4); filter: brightness(1.1); }
+    #msg { margin-top: 20px; font-size: 0.8rem; min-height: 20px; font-weight: 600; }
+    .footer-text { margin-top: 35px; font-size: 0.7rem; color: #6c757d; }
+    .footer-text b { color: #c5a059; }
   </style>
 </head>
 <body>
 
 <div class="login-container">
   <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG" class="rccg-logo">
-  <h2>Admin Access</h2>
-  <p class="subtitle">Power Sanctuary Area Portal</p>
+  <h2>Executive Access</h2>
+  <p class="subtitle">Power Sanctuary HQ</p>
   
   <form id="adminLoginForm">
     <div class="form-group">
-      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="email" id="email" placeholder="Admin Email" required autocomplete="email">
     </div>
     <div class="form-group">
-      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="password" placeholder="Security Passcode" required autocomplete="current-password">
     </div>
-    <button type="submit" id="loginBtn">Login to Dashboard</button>
+    <button type="submit" id="loginBtn">Authorize Entry</button>
   </form>
   
   <p id="msg"></p>
 
   <div class="footer-text">
-    Developed by <b>Oluwarotimi Sunday Temitope</b>
+    System Architect: <b>Oluwarotimi Sunday Temitope</b>
   </div>
 </div>
 
 <script>
-// --- FIXED LOGIN LOGIC ---
 document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
   e.preventDefault(); 
   
   const msg = document.getElementById('msg');
   const btn = document.getElementById('loginBtn');
   
-  // 1. SET YOUR LOGINS HERE
+  // CREDENTIALS
   const VALID_EMAIL = "admin@powersanctuary.com";
   const VALID_PASSWORD = "admin123password"; 
 
-  const emailInput = document.getElementById('email').value;
-  const passwordInput = document.getElementById('password').value;
+  const emailInput = document.getElementById('email').value.trim();
+  const passwordInput = document.getElementById('password').value.trim();
 
-  btn.innerText = "Authenticating...";
+  btn.innerText = "Verifying Credentials...";
   btn.disabled = true;
 
-  // Simulate a quick check
   setTimeout(() => {
     if (emailInput === VALID_EMAIL && passwordInput === VALID_PASSWORD) {
       msg.style.color = "#28a745";
-      msg.innerText = "✅ Login Successful! Redirecting...";
+      msg.innerText = "✅ Authorized. Entering Command Center...";
       
-      // Store session so the dashboard knows you are logged in
+      // Store session
       localStorage.setItem('admin_auth', 'active');
 
-      // 2. REDIRECT TO YOUR DASHBOARD FILE
+      // PATH RESOLVER: Forces the browser to look in the exact same directory
+      const currentPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+      const targetPage = currentPath + "/dashboard.html";
+
       setTimeout(() => { 
-        window.location.href = "dashboard.html"; 
-      }, 1000);
+        window.location.href = targetPage; 
+      }, 800);
     } else {
       msg.style.color = "#ff4d4d";
-      msg.innerText = "❌ Invalid Credentials. Please try again.";
-      btn.innerText = "Login to Dashboard";
+      msg.innerText = "❌ Access Denied. Invalid Admin Key.";
+      btn.innerText = "Authorize Entry";
       btn.disabled = false;
     }
-  }, 800);
+  }, 1000);
 });
 </script>
 
