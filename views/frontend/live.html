@@ -3,230 +3,207 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unified Hub | Power Sanctuary</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>Fellowship Hub | Power Sanctuary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --primary: #020617;
-      --secondary: #0f172a;
+      --secondary: #0b0f1a;
       --accent: #c5a059;
-      --glass: rgba(255, 255, 255, 0.03);
-      --border: rgba(197, 160, 89, 0.2);
+      --border: rgba(255, 255, 255, 0.08);
+      --text-dim: #94a3b8;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
       font-family: 'Plus Jakarta Sans', sans-serif; 
       background: var(--primary); 
       color: white; 
-      height: 100vh; 
-      overflow: hidden; 
-    }
-
-    /* --- THE UNIFIED HUB GRID --- */
-    .unified-hub {
-      display: grid;
-      grid-template-columns: 280px 1fr 350px;
-      grid-template-rows: 70px 1fr;
+      display: flex;
+      flex-direction: column;
       height: 100vh;
+      overflow: hidden; /* Prevent body scroll, use container scroll */
     }
 
-    /* --- TOP HEADER (Navigation & Status) --- */
+    /* --- MOBILE HEADER --- */
     header {
-      grid-column: 1 / -1;
       background: var(--secondary);
+      padding: 12px 20px;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 30px;
+      z-index: 100;
     }
-    .logo { font-weight: 800; color: var(--accent); letter-spacing: 1px; font-size: 1.1rem; }
-    .hub-status { background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 6px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
 
-    /* --- LEFT SECTION: DIRECTORY & GROUPS --- */
-    .left-panel {
-      background: var(--secondary);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 20px 0;
-    }
-    .section-title { padding: 10px 25px; font-size: 0.7rem; text-transform: uppercase; color: var(--accent); opacity: 0.8; letter-spacing: 1px; }
-    .group-pill { margin: 10px 15px; background: var(--glass); border: 1px solid var(--border); padding: 12px; border-radius: 12px; }
-    .member-list { flex: 1; overflow-y: auto; padding: 0 15px; }
-    .member-card { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; margin-bottom: 5px; cursor: pointer; }
-    .member-card:hover { background: var(--glass); }
-    .avatar { width: 35px; height: 35px; background: var(--accent); color: black; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
-
-    /* --- CENTER SECTION: LIVE & CALLS --- */
-    .main-stage {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      background: radial-gradient(circle at top, #0f172a, #020617);
-    }
-    .video-viewport {
+    /* --- MAIN LAYOUT --- */
+    .hub-main {
       flex: 1;
-      background: #000;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-    }
-    .call-dashboard {
-      background: var(--secondary);
-      border: 1px solid var(--border);
-      padding: 20px;
-      border-radius: 100px;
       display: flex;
-      justify-content: space-around;
-      align-items: center;
-      width: 90%;
-      margin: 0 auto;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
     }
-    .btn-action {
-      width: 50px; height: 50px; border-radius: 50%; border: none; 
-      cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;
-      background: var(--glass); color: white; border: 1px solid var(--border);
-    }
-    .btn-action:hover { background: var(--accent); color: black; }
-    .btn-call-active { background: #ef4444 !important; color: white !important; animation: pulse-red 2s infinite; }
-    @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 
-    /* --- RIGHT SECTION: UNIFIED CHAT --- */
-    .right-panel {
+    /* --- LIVE VIDEO --- */
+    .live-stream {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+    }
+
+    /* --- CHAT AREA --- */
+    .chat-display {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: linear-gradient(to bottom, #020617, #0b0f1a);
+    }
+
+    .msg-box {
+      background: rgba(255,255,255,0.04);
+      padding: 12px;
+      border-radius: 12px;
+      max-width: 85%;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .u-name { color: var(--accent); font-weight: 700; font-size: 0.7rem; margin-bottom: 3px; display: block; }
+
+    /* --- CONTACT DRAWER (The "Sliding" List) --- */
+    #contactDrawer {
+      position: absolute;
+      top: 0;
+      right: -100%; /* Hidden by default */
+      width: 85%;
+      height: 100%;
       background: var(--secondary);
+      z-index: 200;
+      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border-left: 1px solid var(--border);
       display: flex;
       flex-direction: column;
     }
-    .chat-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-    .msg { background: var(--glass); padding: 12px; border-radius: 12px; font-size: 0.9rem; }
-    .msg-name { color: var(--accent); font-weight: 700; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
-    .badge { background: var(--accent); color: black; font-size: 0.6rem; padding: 2px 5px; border-radius: 4px; }
-    
-    .chat-footer { padding: 20px; border-top: 1px solid var(--border); }
-    .input-box { background: var(--primary); border: 1px solid var(--border); border-radius: 10px; display: flex; padding: 5px; }
-    .input-box input { flex: 1; background: transparent; border: none; color: white; padding: 10px; }
-    .input-box button { background: var(--accent); border: none; color: black; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 800; }
+    #contactDrawer.active { right: 0; }
 
-    /* --- MODAL --- */
-    #joinModal { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; }
-    .join-card { background: var(--secondary); padding: 40px; border-radius: 20px; border: 1px solid var(--border); text-align: center; width: 380px; }
+    .drawer-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .contact-scroll { flex: 1; overflow-y: auto; padding: 10px; }
+    .contact-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.02);
+    }
+    .c-info { display: flex; align-items: center; gap: 10px; }
+    .c-avatar { width: 35px; height: 35px; background: #1e293b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: var(--accent); }
+    .btn-save { color: var(--accent); background: none; border: 1px solid var(--accent); padding: 4px 8px; border-radius: 5px; font-size: 0.7rem; }
+
+    /* --- CONTROLS --- */
+    .hub-controls {
+      padding: 10px 15px;
+      background: var(--secondary);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+    }
+    .hub-controls input { flex: 1; background: #000; border: 1px solid var(--border); color: white; padding: 10px; border-radius: 8px; font-size: 0.9rem; }
+    .action-btn { background: var(--accent); border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; color: black; font-weight: 800; }
+    .wa-link { background: #25D366; color: white; }
+
+    /* --- FOOTER --- */
+    footer { background: #000; padding: 20px; text-align: center; border-top: 1px solid var(--border); }
+    .f-credits { font-size: 0.65rem; color: #475569; line-height: 1.5; }
   </style>
 </head>
 <body>
 
-<div id="joinModal">
-  <div class="join-card">
-    <h1 style="color:var(--accent); margin-bottom:10px;">SANCTUARY HUB</h1>
-    <p style="color:#64748b; font-size:0.9rem; margin-bottom:20px;">Enter the Family Circle</p>
-    <input type="text" id="nameIn" placeholder="Full Name" style="width:100%; padding:15px; background:var(--primary); border:1px solid var(--border); border-radius:10px; color:white; margin-bottom:20px;">
-    <button onclick="startHub()" style="width:100%; padding:15px; background:var(--accent); border:none; border-radius:10px; font-weight:800; cursor:pointer;">CONNECT NOW</button>
+<header>
+  <div style="font-weight: 800; color: var(--accent); font-size: 0.9rem;">POWER SANCTUARY</div>
+  <button onclick="toggleContacts()" style="background:none; border:none; color:white; font-size: 1.1rem;"><i class="fa fa-users"></i></button>
+</header>
+
+<div class="hub-main">
+  <div class="live-stream">
+    <iframe src="https://www.youtube.com/embed/live_stream?channel=UC8pAnVToO8R_jS2M7OidG8A" style="width:100%; height:100%; border:none;"></iframe>
+  </div>
+
+  <div class="chat-display" id="chatWindow">
+    <div class="msg-box">
+      <span class="u-name">SYSTEM BROADCAST</span>
+      Welcome to the fellowship group! Click the user icon at the top to see all 492 members.
+    </div>
+  </div>
+
+  <div id="contactDrawer">
+    <div class="drawer-header">
+      <h3 style="font-size: 1rem;">Fellowship Contacts</h3>
+      <button onclick="toggleContacts()" style="background:none; border:none; color:var(--accent); font-size: 1.2rem;">&times;</button>
+    </div>
+    <div class="contact-scroll" id="contactList">
+      </div>
+  </div>
+
+  <div class="hub-controls">
+    <button class="action-btn wa-link" onclick="sendInvite()"><i class="fab fa-whatsapp"></i></button>
+    <input type="text" id="chatInput" placeholder="Message group...">
+    <button class="action-btn" onclick="postMsg()"><i class="fa fa-paper-plane"></i></button>
   </div>
 </div>
 
-<div class="unified-hub">
-  <header>
-    <div class="logo">POWER SANCTUARY <span style="font-weight:300; color:white;">CONSOLE</span></div>
-    <div class="hub-status"><i class="fa fa-circle"></i> SYSTEM ONLINE: 1,240 SAINTS</div>
-  </header>
-
-  <aside class="left-panel">
-    <div class="section-title">Active Fellowship</div>
-    <div class="group-pill">
-      <div style="font-weight:700; font-size:0.85rem;">Group Alpha</div>
-      <div style="font-size:0.75rem; color:#64748b;">492 / 500 Members</div>
-      <div style="height:4px; background:#1e293b; margin-top:10px; border-radius:10px; overflow:hidden;">
-        <div style="width:98%; height:100%; background:var(--accent);"></div>
-      </div>
-    </div>
-
-    <div class="section-title">Saints in Sanctuary</div>
-    <div class="member-list" id="memberList">
-      <div class="member-card"><div class="avatar">P</div> <span>Pastor Sunday</span></div>
-      <div class="member-card"><div class="avatar">M</div> <span>Minister Segun</span></div>
-    </div>
-  </aside>
-
-  <main class="main-stage">
-    <div class="video-viewport">
-      <iframe src="https://www.youtube.com/embed/live_stream?channel=UC8pAnVToO8R_jS2M7OidG8A" allowfullscreen style="width:100%; height:100%; border:none;"></iframe>
-    </div>
-
-    <div class="call-dashboard">
-      <button class="btn-action" onclick="toggleCall(this, 'Audio')"><i class="fa fa-microphone"></i></button>
-      <button class="btn-action" onclick="toggleCall(this, 'Video')"><i class="fa fa-video"></i></button>
-      <div style="text-align:center;">
-        <div style="font-weight:800; color:var(--accent); font-size:0.8rem;">VOICE LOBBY</div>
-        <div style="font-size:0.65rem; opacity:0.6;">Connect to Altar</div>
-      </div>
-      <button class="btn-action" onclick="alert('Phone invite sent!')"><i class="fa fa-phone"></i></button>
-      <button class="btn-action" onclick="alert('Recording started')"><i class="fa fa-record-vinyl"></i></button>
-    </div>
-  </main>
-
-  <aside class="right-panel">
-    <div class="section-title" style="padding: 20px; border-bottom: 1px solid var(--border);">Live Family Chat</div>
-    <div class="chat-body" id="chatBox">
-      <div class="msg">
-        <div class="msg-name"><span class="badge">ADMIN</span> Minister Rotimi</div>
-        <div>Welcome to the unified sanctuary. We are one family in Christ.</div>
-      </div>
-    </div>
-    <div class="chat-footer">
-      <div class="input-box">
-        <input type="text" id="chatIn" placeholder="Type a message...">
-        <button onclick="sendChat()">SEND</button>
-      </div>
-    </div>
-  </aside>
-</div>
+<footer>
+  <p class="f-credits">&copy; 2025 RCCG POWER SANCTUARY AREA HQ<br>
+  <span style="color: var(--accent);">Dev: Oluwarotimi Sunday Temitope</span></p>
+</footer>
 
 <script>
-  let myName = "";
-
-  function startHub() {
-    const n = document.getElementById('nameIn').value;
-    if(!n) return;
-    myName = n;
-    document.getElementById('joinModal').style.display = 'none';
-    
-    // Add to member list
-    const list = document.getElementById('memberList');
-    list.innerHTML += `<div class="member-card"><div class="avatar" style="background:white; color:black">${myName[0].toUpperCase()}</div> <span>${myName} (You)</span></div>`;
-    
-    pushChat("System", `${myName} has joined the circle.`);
+  // 1. Toggle Contact List
+  function toggleContacts() {
+    document.getElementById('contactDrawer').classList.toggle('active');
   }
 
-  function sendChat() {
-    const input = document.getElementById('chatIn');
-    if(!input.value) return;
-    pushChat(myName, input.value);
-    input.value = "";
-  }
+  // 2. Generate Contacts (Simulation of 492 people)
+  const contactData = [
+    {n: "Pastor Sunday", i: "PS"},
+    {n: "Minister Segun", i: "MS"},
+    {n: "Sis Elizabeth", i: "SE"},
+    {n: "Bro David", i: "BD"},
+    {n: "Deaconess Ruth", i: "DR"}
+  ];
 
-  function pushChat(sender, message) {
-    const box = document.getElementById('chatBox');
-    const isMin = sender === "Pastor Sunday" || sender === "System";
-    box.innerHTML += `
-      <div class="msg">
-        <div class="msg-name">${isMin ? '<span class="badge">MINISTER</span>' : ''} ${sender}</div>
-        <div>${message}</div>
+  const cList = document.getElementById('contactList');
+  contactData.forEach(person => {
+    cList.innerHTML += `
+      <div class="contact-row">
+        <div class="c-info">
+          <div class="c-avatar">${person.i}</div>
+          <span style="font-size:0.85rem;">${person.n}</span>
+        </div>
+        <button class="btn-save" onclick="alert('Contact Added')">Save</button>
       </div>`;
-    box.scrollTop = box.scrollHeight;
+  });
+
+  // 3. Message Logic
+  function postMsg() {
+    const input = document.getElementById('chatInput');
+    if(!input.value) return;
+    const win = document.getElementById('chatWindow');
+    win.innerHTML += `
+      <div class="msg-box" style="align-self: flex-end; background: var(--accent); color: black;">
+        <span class="u-name" style="color:#000">YOU</span>
+        ${input.value}
+      </div>`;
+    input.value = "";
+    win.scrollTop = win.scrollHeight;
   }
 
-  function toggleCall(btn, type) {
-    btn.classList.toggle('btn-call-active');
-    const isActive = btn.classList.contains('btn-call-active');
-    pushChat("System", `${myName} has ${isActive ? 'joined' : 'left'} the ${type} call.`);
+  // 4. WhatsApp Broadcast
+  function sendInvite() {
+    const text = encodeURIComponent("I am joining the Power Sanctuary Fellowship Group! Join us here: " + window.location.href);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
   }
 
-  document.getElementById('chatIn').addEventListener("keyup", e => { if(e.key === "Enter") sendChat(); });
+  document.getElementById('chatInput').addEventListener("keyup", e => { if(e.key === "Enter") postMsg(); });
 </script>
 
 </body>
