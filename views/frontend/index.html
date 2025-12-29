@@ -127,8 +127,8 @@
 </head>
 <body>
 
-<div class="top-announcement">
-  <i class="fa fa-bullhorn"></i> ATTENTION: New Year Crossover Service starts 9:00 PM on Dec 31st!
+<div class="top-announcement" id="mainBanner">
+  <i class="fa fa-bullhorn"></i> Welcome to the Arena of Liberty!
 </div>
 
 <nav>
@@ -142,8 +142,8 @@
     <li><a href="membership.html">Membership</a></li>
     <li><a href="event.html">Events</a></li>
     <li><a href="prayer.html">Prayer</a></li>
-    <li><a href="media.html">Media</a></li>
     <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="media.html">Media</a></li>
   </ul>
 </nav>
 
@@ -219,50 +219,40 @@
 </footer>
 
 <script>
-  // Show toast after 3 seconds
+  // 1. VISITOR PULSE: Tells the Dashboard you are online
+  function sendPulse() {
+      if (!sessionStorage.getItem('visitor_id')) {
+          sessionStorage.setItem('visitor_id', 'user_' + Math.random().toString(36).substr(2, 9));
+      }
+      const vID = sessionStorage.getItem('visitor_id');
+      let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
+      visitorData[vID] = Date.now(); 
+      localStorage.setItem('online_visitors', JSON.stringify(visitorData));
+  }
+  setInterval(sendPulse, 5000);
+  sendPulse();
+
+  // 2. BANNER SYNC: Updates the announcement bar from Dashboard
+  function syncAnnouncement() {
+      const banner = document.getElementById('mainBanner');
+      const msg = localStorage.getItem('live_announcement');
+      if (msg && banner) {
+          banner.innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
+      }
+  }
+  setInterval(syncAnnouncement, 3000);
+
+  // 3. TOAST NOTIFICATION
   window.addEventListener('load', () => {
     setTimeout(() => {
       document.getElementById('toast-notification').classList.add('show');
     }, 3000);
+    syncAnnouncement();
   });
 </script>
 
 </body>
-  </html>    .footer-col a { color: #bbb; text-decoration: none; }
-    .footer-col i { margin-right: 10px; color: var(--accent); }
-    .bottom-bar { text-align: center; border-top: 1px solid #222; padding-top: 20px; font-size: 0.8rem; color: #666; }
-
-    @media (max-width: 768px) { .hero h2 { font-size: 2.5rem; } .nav-menu { display: none; } }
-  </style>
-</head>
-<body>
-
-<nav>
-  <div class="logo-box">
-    <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG">
-    <div class="logo-text"><h1>POWER SANCTUARY</h1></div>
-  </div>
-  <ul class="nav-menu">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="live.html">Live</a></li>
-    <li><a href="membership.html">Membership</a></li>
-    <li><a href="event.html">Events</a></li>
-    <li><a href="prayer.html">Prayer</a></li>
-    <li><a href="media.html">Media</a></li>
-  </ul>
-</nav>
-
-<header class="hero">
-  <p>WELCOME TO THE ARENA OF LIBERTY</p>
-  <h2>Experience the Power <br> of God's Presence</h2>
-  <a href="live.html" class="btn-main">JOIN US ONLINE</a>
-</header>
-
-<section id="weekly-activities">
-  <div class="section-header">
-    <h2>Weekly Activities</h2>
-    <div class="gold-line"></div>
-    <p>Join us in any of our weekly spiritual growth programs</p>
+  </html>iritual growth programs</p>
   </div>
   <div class="activity-grid">
     <div class="activity-card">
@@ -333,6 +323,7 @@
 
 </body>
 </html>
+
 
 
 
