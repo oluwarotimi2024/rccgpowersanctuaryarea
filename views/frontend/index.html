@@ -3,233 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Experience | Power Sanctuary</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <title>RCCG Power Sanctuary | Official Website</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
-    :root { --primary: #050a18; --accent: #c5a059; --glass: rgba(255, 255, 255, 0.05); }
-    body { background: #02060f; color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
+    :root {
+      --primary: #050a18; 
+      --accent: #c5a059;  
+      --accent-light: #e0c58e;
+      --white: #ffffff;
+      --bg: #f4f7fa;
+      --footer-bg: #03070f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--primary); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* --- PREVIOUS STYLES (Navigation & Hero) --- */
+    nav { background: var(--primary); padding: 20px 8%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); position: sticky; top:0; z-index: 1000; }
+    .logo-box { display: flex; align-items: center; gap: 12px; }
+    .logo-text h1 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.2rem; margin: 0; }
+    .nav-menu { display: flex; list-style: none; gap: 20px; }
+    .nav-menu a { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+
+    .hero { height: 60vh; background: linear-gradient(rgba(5, 10, 24, 0.7), rgba(5, 10, 24, 0.7)), url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1500&q=80'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; }
+    .hero h2 { font-size: 3.5rem; font-family: 'Playfair Display', serif; margin-bottom: 10px; }
     
-    /* Announcement Bar */
-    .top-announcement {
-      background: var(--accent); color: var(--primary);
-      padding: 10px 5%; text-align: center; font-weight: 700; font-size: 0.85rem;
+    .action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 40px 8%; margin-top: -60px; flex-grow: 1; }
+    .action-card { background: white; padding: 30px; border-radius: 8px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-decoration: none; color: var(--primary); transition: 0.3s; }
+    .action-card:hover { transform: translateY(-5px); }
+
+    /* --- PROFESSIONAL FOOTER DESIGN --- */
+    footer {
+      background: var(--footer-bg);
+      color: #ffffff;
+      padding: 80px 8% 30px;
+      margin-top: 100px;
+      position: relative;
     }
 
-    /* Navigation */
-    nav {
-      background: var(--primary); padding: 15px 8%; display: flex;
-      justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(197, 160, 89, 0.3);
-      position: sticky; top: 0; z-index: 1000;
-    }
-    .logo-text h1 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.2rem; margin:0;}
-    .nav-links { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; }
-    .nav-links a { color: white; text-decoration: none; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
-    .nav-links a:hover { color: var(--accent); }
-
-    .live-header { text-align: center; padding: 40px 20px; }
-    .live-header h2 { font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--accent); margin-bottom: 5px; }
-
-    .stream-box { 
-      max-width: 1000px; margin: 0 auto; background: black; 
-      border: 2px solid var(--accent); position: relative;
-      box-shadow: 0 0 50px rgba(197, 160, 89, 0.2);
-    }
-    .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
-    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-
-    .live-indicator { 
-      display: inline-block; background: #ff0000; 
-      padding: 4px 12px; border-radius: 4px; font-weight: 800; font-size: 0.7rem;
-      margin-bottom: 15px; animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse { 0% {opacity: 1;} 50% {opacity: 0.4;} 100% {opacity: 1;} }
-
-    .live-meta { padding: 40px 8%; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-    
-    /* Boxes */
-    .content-card { background: var(--glass); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; }
-    .notes-box { border-left: 4px solid var(--accent); }
-    
-    /* Buttons */
-    .btn-action { 
-      width: 100%; padding: 15px; border-radius: 8px; border: none; 
-      font-weight: 700; cursor: pointer; transition: 0.3s; 
-      text-transform: uppercase; margin-bottom: 15px; display: block; text-align: center; text-decoration: none;
-    }
-    .btn-testimony { background: #ffd700; color: #000; }
-    .btn-testimony:hover { background: #fff; transform: scale(1.02); }
-    .btn-whatsapp { background: #25D366; color: white; }
-
-    /* Invite Tool */
-    .invite-group { display: flex; gap: 8px; margin-top: 10px; }
-    .invite-group input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid #444; color: white; padding: 10px; border-radius: 4px; }
-    .mini-btn { background: var(--accent); border: none; padding: 10px; border-radius: 4px; cursor: pointer; color: var(--primary); }
-
-    footer { padding: 40px; text-align: center; color: #555; border-top: 1px solid #111; font-size: 0.8rem; }
-  </style>
-</head>
-<body>
-
-  <div class="top-announcement" id="liveBanner">
-    <i class="fa fa-broadcast-tower"></i> CONNECTING TO THE ATMOSPHERE OF MIRACLES...
-  </div>
-
-  <nav>
-    <div class="logo-text"><h1>POWER SANCTUARY</h1></div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="prayer.html">Prayer</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-    </ul>
-  </nav>
-
-  <header class="live-header">
-    <div class="live-indicator">LIVE NOW</div>
-    <h2 id="serviceTitle">The Arena of Liberty</h2>
-    <p>Join believers worldwide in this life-transforming encounter.</p>
-  </header>
-
-  <div class="stream-box">
-    <div class="video-container">
-      <iframe id="mainStream" src="https://www.youtube.com/embed/live_stream?channel=UC8pAnVToO8R_jS2M7OidG8A" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <div class="live-meta">
-    <div class="main-content">
-      <div class="content-card notes-box">
-        <h3 style="color:var(--accent); margin-bottom:15px;"><i class="fa fa-edit"></i> Live Sermon Notes</h3>
-        <div id="sermonDisplay" style="color: #ccc; line-height: 1.8; font-size: 1.1rem;">
-          The preacher's points will appear here...
-        </div>
-      </div>
-
-      <div class="content-card">
-        <h4><i class="fa fa-share-nodes"></i> Invite Your World</h4>
-        <div class="invite-group">
-          <input type="tel" id="invitePhone" placeholder="Enter phone number">
-          <button class="mini-btn" onclick="inviteWhatsApp()"><i class="fab fa-whatsapp"></i></button>
-          <button class="mini-btn" onclick="inviteSMS()" style="background:white;"><i class="fa fa-sms"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-content">
-      <div class="content-card">
-        <h4 style="margin-bottom:20px;">Atmosphere of Praise</h4>
-        
-        <button class="btn-action btn-testimony" onclick="submitTestimony()">
-          <i class="fa fa-crown"></i> Share My Testimony
-        </button>
-
-        <a href="https://wa.me/2349024301199" target="_blank" class="btn-action btn-whatsapp">
-          <i class="fab fa-whatsapp"></i> Join Prayer Room
-        </a>
-
-        <div style="margin-top:20px; text-align:center;">
-           <small style="color:#666;">Need Counseling? +234 902 430 1199</small>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    &copy; 2025 Power Sanctuary. Developed by <span style="color:var(--accent)">Oluwarotimi Sunday Temitope</span>
-  </footer>
-
-  <script>
-    // 1. TESTIMONY LOGIC
-    function submitTestimony() {
-      const msg = prompt("God is Good! Tell us what He has done for you (include your name):");
-      if (msg) {
-        let alerts = JSON.parse(localStorage.getItem('church_alerts')) || [];
-        alerts.push({
-          type: 'Testimony',
-          message: msg,
-          time: new Date().toLocaleTimeString()
-        });
-        localStorage.setItem('church_alerts', JSON.stringify(alerts));
-        alert("Praise God! Your testimony has been sent to the Sanctuary.");
-      }
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--accent), var(--primary));
     }
 
-    // 2. INVITE LOGIC
-    function inviteWhatsApp() {
-      const phone = document.getElementById('invitePhone').value.replace(/\D/g,'');
-      const link = window.location.href;
-      window.open(`https://wa.me/${phone}?text=Join me live at Power Sanctuary! God is moving: ${link}`, '_blank');
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 50px;
+      margin-bottom: 60px;
     }
 
-    function inviteSMS() {
-      const phone = document.getElementById('invitePhone').value;
-      window.location.href = `sms:${phone}?body=Join me live at Power Sanctuary! ${window.location.href}`;
+    .footer-col h4 {
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
     }
 
-    // 3. LIVE SYNC & PULSE
-    function sync() {
-        const msg = localStorage.getItem('live_announcement');
-        if (msg) document.getElementById('liveBanner').innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
-        const notes = localStorage.getItem('live_sermon_notes');
-        if (notes) document.getElementById('sermonDisplay').innerHTML = notes;
-        const title = localStorage.getItem('live_service_title');
-        if (title) document.getElementById('serviceTitle').innerText = title;
-
-        // Pulse
-        const vID = sessionStorage.getItem('v_id') || 'v_' + Math.random().toString(36).substr(2, 9);
-        sessionStorage.setItem('v_id', vID);
-        let visitors = JSON.parse(localStorage.getItem('online_visitors')) || {};
-        visitors[vID] = Date.now();
-        localStorage.setItem('online_visitors', JSON.stringify(visitors));
+    .footer-col h4::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: 0; width: 30px; height: 2px;
+      background: var(--accent);
     }
-    setInterval(sync, 3000);
-    window.onload = sync;
-  </script>
-</body>
-</html>    .btn-main:hover { background: white; }
 
-    /* --- SECTION STYLING --- */
-    section { padding: 80px 10%; }
-    .section-header { text-align: center; margin-bottom: 60px; }
-    .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--primary); }
-    .gold-line { width: 50px; height: 3px; background: var(--accent); margin: 15px auto; }
+    .footer-col p, .footer-col li {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      list-style: none;
+    }
 
-    .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-    .activity-card { 
-      background: var(--light-gray); 
-      padding: 40px; 
-      border-left: 5px solid var(--accent); 
+    .footer-col a {
+      color: #94a3b8;
+      text-decoration: none;
       transition: 0.3s;
     }
-    .activity-card:hover { transform: scale(1.03); background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    .activity-card h3 { color: var(--primary); margin-bottom: 10px; }
-    .activity-card .time { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
 
-    /* --- FOOTER --- */
-    footer { background: var(--primary); color: white; padding: 60px 8% 20px; }
-    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
-    .footer-col h4 { color: var(--accent); margin-bottom: 20px; font-family: 'Playfair Display', serif; }
-    .footer-col p, .footer-col li { color: #bbb; font-size: 0.9rem; list-style: none; margin-bottom: 10px; }
-    .footer-col a { color: #bbb; text-decoration: none; }
-    .bottom-bar { text-align: center; border-top: 1px solid #222; padding-top: 20px; font-size: 0.8rem; color: #666; }
-
-    /* WhatsApp Floating */
-    .whatsapp-float {
-      position: fixed; bottom: 30px; left: 30px; background: #25D366; color: white; 
-      width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; 
-      justify-content: center; font-size: 30px; box-shadow: 2px 5px 15px rgba(0,0,0,0.3); z-index: 9999;
+    .footer-col a:hover {
+      color: var(--accent);
+      padding-left: 5px;
     }
 
-    @media (max-width: 768px) { .hero h2 { font-size: 2.5rem; } .nav-menu { display: none; } }
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-links a {
+      width: 35px;
+      height: 35px;
+      background: rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: var(--accent);
+      border: 1px solid rgba(197, 160, 89, 0.2);
+    }
+
+    .social-links a:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    /* Newsletter Box */
+    .newsletter-box {
+      display: flex;
+      margin-top: 15px;
+    }
+
+    .newsletter-box input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid #334155;
+      padding: 10px 15px;
+      color: white;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+      width: 100%;
+    }
+
+    .newsletter-box button {
+      background: var(--accent);
+      border: none;
+      padding: 0 20px;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .bottom-bar {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .copyright { color: #64748b; font-size: 0.85rem; }
+    .dev-tag { font-size: 0.85rem; color: #64748b; }
+    .dev-tag b { color: var(--accent-light); }
+
+    @media (max-width: 992px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .bottom-bar { flex-direction: column; text-align: center; }
+    }
   </style>
 </head>
 <body>
-
-<div class="top-announcement" id="mainBanner">
-  <i class="fa fa-bullhorn"></i> Welcome to the Arena of Liberty!
-</div>
 
 <nav>
   <div class="logo-box">
@@ -239,126 +173,95 @@
   <ul class="nav-menu">
     <li><a href="index.html">Home</a></li>
     <li><a href="live.html">Live</a></li>
-    <li><a href="membership.html">Membership</a></li>
-    <li><a href="events.html">Events</a></li>
     <li><a href="prayer.html">Prayer</a></li>
-    <li><a href="gallery.html">Gallery</a></li>
-    <li><a href="media.html">Media</a></li>
+    <li><a href="event.html">Events</a></li>
   </ul>
 </nav>
 
 <header class="hero">
-  <p>WELCOME TO THE ARENA OF LIBERTY</p>
-  <h2>Experience the Power <br> of God's Presence</h2>
-  <a href="live.html" class="btn-main">JOIN US ONLINE</a>
+  <h2>A House of Liberty</h2>
+  <p>RCCG Area Headquarters | Transforming Lives Globally</p>
 </header>
 
-<section id="weekly-activities">
-  <div class="section-header">
-    <h2>Weekly Activities</h2>
-    <div class="gold-line"></div>
-    <p>Join us in any of our weekly spiritual growth programs</p>
-  </div>
-  <div class="activity-grid">
-    <div class="activity-card">
-      <h3>Digging Deep</h3>
-      <p class="time"><i class="fa fa-calendar"></i> TUESDAYS | 5:30 PM</p>
-      <p>Systematic study of the Word of God to equip the saints.</p>
-    </div>
-    <div class="activity-card">
-      <h3>Faith Clinic</h3>
-      <p class="time"><i class="fa fa-calendar"></i> THURSDAYS | 5:30 PM</p>
-      <p>A specialized prayer service for breakthroughs and healing.</p>
-    </div>
-    <div class="activity-card">
-      <h3>Glorious Service</h3>
-      <p class="time"><i class="fa fa-calendar"></i> SUNDAYS | 8:00 AM</p>
-      <p>A celebration of worship, word, and the supernatural.</p>
-    </div>
-  </div>
-</section>
-
-<div id="toast-notification">
-    <div style="background: var(--primary); color: var(--accent); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <i class="fa fa-hands-praying"></i>
-    </div>
-    <div>
-        <strong style="display:block;">Need Prayer?</strong>
-        <small style="color:#666;">We are available to pray with you.</small>
-    </div>
-    <button onclick="this.parentElement.classList.remove('show')" style="border:none; background:none; cursor:pointer; font-size:1.2rem;">&times;</button>
+<div class="action-grid">
+  <a href="prayer.html" class="action-card">
+    <i class="fa fa-pray" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px; display: block;"></i>
+    <h3>Prayer Altar</h3>
+    <p>Submit your requests for divine intervention.</p>
+  </a>
+  <a href="live.html" class="action-card">
+    <i class="fa fa-broadcast-tower" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px; display: block;"></i>
+    <h3>Live Stream</h3>
+    <p>Join our interactive sanctuary experience.</p>
+  </a>
+  <a href="event.html" class="action-card">
+    <i class="fa fa-calendar-check" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px; display: block;"></i>
+    <h3>Calendar</h3>
+    <p>Never miss a special move of God.</p>
+  </a>
 </div>
-
-<a href="https://wa.me/2349024301199" class="whatsapp-float" target="_blank">
-  <i class="fab fa-whatsapp"></i>
-</a>
 
 <footer>
   <div class="footer-grid">
     <div class="footer-col">
-      <h4>Power Sanctuary</h4>
-      <p>RCCG Area Headquarters. Building a generation of people filled with power and the Holy Spirit.</p>
+      <h4>Our Mission</h4>
+      <p>RCCG Power Sanctuary is dedicated to raising a generation of believers who walk in the power of the Holy Spirit and manifest the liberty of Christ.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/2349024301199"><i class="fab fa-whatsapp"></i></a>
+      </div>
     </div>
+
     <div class="footer-col">
-      <h4>Quick Navigation</h4>
-      <li><a href="live.html">Watch Live</a></li>
-      <li><a href="event.html">Calendar</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="media.html">Resources</a></li>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="live.html">Watch Online</a></li>
+        <li><a href="membership.html">Join the Family</a></li>
+        <li><a href="prayer.html">Prayer Requests</a></li>
+        <li><a href="event.html">Upcoming Programs</a></li>
+      </ul>
     </div>
+
     <div class="footer-col">
-      <h4>Connect With Us</h4>
-      <p><i class="fa fa-map-marker-alt"></i> Area HQ, Ekiti State, Nigeria</p>
-      <p><i class="fa fa-phone"></i> +234 902 430 1199</p>
-      <p><i class="fa fa-envelope"></i> sundayoluwarotimi1@gmail.com</p>
+      <h4>Sanctuary Info</h4>
+      <ul>
+        <li><i class="fa fa-map-marker-alt"></i> Oke Ureje, Ado-Ekiti</li>
+        <li><i class="fa fa-phone"></i> +234 902 430 1199</li>
+        <li><i class="fa fa-envelope"></i> info@powersanctuary.org</li>
+        <li><i class="fa fa-clock"></i> Sun: 8:00 AM</li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p>Subscribe to receive spiritual nuggets and updates.</p>
+      <div class="newsletter-box">
+        <input type="email" placeholder="Your Email">
+        <button><i class="fa fa-paper-plane"></i></button>
+      </div>
     </div>
   </div>
+
   <div class="bottom-bar">
-    &copy; 2025 Power Sanctuary. | Developed by <b>Oluwarotimi Sunday Temitope</b>
+    <div class="copyright">
+      &copy; 2025 RCCG Power Sanctuary Area HQ. All Rights Reserved.
+    </div>
+    <div class="dev-tag">
+      System Architect: <b>Oluwarotimi Sunday Temitope</b>
+    </div>
   </div>
 </footer>
 
 <script>
-  // 1. VISITOR PULSE: Tells the Dashboard you are online
-  function sendPulse() {
-      if (!sessionStorage.getItem('visitor_id')) {
-          sessionStorage.setItem('visitor_id', 'user_' + Math.random().toString(36).substr(2, 9));
-      }
-      const vID = sessionStorage.getItem('visitor_id');
-      let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
-      visitorData[vID] = Date.now(); 
-      localStorage.setItem('online_visitors', JSON.stringify(visitorData));
-  }
-  setInterval(sendPulse, 5000);
-  sendPulse();
-
-  // 2. BANNER SYNC: Updates the announcement bar from Dashboard
-  function syncAnnouncement() {
-      const banner = document.getElementById('mainBanner');
-      const msg = localStorage.getItem('live_announcement');
-      if (msg && banner) {
-          banner.innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
-      }
-  }
-  setInterval(syncAnnouncement, 3000);
-
-  // 3. TOAST NOTIFICATION
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('toast-notification').classList.add('show');
-    }, 3000);
-    syncAnnouncement();
-  });
+  // Sync Banner & Visitors
+  setInterval(() => {
+    let visitors = JSON.parse(localStorage.getItem('online_visitors')) || {};
+    visitors['v_'+Math.random().toString(36).substr(2,4)] = Date.now();
+    localStorage.setItem('online_visitors', JSON.stringify(visitors));
+  }, 10000);
 </script>
 
 </body>
-</html>
-
-
-
-
-
-
-
-
-
+      </html>
