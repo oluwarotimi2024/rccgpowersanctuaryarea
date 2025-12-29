@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Giving | Power Sanctuary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #050a18; 
+      --accent: #c5a059;  
+      --white: #ffffff;
+      --border: rgba(255, 255, 255, 0.08);
+      --footer-bg: #03070f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Inter', sans-serif; background-color: #f4f7fa; color: var(--primary); display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* --- NAVIGATION --- */
+    nav { background: var(--primary); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); position: sticky; top:0; z-index: 1000; }
+    .logo-text h1 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1rem; margin: 0; }
+    .nav-menu { display: flex; list-style: none; gap: 15px; align-items: center; }
+    .nav-menu a { color: white; text-decoration: none; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+    .admin-btn { border: 1px solid var(--accent); padding: 5px 12px; border-radius: 4px; color: var(--accent) !important; }
+
+    /* --- GIVING HERO --- */
+    .giving-header {
+      background: linear-gradient(rgba(5, 10, 24, 0.8), rgba(5, 10, 24, 0.8)), url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=1000&q=80');
+      background-size: cover; background-position: center;
+      padding: 60px 20px; text-align: center; color: white;
+    }
+    .giving-header h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--accent); margin-bottom: 10px; }
+    .giving-header p { font-size: 0.9rem; max-width: 500px; margin: 0 auto; color: #cbd5e1; }
+
+    /* --- PAYMENT CARDS --- */
+    .giving-container { padding: 30px 5%; flex: 1; max-width: 800px; margin: 0 auto; width: 100%; }
+    
+    .card {
+      background: white; border-radius: 15px; padding: 25px; margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
+    }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+    .card-title i { color: var(--accent); }
+
+    .bank-details { background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px dashed var(--accent); margin-top: 10px; }
+    .bank-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
+    .bank-row b { color: var(--primary); }
+    
+    .copy-btn {
+      background: var(--primary); color: var(--accent); border: none; padding: 8px 15px; 
+      border-radius: 5px; font-size: 0.75rem; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px;
+    }
+
+    /* --- ONLINE BUTTONS --- */
+    .online-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px; background: var(--primary); color: white;
+      text-decoration: none; border-radius: 10px; font-weight: 700; margin-top: 10px;
+      transition: 0.3s;
+    }
+    .online-btn:hover { background: var(--accent); color: var(--primary); }
+
+    /* --- FOOTER --- */
+    footer { background: var(--footer-bg); color: #ffffff; padding: 40px 8% 30px; border-top: 3px solid var(--accent); text-align: center; }
+    .copyright { font-size: 0.75rem; color: #64748b; margin-bottom: 5px; }
+    .dev-tag { font-size: 0.75rem; color: #64748b; }
+    .dev-tag b { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo-box">
+      <div class="logo-text"><h1>POWER SANCTUARY</h1></div>
+    </div>
+    <ul class="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="live.html">Live</a></li>
+      <li><a href="login.html" class="admin-btn"><i class="fa fa-lock"></i> ADMIN</a></li>
+    </ul>
+  </nav>
+
+  <header class="giving-header">
+    <h2>Worship with your Substance</h2>
+    <p>"Honor the LORD with your wealth and with the firstfruits of all your produce." — Proverbs 3:9</p>
+  </header>
+
+  <div class="giving-container">
+    
+    <div class="card">
+      <div class="card-title"><i class="fa fa-university"></i> Bank Transfer</div>
+      <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Use the details below for Tithes, Offerings, and Building Seeds.</p>
+      
+      <div class="bank-details">
+        <div class="bank-row"><span>Bank Name:</span> <b>Zenith Bank</b></div>
+        <div class="bank-row"><span>Account Name:</span> <b>RCCG Power Sanctuary</b></div>
+        <div class="bank-row"><span>Account No:</span> <b id="accNum">1234567890</b></div>
+      </div>
+      
+      <button class="copy-btn" onclick="copyAccount()"> <i class="fa fa-copy"></i> COPY ACCOUNT NUMBER</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa fa-credit-card"></i> Online Giving</div>
+      <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Securely give using your Debit Card (Flutterwave / Paystack).</p>
+      
+      <a href="#" class="online-btn">
+        <i class="fa fa-heart"></i> GIVE ONLINE NOW
+      </a>
+    </div>
+
+    <div style="text-align: center; padding: 20px;">
+      <p style="font-size: 0.8rem; color: #64748b;">
+        Having trouble? Contact our treasury department:<br>
+        <a href="https://wa.me/2349024301199" style="color: var(--accent); text-decoration: none; font-weight: 700;">+234 902 430 1199</a>
+      </p>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="copyright">&copy; 2025 RCCG Power Sanctuary Area HQ.</div>
+    <div class="dev-tag">System Architect: <b>Oluwarotimi Sunday Temitope</b></div>
+  </footer>
+
+  <script>
+    function copyAccount() {
+      const acc = document.getElementById('accNum').innerText;
+      navigator.clipboard.writeText(acc);
+      alert("Account number copied to clipboard!");
+    }
+  </script>
+
+</body>
+</html>
