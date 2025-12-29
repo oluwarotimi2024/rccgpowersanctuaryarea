@@ -2,127 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Membership | Power Sanctuary Area</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+  <title>Membership Portal | Power Sanctuary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; background: #f0f2f5; display: flex; flex-direction: column; min-height: 100vh; }
-
-    /* Navigation */
-    nav { background: #1e1e2f; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-    nav .logo { color: white; font-weight: 700; font-size: 1.2rem; }
-    nav ul { list-style: none; display: flex; }
-    nav ul li { margin-left: 20px; }
-    nav ul li a { color: white; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
-    nav ul li a:hover { color: #ffd700; }
-
-    /* Form Container */
-    .reg-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
-    .reg-card { background: white; width: 100%; max-width: 450px; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; }
-    .reg-card h2 { color: #1e1e2f; margin-bottom: 10px; font-size: 1.8rem; text-align: center; }
-    .reg-card p { color: #666; text-align: center; margin-bottom: 30px; font-size: 0.9rem; }
-
-    .input-group { margin-bottom: 20px; }
-    .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 0.85rem; }
-    
-    input { width: 100%; padding: 14px 18px; border: 2px solid #e1e1e1; border-radius: 10px; font-family: inherit; font-size: 1rem; transition: all 0.3s; }
-    input:focus { outline: none; border-color: #1e1e2f; background: #fafafa; }
-
-    .submit-btn { width: 100%; padding: 16px; background: #1e1e2f; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
-    .submit-btn:hover { background: #ffd700; color: #1e1e2f; transform: translateY(-2px); }
-
-    /* Success Overlay */
-    #success-box { display: none; text-align: center; }
-    .success-icon { font-size: 4rem; color: #28a745; margin-bottom: 15px; }
+    :root { --primary: #050a18; --accent: #c5a059; }
+    body { background: #fdfdfd; font-family: 'Inter', sans-serif; margin:0; }
+    .hero-side { 
+      background: linear-gradient(rgba(5, 10, 24, 0.9), rgba(5, 10, 24, 0.9)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80'); 
+      background-size: cover; color: white; padding: 100px 8%; text-align: center;
+    }
+    .form-section { max-width: 600px; margin: -50px auto 100px; background: white; padding: 50px; border-radius: 4px; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+    .form-group { margin-bottom: 25px; }
+    label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; color: var(--primary); }
+    input, select { width: 100%; padding: 15px; border: 1px solid #eee; background: #fafafa; border-radius: 4px; }
+    .submit-btn { width: 100%; padding: 18px; background: var(--primary); color: var(--accent); border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
+    .submit-btn:hover { background: var(--accent); color: var(--primary); }
   </style>
 </head>
 <body>
-
-<nav>
-  <div class="logo">RCCG POWER SANCTUARY</div>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="admin-panel.html">Admin</a></li>
-  </ul>
-</nav>
-
-<div class="reg-wrapper">
-  <div class="reg-card">
-    <div id="form-container">
-      <h2>Join the Family</h2>
-      <p>Become a registered member of RCCG Power Sanctuary Area today.</p>
-
-      <div class="input-group">
-        <label>Full Name</label>
-        <input type="text" id="fullName" placeholder="e.g. John Sunday">
-      </div>
-
-      <div class="input-group">
-        <label>Phone Number</label>
-        <input type="tel" id="phone" placeholder="e.g. 08012345678">
-      </div>
-
-      <button class="submit-btn" id="subBtn" onclick="handleRegistration()">Register Membership</button>
-    </div>
-
-    <div id="success-box">
-      <i class="fa-solid fa-circle-check success-icon"></i>
-      <h2>Welcome!</h2>
-      <p>Your registration was successful. God bless you!</p>
-      <button class="submit-btn" onclick="location.reload()">Back to Form</button>
-    </div>
+  <div class="hero-side">
+    <h1 style="font-family: 'Playfair Display'; font-size: 3rem;">Become a Part of Us</h1>
+    <p style="color:var(--accent)">STEP INTO YOUR DIVINE ASSIGNMENT</p>
   </div>
-</div>
 
-<script>
-function handleRegistration() {
-  const nameVal = document.getElementById("fullName").value.trim();
-  const phoneVal = document.getElementById("phone").value.trim();
-  const btn = document.getElementById("subBtn");
-
-  // 1. Validation
-  if (!nameVal || !phoneVal) {
-    alert("Please enter both your name and phone number.");
-    return;
-  }
-
-  // 2. Change button status
-  btn.innerText = "Processing...";
-  btn.disabled = true;
-
-  // 3. THE FIX: Save to LocalStorage instead of a server
-  try {
-    // Get existing members or start an empty list
-    let members = JSON.parse(localStorage.getItem('church_members_list')) || [];
-
-    // Add new member
-    const newMember = {
-      fullName: nameVal,
-      phone: phoneVal,
-      regDate: new Date().toLocaleString()
-    };
-
-    members.push(newMember);
-
-    // Save back to memory
-    localStorage.setItem('church_members_list', JSON.stringify(members));
-
-    // 4. Show Success UI
-    setTimeout(() => {
-        document.getElementById('form-container').style.display = 'none';
-        document.getElementById('success-box').style.display = 'block';
-    }, 1000);
-
-  } catch (err) {
-    alert("An error occurred. Please try again.");
-    btn.innerText = "Register Membership";
-    btn.disabled = false;
-  }
-}
-</script>
-
+  <div class="form-section">
+    <form>
+      <div class="form-group"><label>FULL NAME</label><input type="text" placeholder="John Doe"></div>
+      <div class="form-group"><label>PHONE NUMBER</label><input type="tel" placeholder="+234..."></div>
+      <div class="form-group"><label>AREA OF INTEREST (DEPARTMENT)</label>
+        <select>
+          <option>Media & Technical</option>
+          <option>The Voices (Choir)</option>
+          <option>Protocol & Ushering</option>
+          <option>Sanctuary Keepers</option>
+        </select>
+      </div>
+      <div class="form-group"><label>ARE YOU BAPTIZED?</label>
+        <div style="display:flex; gap:20px;">
+          <label style="font-weight:400"><input type="radio" name="bap" style="width:auto"> Yes</label>
+          <label style="font-weight:400"><input type="radio" name="bap" style="width:auto"> No</label>
+        </div>
+      </div>
+      <button class="submit-btn">SUBMIT REGISTRATION</button>
+    </form>
+  </div>
 </body>
-</html>
+</html></html>
