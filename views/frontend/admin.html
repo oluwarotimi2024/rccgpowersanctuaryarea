@@ -57,6 +57,7 @@
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th { text-align: left; padding: 12px; background: #f1f5f9; font-size: 0.8rem; }
     td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+    .preview-img { width: 50px; height: 40px; object-fit: cover; border-radius: 5px; }
 
     @media (max-width: 768px) {
       .sidebar { display: none; }
@@ -135,10 +136,19 @@
       <div id="gallery" class="section">
         <h2>Gallery Manager</h2>
         <div class="panel">
-          <h3>Upload New Media</h3>
-          <input type="text" id="imgUrl" placeholder="Image URL (Link)">
-          <input type="text" id="imgCap" placeholder="Caption (e.g. Sunday Service)">
+          <h3>Upload New Media (Link Required)</h3>
+          <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Note: Do not paste local file paths. Use a direct link from ImgBB or PostImg.</p>
+          <input type="text" id="imgUrl" placeholder="Direct Image URL (e.g. https://...)">
+          <input type="text" id="imgCap" placeholder="Caption (e.g. Sunday Celebration)">
           <button class="btn-push" onclick="addToGallery()">PUBLISH TO GALLERY</button>
+        </div>
+
+        <div class="panel">
+          <h3>Current Gallery Items</h3>
+          <table>
+            <thead><tr><th>Preview</th><th>Caption</th><th>Action</th></tr></thead>
+            <tbody id="gallery-list-table"></tbody>
+          </table>
         </div>
       </div>
 
@@ -172,6 +182,7 @@
       
       if(id === 'prayers') loadPrayers();
       if(id === 'members') loadMembers();
+      if(id === 'gallery') loadGalleryItems();
     }
 
     // --- DATA PUSHING ---
@@ -186,17 +197,29 @@
     }
 
     function addToGallery() {
+        const urlInput = document.getElementById('imgUrl').value;
+        const capInput = document.getElementById('imgCap').value;
+
+        if(!urlInput.startsWith('http')) {
+            alert("Error: Please paste a web link starting with http/https. Use ImgBB to upload your photo first!");
+            return;
+        }
+
         let gallery = JSON.parse(localStorage.getItem('church_gallery')) || [];
-        gallery.unshift({ url: document.getElementById('imgUrl').value, cap: document.getElementById('imgCap').value });
+        gallery.unshift({ url: urlInput, cap: capInput });
         localStorage.setItem('church_gallery', JSON.stringify(gallery));
-        alert("Added to Gallery!");
+        
+        document.getElementById('imgUrl').value = "";
+        document.getElementById('imgCap').value = "";
+        alert("Image Published to Public Gallery!");
+        loadGalleryItems();
     }
 
     // --- DATA LOADING ---
     function loadPrayers() {
       const data = JSON.parse(localStorage.getItem('church_prayers')) || [];
       const table = document.getElementById('prayer-table');
-      table.innerHTML = data.map((p, i) => `<tr><td>${p.name}</td><td>${p.request}</td><td>${p.date}</td><td><button onclick="removeItem('church_prayers', ${i}, loadPrayers)">Delete</button></td></tr>`).join('');
+      table.innerHTML = data.map((p, i) => `<tr><td>${p.name}</td><td>${p.request}</td><td>${p.date}</td><td><button onclick="removeItem('church_prayers', ${i}, loadPrayers)" style="color:red; border:none; background:none; cursor:pointer">Delete</button></td></tr>`).join('');
     }
 
     function loadMembers() {
@@ -205,12 +228,26 @@
       table.innerHTML = data.map(m => `<tr><td>${m.fullName}</td><td>${m.phone}</td><td>${m.dept}</td><td>${m.date}</td></tr>`).join('');
     }
 
+    function loadGalleryItems() {
+        const data = JSON.parse(localStorage.getItem('church_gallery')) || [];
+        const table = document.getElementById('gallery-list-table');
+        table.innerHTML = data.map((img, i) => `
+            <tr>
+                <td><img src="${img.url}" class="preview-img"></td>
+                <td>${img.cap}</td>
+                <td><button onclick="removeItem('church_gallery', ${i}, loadGalleryItems)" style="color:red; border:none; background:none; cursor:pointer">Remove</button></td>
+            </tr>
+        `).join('');
+    }
+
     function removeItem(key, index, callback) {
-        let data = JSON.parse(localStorage.getItem(key));
-        data.splice(index, 1);
-        localStorage.setItem(key, JSON.stringify(data));
-        callback();
-        refreshCounts();
+        if(confirm("Are you sure you want to delete this?")) {
+            let data = JSON.parse(localStorage.getItem(key));
+            data.splice(index, 1);
+            localStorage.setItem(key, JSON.stringify(data));
+            callback();
+            refreshCounts();
+        }
     }
 
     function refreshCounts() {
