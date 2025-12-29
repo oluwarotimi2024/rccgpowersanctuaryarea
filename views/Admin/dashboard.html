@@ -2,56 +2,60 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Executive Command | Power Sanctuary HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HQ Command | Power Sanctuary Area</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root { 
-      --nav-width: 280px; --primary: #050a18; --accent: #c5a059; 
-      --bg: #f4f7fa; --success: #25D366; --danger: #ff4757;
+      --nav-width: 260px; --primary: #050a18; --accent: #c5a059; 
+      --bg: #f8fafc; --success: #22c55e; --danger: #ef4444; --warning: #f59e0b;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; color: #333; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; color: #1e293b; overflow: hidden; }
 
     /* --- SIDEBAR --- */
-    .sidebar { width: var(--nav-width); background: var(--primary); height: 100vh; color: white; position: fixed; z-index: 100; }
-    .sidebar-header { padding: 40px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center;}
-    .sidebar-header img { width: 60px; margin-bottom: 15px; border-radius: 50%; border: 2px solid var(--accent); }
+    .sidebar { width: var(--nav-width); background: var(--primary); height: 100vh; color: white; display: flex; flex-direction: column; }
+    .sidebar-header { padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; }
+    .sidebar-header img { width: 50px; margin-bottom: 10px; border: 2px solid var(--accent); border-radius: 50%; }
     
-    .nav-links { list-style: none; padding: 20px; }
-    .nav-links li { padding: 15px 20px; margin-bottom: 8px; border-radius: 10px; transition: 0.3s; display: flex; align-items: center; gap: 15px; cursor: pointer; color: #94a3b8; }
-    .nav-links li:hover { background: rgba(197, 160, 89, 0.1); color: var(--accent); }
-    .nav-links a { color: inherit; text-decoration: none; display: flex; align-items: center; gap: 15px; width: 100% }
+    .nav-links { list-style: none; padding: 20px; flex: 1; }
+    .nav-links li { padding: 12px 15px; margin-bottom: 5px; border-radius: 8px; transition: 0.3s; display: flex; align-items: center; gap: 12px; cursor: pointer; color: #94a3b8; font-size: 0.9rem; }
+    .nav-links li:hover, .nav-links li.active { background: rgba(197, 160, 89, 0.1); color: var(--accent); }
+    .nav-links a { color: inherit; text-decoration: none; display: flex; align-items: center; gap: 12px; width: 100%; }
 
-    /* --- MAIN CONTENT --- */
-    .main-content { margin-left: var(--nav-width); flex: 1; padding: 40px; }
+    /* --- MAIN --- */
+    .main-content { flex: 1; height: 100vh; overflow-y: auto; padding: 30px; }
+    .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
     
-    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: white; padding: 20px 30px; border-radius: 15px; }
-    .notif-bell { position: relative; background: var(--bg); width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-    .badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; font-size: 0.7rem; padding: 3px 6px; border-radius: 50%; font-weight: bold; }
+    /* --- STATS --- */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .s-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+    .s-val { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+    .s-label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+    .s-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 
-    /* --- STATS GRID --- */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
-    .stat-card { background: white; padding: 25px; border-radius: 15px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-    .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    /* --- COMMAND PANELS --- */
+    .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
+    .panel { background: white; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .panel-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; }
+    .panel-h h3 { font-size: 1rem; display: flex; align-items: center; gap: 10px; }
 
-    /* --- PANELS --- */
-    .action-grid { display: grid; grid-template-columns: 1.2fr 1.2fr 1fr; gap: 20px; }
-    .panel { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-    .panel h3 { margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-    
-    textarea { width: 100%; padding: 15px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-family: inherit; margin-bottom: 10px; resize: none; }
-    
-    .btn { padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 5px; }
-    .btn-push { background: var(--primary); color: var(--accent); }
-    .btn-wa { background: var(--success); color: white; }
+    textarea { width: 100%; padding: 15px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; font-family: inherit; margin-bottom: 15px; resize: none; font-size: 0.9rem; }
+    .p-btn { padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+    .btn-gold { background: var(--primary); color: var(--accent); border: 1px solid var(--accent); }
+    .btn-gold:hover { background: var(--accent); color: var(--primary); }
 
-    /* --- LIVE FEED --- */
-    .alert-list { max-height: 400px; overflow-y: auto; }
-    .alert-item { padding: 12px; border-bottom: 1px solid #f8fafc; display: flex; gap: 12px; position: relative; }
-    .alert-item small { color: #64748b; display: block; }
+    /* --- ALERT FEED --- */
+    .feed { max-height: 450px; overflow-y: auto; }
+    .feed-item { padding: 15px; border-radius: 10px; background: #f8fafc; margin-bottom: 10px; border-left: 4px solid var(--accent); position: relative; }
+    .feed-item b { font-size: 0.85rem; display: block; color: var(--primary); }
+    .feed-item small { color: #64748b; font-size: 0.75rem; }
+    .clear-one { position: absolute; top: 10px; right: 10px; color: #cbd5e1; cursor: pointer; }
+
+    .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; background: var(--success); color: white; }
   </style>
 </head>
 <body>
@@ -59,189 +63,162 @@
 <aside class="sidebar">
   <div class="sidebar-header">
     <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG">
-    <h3>POWER ADMIN</h3>
+    <h2 style="font-size: 0.9rem; color: var(--accent);">AREA COMMAND</h2>
   </div>
   <ul class="nav-links">
-    <li style="color:var(--accent)"><i class="fa fa-dashboard"></i> Command Center</li>
-    <li><a href="index.html"><i class="fa fa-globe"></i> View Website</a></li>
-    <li><i class="fa fa-users"></i> Members</li>
-    <li><i class="fa fa-video"></i> Sermon Control</li>
+    <li class="active"><i class="fa fa-th-large"></i> Dashboard</li>
+    <li><a href="../index.html" target="_blank"><i class="fa fa-external-link"></i> Live Website</a></li>
+    <li><i class="fa fa-users"></i> Member Registry</li>
+    <li><i class="fa fa-hands-praying"></i> Prayer Inbox</li>
+    <li onclick="logout()" style="margin-top: auto; color: var(--danger);"><i class="fa fa-sign-out-alt"></i> Sign Out</li>
   </ul>
 </aside>
 
 <main class="main-content">
-  <div class="top-bar">
-    <div><h2>Executive Dashboard</h2><p id="time-display"></p></div>
-    <div class="notif-bell"><i class="fa fa-bell"></i><span class="badge" id="badge-count">0</span></div>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon" style="background: rgba(37,211,102,0.1); color: var(--success);"><i class="fa fa-users"></i></div>
-      <div class="stat-info"><h4>Live Visitors</h4><h2 id="live-visitors">0</h2></div>
+  <div class="header-flex">
+    <div>
+      <h1 style="font-size: 1.5rem;">Executive Overview</h1>
+      <p id="date-display" style="font-size: 0.85rem; color: #64748b;"></p>
     </div>
-    <div class="stat-card">
-      <div class="stat-icon" style="background: rgba(255,71,87,0.1); color: var(--danger);"><i class="fa fa-pray"></i></div>
-      <div class="stat-info"><h4>Pending Requests</h4><h2 id="stat-requests">0</h2></div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon" style="background: rgba(197,160,89,0.1); color: var(--accent);"><i class="fa fa-bolt"></i></div>
-      <div class="stat-info"><h4>Service Status</h4><h2 style="font-size: 1rem;">ONLINE</h2></div>
+    <div style="display: flex; gap: 15px; align-items: center;">
+      <span class="status-pill">SERVER ONLINE</span>
+      <div style="background: white; padding: 8px 15px; border-radius: 8px; border: 1px solid #e2e8f0; font-weight: 700;" id="clock">00:00:00</div>
     </div>
   </div>
 
-  <div class="action-grid">
+  <div class="stats-row">
+    <div class="s-card">
+      <div><p class="s-label">Active Users</p><div class="s-val" id="live-visitors">0</div></div>
+      <div class="s-icon" style="background: rgba(34,197,94,0.1); color: var(--success);"><i class="fa fa-eye"></i></div>
+    </div>
+    <div class="s-card">
+      <div><p class="s-label">Pending Requests</p><div class="s-val" id="stat-requests">0</div></div>
+      <div class="s-icon" style="background: rgba(239,68,68,0.1); color: var(--danger);"><i class="fa fa-heart"></i></div>
+    </div>
+    <div class="s-card">
+      <div><p class="s-label">Admin Level</p><div class="s-val" style="font-size: 1rem;">SUPER ARCHITECT</div></div>
+      <div class="s-icon" style="background: rgba(197,160,89,0.1); color: var(--accent);"><i class="fa fa-shield-check"></i></div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
     <div class="panel">
-      <h3><i class="fa fa-bullhorn"></i> Global Broadcast</h3>
-      <textarea id="broadcastInput" rows="4" placeholder="Update the Website Banner text..."></textarea>
-      <button class="btn btn-push" onclick="updateBanner()">PUSH TO WEBSITE</button>
-      <button class="btn btn-wa" onclick="sendWA()"><i class="fab fa-whatsapp"></i> SEND TO GROUPS</button>
+      <div class="panel-h">
+        <h3><i class="fa fa-tower-broadcast" style="color:var(--accent)"></i> Broadcast Control</h3>
+        <small style="color: #64748b;">Live Website Sync</small>
+      </div>
+      
+      <label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin-bottom: 8px;">GLOBAL ANNOUNCEMENT BAR</label>
+      <textarea id="broadcastInput" rows="3" placeholder="Type urgent announcement here..."></textarea>
+      <button class="p-btn btn-gold" onclick="updateBanner()"><i class="fa fa-paper-plane"></i> PUSH TO HOME PAGE</button>
+
+      <label style="font-size: 0.75rem; font-weight: 700; color: #64748b; display: block; margin: 15px 0 8px;">LIVE SERMON POINTS</label>
+      <textarea id="sermonInput" rows="3" placeholder="1. Holiness is..."></textarea>
+      <button class="p-btn btn-gold" onclick="updateNotes()"><i class="fa fa-sync"></i> UPDATE LIVE NOTES</button>
+      
+      <button class="p-btn" style="background:#25D366; color:white; margin-top:10px;" onclick="sendWA()">
+        <i class="fab fa-whatsapp"></i> BROADCAST TO WHATSAPP
+      </button>
     </div>
 
     <div class="panel">
-      <h3><i class="fa fa-edit"></i> Live Sermon Notes</h3>
-      <textarea id="sermonInput" rows="4" placeholder="Type sermon points here for the Live Page..."></textarea>
-      <button class="btn btn-push" onclick="updateNotes()">UPDATE LIVE NOTES</button>
-    </div>
-
-    <div class="panel">
-      <h3><i class="fa fa-bell"></i> Recent Activity</h3>
-      <div class="alert-list" id="alert-list">
-        <p style="text-align:center; color:#999; margin-top:20px;">No new alerts</p>
+      <div class="panel-h">
+        <h3><i class="fa fa-bolt" style="color:var(--warning)"></i> Live Alerts</h3>
+        <button onclick="clearAll()" style="background:none; border:none; color:var(--danger); font-size:0.7rem; cursor:pointer; font-weight:700;">CLEAR ALL</button>
+      </div>
+      <div class="feed" id="alert-list">
+        <p style="text-align:center; color:#94a3b8; font-size:0.8rem; margin-top:20px;">No incoming data...</p>
       </div>
     </div>
   </div>
 </main>
 
 <script>
-  // 1. Live Visitor Tracking Logic
-  function trackVisitors() {
+  // SECURITY CHECK
+  if(localStorage.getItem('admin_auth') !== 'active') window.location.href = "login.html";
+
+  function logout() {
+    localStorage.removeItem('admin_auth');
+    window.location.href = "login.html";
+  }
+
+  // 1. LIVE TRACKING
+  function updateDashboard() {
+      // Time/Date
+      const now = new Date();
+      document.getElementById('clock').innerText = now.toLocaleTimeString();
+      document.getElementById('date-display').innerText = now.toDateString();
+
+      // Visitors
       let visitors = JSON.parse(localStorage.getItem('online_visitors')) || {};
-      let now = Date.now();
       let activeCount = 0;
       for (let id in visitors) {
-          if (now - visitors[id] < 10000) activeCount++;
+          if (Date.now() - visitors[id] < 15000) activeCount++;
           else delete visitors[id];
       }
       localStorage.setItem('online_visitors', JSON.stringify(visitors));
       document.getElementById('live-visitors').innerText = activeCount;
+
+      // Alerts
+      syncAlerts();
   }
 
-  // 2. Sync Prayer/Member Alerts
+  // 2. ALERT SYSTEM
   function syncAlerts() {
       const alerts = JSON.parse(localStorage.getItem('church_alerts')) || [];
       const container = document.getElementById('alert-list');
-      const badge = document.getElementById('badge-count');
-      const statReq = document.getElementById('stat-requests');
-
-      badge.innerText = alerts.length;
-      statReq.innerText = alerts.length;
+      document.getElementById('stat-requests').innerText = alerts.length;
 
       if (alerts.length > 0) {
           container.innerHTML = '';
-          alerts.forEach((data, index) => {
-              container.insertAdjacentHTML('afterbegin', `
-                  <div class="alert-item">
-                    <div style="flex:1">
-                      <strong>${data.type}: ${data.name}</strong>
-                      <small>${data.message}</small>
-                    </div>
-                    <button onclick="clearItem(${index})" style="border:none; color:red; background:none; cursor:pointer">&times;</button>
+          alerts.reverse().forEach((data, index) => {
+              container.insertAdjacentHTML('beforeend', `
+                  <div class="feed-item">
+                    <i class="fa fa-times clear-one" onclick="clearItem(${alerts.length - 1 - index})"></i>
+                    <b>${data.type}</b>
+                    <p style="font-size:0.8rem; margin:4px 0;">${data.message}</p>
+                    <small>${data.time || 'Just now'}</small>
                   </div>
               `);
           });
+      } else {
+          container.innerHTML = '<p style="text-align:center; color:#94a3b8; font-size:0.8rem; margin-top:20px;">Dashboard is quiet.</p>';
       }
   }
 
-  // 3. Command Functions
+  // 3. ACTIONS
   function updateBanner() {
       const msg = document.getElementById('broadcastInput').value;
       localStorage.setItem('live_announcement', msg);
-      alert("Website Banner Updated!");
+      alert("✅ GLOBAL BROADCAST ACTIVE");
   }
 
   function updateNotes() {
       const notes = document.getElementById('sermonInput').value;
       localStorage.setItem('live_sermon_notes', notes);
-      alert("Sermon Notes Pushed to Live Page!");
+      alert("✅ LIVE NOTES UPDATED");
   }
 
-  function clearItem(index) {
+  function clearItem(idx) {
       let alerts = JSON.parse(localStorage.getItem('church_alerts'));
-      alerts.splice(index, 1);
+      alerts.splice(idx, 1);
       localStorage.setItem('church_alerts', JSON.stringify(alerts));
       syncAlerts();
   }
 
+  function clearAll() {
+      localStorage.setItem('church_alerts', JSON.stringify([]));
+      syncAlerts();
+  }
+
   function sendWA() {
-      const msg = document.getElementById('broadcastInput').value;
+      const msg = document.getElementById('broadcastInput').value || "Power Sanctuary Update";
       window.open(`https://wa.me/2349024301199?text=${encodeURIComponent(msg)}`);
   }
 
-  // Initializers
-  setInterval(() => {
-    trackVisitors();
-    syncAlerts();
-    document.getElementById('time-display').innerText = new Date().toLocaleTimeString();
-  }, 3000);
+  setInterval(updateDashboard, 2000);
+  updateDashboard();
 </script>
 
 </body>
-  </html>      </button>
-    </div>
-
-    <div class="panel">
-      <h3><i class="fa fa-bolt" style="color: var(--accent);"></i> Recent Alerts</h3>
-      <div id="alertList">
-        <div class="alert-item">
-          <div class="alert-icon" style="background: #e1f5fe; color: #03a9f4;"><i class="fa fa-user"></i></div>
-          <div>
-            <p style="font-size: 0.85rem; font-weight: 600;">New Member Registered</p>
-            <small style="color: #bbb;">2 minutes ago</small>
-          </div>
-        </div>
-        <div class="alert-item">
-          <div class="alert-icon" style="background: #fff3e0; color: #ff9800;"><i class="fa fa-hands-praying"></i></div>
-          <div>
-            <p style="font-size: 0.85rem; font-weight: 600;">Urgent Prayer Request</p>
-            <small style="color: #bbb;">15 minutes ago</small>
-          </div>
-        </div>
-        <div class="alert-item">
-            <div class="alert-icon" style="background: #e8f5e9; color: #4caf50;"><i class="fa fa-comment"></i></div>
-            <div>
-              <p style="font-size: 0.85rem; font-weight: 600;">New Media Comment</p>
-              <small style="color: #bbb;">1 hour ago</small>
-            </div>
-          </div>
-      </div>
-    </div>
-  </div>
-</main>
-
-<script>
-  function sendWhatsApp() {
-    const msg = document.getElementById('waMessage').value;
-    if(!msg) return alert("Please enter a message");
-    const phone = "2349024301199"; 
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
-  }
-
-  function pushToSite() {
-    const msg = document.getElementById('waMessage').value;
-    if(!msg) return alert("Enter content to push to website notification bar");
-    
-    // In a real app, this would update a database. 
-    // For now, we simulate the success.
-    alert("SUCCESS: Website notification bar updated with: " + msg);
-  }
-
-  function toggleNotifPanel() {
-    alert("Opening Detailed Notification Logs...");
-    document.getElementById('notifCount').innerText = "0";
-  }
-</script>
-
-</body>
-            </html>
-
+        </html>
