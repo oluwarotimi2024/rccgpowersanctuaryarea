@@ -19,6 +19,19 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: var(--white); color: #333; line-height: 1.6; }
 
+    /* --- NOTIFICATION SYSTEM --- */
+    .top-announcement {
+      background: var(--accent);
+      color: var(--primary);
+      padding: 10px 5%;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+    }
+
     /* --- NAVIGATION --- */
     nav {
       background: var(--primary);
@@ -27,7 +40,7 @@
       justify-content: space-between;
       align-items: center;
       position: sticky;
-      top: 0;
+      top: 38px; /* Adjusted for announcement bar */
       z-index: 1000;
       border-bottom: 2px solid var(--accent);
     }
@@ -78,7 +91,7 @@
 
     /* --- LOCATION SECTION --- */
     .location-section { background: var(--light-bg); display: flex; flex-wrap: wrap; align-items: stretch; padding: 0; }
-    .map-box { flex: 1; min-width: 300px; min-height: 400px; background: #ddd; }
+    .map-box { flex: 1; min-width: 300px; min-height: 450px; }
     .address-box { flex: 1; min-width: 300px; padding: 80px 10%; }
     .address-box h2 { font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--primary); }
 
@@ -92,6 +105,10 @@
 </head>
 <body>
 
+<div class="top-announcement" id="eventBanner">
+  <i class="fa fa-calendar-check"></i> Stay updated with our upcoming Kingdom activities!
+</div>
+
 <nav>
   <div class="logo-box">
     <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" alt="RCCG">
@@ -100,8 +117,8 @@
   <ul class="nav-menu">
     <li><a href="index.html">Home</a></li>
     <li><a href="live.html">Live</a></li>
-    <li><a href="members.html">Membership</a></li>
-    <li><a href="event.html">Events</a></li>
+    <li><a href="membership.html">Membership</a></li>
+    <li><a href="event.html" style="color:var(--accent)">Events</a></li>
     <li><a href="prayer.html">Prayer</a></li>
     <li><a href="media.html">Media</a></li>
   </ul>
@@ -155,7 +172,7 @@
   <div class="address-box">
     <h2>Find Us</h2>
     <p><strong>Area Headquarters</strong></p>
-    <p> oke Ureje Off poly Road,</p>
+    <p> Oke Ureje Off Poly Road,</p>
     <p>Ado-Ekiti, Ekiti State, Nigeria.</p>
     <br>
     <p><i class="fa fa-phone" style="color:var(--accent)"></i> +234 902 430 1199</p>
@@ -163,7 +180,7 @@
   </div>
   <div class="map-box">
     <iframe 
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126600.0000000000!2d5.200000!3d7.600000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1047fa5000000001%3A0x0!2zAWRvIEVraXRp!5e0!3m2!1sen!2sng!4v1625000000000" 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15822.463691684725!2d5.2559564!3d7.6167198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1047fa369527947d%3A0x6d1136b8017c6b55!2sUreje%2C%20Ado%20Ekiti!5e0!3m2!1sen!2sng!4v1700000000000" 
       width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
     </iframe>
   </div>
@@ -182,9 +199,35 @@
     </div>
   </div>
   <div class="bottom-bar">
-    &copy; 2025 Power Sanctuary. Developed by <b>Oluwarotimi Sunday Temitope</b>
+    © 2025 Power Sanctuary. Developed by <b>Oluwarotimi Sunday Temitope</b>
   </div>
 </footer>
 
+<script>
+  // 1. VISITOR PULSE: Tracks active users on Admin Dashboard
+  function sendPulse() {
+      if (!sessionStorage.getItem('visitor_id')) {
+          sessionStorage.setItem('visitor_id', 'user_' + Math.random().toString(36).substr(2, 9));
+      }
+      const vID = sessionStorage.getItem('visitor_id');
+      let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
+      visitorData[vID] = Date.now(); 
+      localStorage.setItem('online_visitors', JSON.stringify(visitorData));
+  }
+  setInterval(sendPulse, 5000);
+  sendPulse();
+
+  // 2. BANNER SYNC: Syncs top announcement from Admin Dashboard
+  function syncAnnouncement() {
+      const banner = document.getElementById('eventBanner');
+      const msg = localStorage.getItem('live_announcement');
+      if (msg && banner) {
+          banner.innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
+      }
+  }
+  setInterval(syncAnnouncement, 3000);
+  window.onload = syncAnnouncement;
+</script>
+
 </body>
-  </html>
+</html>
