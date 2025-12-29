@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Community Hub | Power Sanctuary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0b0f1a;
+      --accent: #c5a059;
+      --border: rgba(255, 255, 255, 0.08);
+      --text-dim: #94a3b8;
+      --msg-user: #1e293b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* --- TOP MENU BAR --- */
+    .menu-bar {
+      background: var(--panel);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+    }
+    .logo { font-weight: 800; color: var(--accent); font-size: 0.85rem; letter-spacing: 1px; }
+    .nav-icons { display: flex; gap: 18px; }
+    .nav-icons i { font-size: 1.2rem; cursor: pointer; color: white; transition: 0.3s; }
+    .nav-icons i:hover { color: var(--accent); }
+
+    /* --- CHANNEL MINI-STREAM --- */
+    .mini-live { width: 100%; aspect-ratio: 16/9; background: #000; border-bottom: 1px solid var(--border); }
+
+    /* --- CHAT SECTION --- */
+    .chat-container { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+    .channel-label { padding: 10px 20px; background: rgba(255,255,255,0.02); font-size: 0.7rem; font-weight: 800; color: var(--accent); border-bottom: 1px solid var(--border); }
+    
+    .chat-scroll { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
+    .msg-card { background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; max-width: 85%; border: 1px solid var(--border); }
+    .m-header { font-size: 0.7rem; font-weight: 800; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+    .badge { background: var(--accent); color: black; padding: 2px 5px; border-radius: 4px; font-size: 0.55rem; }
+
+    /* --- INPUT AREA --- */
+    .input-area { padding: 10px 15px; background: var(--panel); border-top: 1px solid var(--border); display: flex; gap: 10px; }
+    .input-area input { flex: 1; background: #000; border: 1px solid var(--border); color: white; padding: 12px 15px; border-radius: 25px; outline: none; }
+    .btn-send { background: var(--accent); border: none; width: 42px; height: 42px; border-radius: 50%; color: black; display: flex; align-items: center; justify-content: center; }
+
+    /* --- MOBILE DRAWERS --- */
+    .drawer { position: absolute; top: 0; right: -100%; width: 100%; height: 100%; background: var(--panel); z-index: 2000; transition: 0.3s; display: flex; flex-direction: column; }
+    .drawer.active { right: 0; }
+    .drawer-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
+
+    /* --- DIRECTORY & SEARCH --- */
+    .search-box { margin: 15px; padding: 12px; background: #000; border: 1px solid var(--border); border-radius: 10px; color: white; width: calc(100% - 30px); }
+    .contact-row { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.02); display: flex; justify-content: space-between; align-items: center; }
+    .c-actions { display: flex; gap: 12px; font-size: 1.1rem; color: var(--accent); }
+
+    /* --- PROFESSIONAL FOOTER --- */
+    footer { padding: 20px; background: #000; text-align: center; border-top: 1px solid var(--border); }
+    .f-text { font-size: 0.65rem; color: #475569; line-height: 1.5; }
+    .dev-name { color: var(--accent); font-weight: 700; display: block; margin-top: 5px; }
+  </style>
+</head>
+<body>
+
+  <nav class="menu-bar">
+    <div class="logo">SANCTUARY CONNECT</div>
+    <div class="nav-icons">
+      <i class="fa fa-user-plus" onclick="toggleDrawer('regDrawer')"></i>
+      <i class="fa fa-address-book" onclick="toggleDrawer('dirDrawer')"></i>
+    </div>
+  </nav>
+
+  <div class="chat-container">
+    <div class="mini-live">
+      <iframe src="https://www.youtube.com/embed/live_stream?channel=UC8pAnVToO8R_jS2M7OidG8A" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+
+    <div class="channel-label"># GENERAL-FELLOWSHIP</div>
+
+    <div class="chat-scroll" id="chatBox">
+      <div class="msg-card">
+        <div class="m-header" style="color:var(--accent)"><span class="badge">MINISTER</span> Pastor Sunday <i class="fa fa-check-circle"></i></div>
+        Welcome to the Fellowship Hub. Use the icons above to register or contact a minister.
+      </div>
+    </div>
+
+    <div id="regDrawer" class="drawer">
+      <div class="drawer-header"><h3>Member Registration</h3><i class="fa fa-times" onclick="toggleDrawer('regDrawer')"></i></div>
+      <div style="padding: 20px;">
+        <input type="text" id="regName" class="search-box" style="margin: 0 0 15px 0; width:100%;" placeholder="Full Name">
+        <input type="tel" id="regPhone" class="search-box" style="margin: 0 0 15px 0; width:100%;" placeholder="WhatsApp No (+234...)">
+        <select id="regRole" class="search-box" style="margin: 0 0 20px 0; width:100%;">
+          <option value="Member">Church Member</option>
+          <option value="Minister">Minister / Official</option>
+        </select>
+        <button class="btn-send" style="width: 100%; border-radius: 10px; color: black; font-weight: 800;" onclick="register()">JOIN DIRECTORY</button>
+      </div>
+    </div>
+
+    <div id="dirDrawer" class="drawer">
+      <div class="drawer-header"><h3>Global Directory</h3><i class="fa fa-times" onclick="toggleDrawer('dirDrawer')"></i></div>
+      <input type="text" id="search" class="search-box" placeholder="Search name or role..." onkeyup="searchDir()">
+      <div id="contactList" style="flex:1; overflow-y:auto;">
+        <div class="contact-row" data-s="pastor sunday minister">
+          <div><h4 style="color:var(--accent); font-size:0.85rem;"><span class="badge">MINISTER</span> Pastor Sunday</h4><p style="font-size:0.65rem; color:var(--text-dim)">Verified Official</p></div>
+          <div class="c-actions"><a href="https://wa.me/2340000000" style="color:inherit"><i class="fab fa-whatsapp"></i></a><a href="tel:2340000000" style="color:inherit"><i class="fa fa-phone"></i></a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="msgIn" placeholder="Type a message...">
+      <button class="btn-send" onclick="sendMsg()"><i class="fa fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="f-text">
+      &copy; 2025 RCCG POWER SANCTUARY AREA HQ
+      <span class="dev-name">System Architect: Oluwarotimi Sunday Temitope</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleDrawer(id) { document.getElementById(id).classList.toggle('active'); }
+
+    function register() {
+      const n = document.getElementById('regName').value;
+      const p = document.getElementById('regPhone').value;
+      const r = document.getElementById('regRole').value;
+      if(!n || !p) return alert("Fill all fields");
+      const isM = r === 'Minister';
+      document.getElementById('contactList').innerHTML += `
+        <div class="contact-row" data-s="${n.toLowerCase()} ${r.toLowerCase()}">
+          <div><h4 style="font-size:0.85rem;">${isM ? '<span class="badge">MINISTER</span> ' : ''}${n}</h4><p style="font-size:0.65rem; color:var(--text-dim)">${r}</p></div>
+          <div class="c-actions"><a href="https://wa.me/${p}" style="color:inherit"><i class="fab fa-whatsapp"></i></a><a href="tel:${p}" style="color:inherit"><i class="fa fa-phone"></i></a></div>
+        </div>`;
+      alert("Registration Successful!");
+      toggleDrawer('regDrawer');
+    }
+
+    function searchDir() {
+      const q = document.getElementById('search').value.toLowerCase();
+      document.querySelectorAll('.contact-row').forEach(row => {
+        row.style.display = row.getAttribute('data-s').includes(q) ? 'flex' : 'none';
+      });
+    }
+
+    function sendMsg() {
+      const i = document.getElementById('msgIn');
+      if(!i.value) return;
+      document.getElementById('chatBox').innerHTML += `
+        <div class="msg-card" style="align-self: flex-end; border-color: var(--accent); background: rgba(197, 160, 89, 0.1);">
+          <div class="m-header" style="justify-content: flex-end; color: white;">YOU</div>
+          <div style="font-size: 0.85rem;">${i.value}</div>
+        </div>`;
+      i.value = "";
+      document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+    }
+  </script>
+</body>
+</html>
