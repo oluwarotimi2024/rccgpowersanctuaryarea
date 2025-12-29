@@ -1,183 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard | Power Sanctuary</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --sidebar-bg: #1e1e2f; --gold: #ffd700; --text: #fff; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; background: #f4f7f6; }
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | Power Sanctuary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --nav-width: 260px; --primary: #050a18; --accent: #c5a059; }
+    body { font-family: 'Inter', sans-serif; margin: 0; display: flex; background: #f0f2f5; }
+    
+    /* Sidebar */
+    .sidebar { width: var(--nav-width); background: var(--primary); height: 100vh; color: white; position: fixed; }
+    .sidebar-header { padding: 30px; text-align: center; border-bottom: 1px solid #1a2238; }
+    .nav-links { list-style: none; padding: 20px; }
+    .nav-links li { padding: 15px; transition: 0.3s; cursor: pointer; border-radius: 8px; margin-bottom: 5px; }
+    .nav-links li:hover { background: var(--accent); color: var(--primary); }
+    .nav-links a { color: inherit; text-decoration: none; display: block; width: 100%; }
 
-        /* --- SIDEBAR --- */
-        .sidebar { width: 250px; background: var(--sidebar-bg); height: 100vh; position: fixed; color: var(--text); }
-        .sidebar h2 { text-align: center; color: var(--gold); padding: 20px; border-bottom: 1px solid #333; }
-        .sidebar-link { 
-            display: block; padding: 15px 25px; color: var(--text); 
-            text-decoration: none; cursor: pointer; transition: 0.3s;
-        }
-        .sidebar-link:hover { background: rgba(255, 215, 0, 0.1); color: var(--gold); }
-        .sidebar-link i { margin-right: 10px; width: 20px; }
-
-        /* --- CONTENT AREA --- */
-        .content { margin-left: 250px; padding: 40px; width: 100%; }
-        .page-section { display: none; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .active-section { display: block !important; } /* This forces the page to show */
-
-        h1 { color: var(--sidebar-bg); margin-top: 0; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #fafafa; }
-        
-        .btn { background: var(--sidebar-bg); color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-edit { background: var(--gold); color: #000; }
-        .btn-danger { background: #ff4d4d; color: white; }
-        .input-box { padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-right: 10px; flex: 1; }
-    </style>
+    /* Main Content */
+    .main-content { margin-left: var(--nav-width); flex: 1; padding: 40px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .stat-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    
+    /* Broadcast Box */
+    .broadcast-section { background: white; margin-top: 40px; padding: 30px; border-radius: 12px; }
+    textarea { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin: 15px 0; }
+    .btn-wa { background: #25D366; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    
+    /* Notification Bell */
+    .notif-badge { position: relative; font-size: 1.5rem; color: var(--primary); }
+    .badge { position: absolute; top: -5px; right: -5px; background: red; color: white; font-size: 0.7rem; padding: 3px 6px; border-radius: 50%; }
+  </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <h2>SANCTUARY</h2>
-    <a class="sidebar-link" onclick="openSection('prayers')"><i class="fa fa-hand-holding-heart"></i> User Prayers</a>
-    <a class="sidebar-link" onclick="openSection('members')"><i class="fa fa-users"></i> Member List</a>
-    <a class="sidebar-link" onclick="openSection('activities')"><i class="fa fa-calendar-alt"></i> Activities</a>
-    <a class="sidebar-link" onclick="openSection('gallery')"><i class="fa fa-image"></i> Gallery/Sermons</a>
-    <a href="login.html" class="sidebar-link" style="margin-top: 50px; color: #ff4d4d;"><i class="fa fa-sign-out-alt"></i> Logout</a>
-</div>
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h3>ADMIN PORTAL</h3>
+    <p style="font-size: 0.7rem; color: var(--accent);">Power Sanctuary HQ</p>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html"><i class="fa fa-home"></i> View Website</a></li>
+    <li><i class="fa fa-video"></i> Manage Live Stream</li>
+    <li><i class="fa fa-users"></i> Member Database</li>
+    <li><i class="fa fa-calendar"></i> Update Events</li>
+    <li><i class="fa fa-sign-out-alt"></i> Logout</li>
+  </ul>
+</aside>
 
-<div class="content">
-
-    <div id="prayers" class="page-section active-section">
-        <h1>User Prayer Requests</h1>
-        <table>
-            <thead><tr><th>Name</th><th>Request</th><th>Action</th></tr></thead>
-            <tbody id="prayerTable"></tbody>
-        </table>
+<main class="main-content">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h2>Executive Overview</h2>
+    <div class="notif-badge">
+      <i class="fa fa-bell"></i>
+      <span class="badge">3</span>
     </div>
+  </div>
 
-    <div id="members" class="page-section">
-        <h1>Registered Members</h1>
-        <table>
-            <thead><tr><th>Full Name</th><th>Phone</th><th>Action</th></tr></thead>
-            <tbody id="membersTable"></tbody>
-        </table>
-    </div>
+  <div class="stats-grid">
+    <div class="stat-card"><h4>New Members</h4><h2 style="color:var(--accent)">124</h2></div>
+    <div class="stat-card"><h4>Prayer Requests</h4><h2 style="color:var(--accent)">18</h2></div>
+    <div class="stat-card"><h4>Live Viewers</h4><h2 style="color:var(--accent)">450</h2></div>
+  </div>
 
-    <div id="activities" class="page-section">
-        <h1>Activities & Events</h1>
-        <div style="display: flex; margin-bottom: 20px;">
-            <input type="hidden" id="actIndex" value="">
-            <input type="text" id="actDay" class="input-box" placeholder="Day (e.g. Sunday)">
-            <input type="text" id="actTitle" class="input-box" placeholder="Service Title">
-            <button class="btn" id="saveActBtn" onclick="saveActivity()">Save Activity</button>
-        </div>
-        <table>
-            <thead><tr><th>Day</th><th>Service Title</th><th>Action</th></tr></thead>
-            <tbody id="activitiesTable"></tbody>
-        </table>
-    </div>
-
-    <div id="gallery" class="page-section">
-        <h1>Gallery & Sermons</h1>
-        <div style="display: flex; margin-bottom: 20px;">
-            <input type="text" id="mediaTitle" class="input-box" placeholder="Title/Caption">
-            <input type="text" id="mediaUrl" class="input-box" placeholder="Link (URL)">
-            <button class="btn" onclick="uploadMedia()">Upload</button>
-        </div>
-        <table>
-            <thead><tr><th>Title</th><th>Type</th><th>Action</th></tr></thead>
-            <tbody id="galleryTable"></tbody>
-        </table>
-    </div>
-
-</div>
+  <div class="broadcast-section">
+    <h3><i class="fab fa-whatsapp"></i> Broadcast to Congregation</h3>
+    <p>This will send a message to your WhatsApp group or contact list.</p>
+    <textarea id="waMessage" rows="4" placeholder="Enter message to broadcast... (e.g. Join us for Digging Deep today by 5:30 PM)"></textarea>
+    <button class="btn-wa" onclick="sendWhatsApp()">SEND TO WHATSAPP</button>
+  </div>
+</main>
 
 <script>
-    // --- THE FIX: MANUAL PAGE SWITCHING ---
-    function openSection(id) {
-        // 1. Hide all sections
-        const sections = document.getElementsByClassName('page-section');
-        for (let s of sections) {
-            s.classList.remove('active-section');
-        }
-        // 2. Show the one clicked
-        const target = document.getElementById(id);
-        if (target) {
-            target.classList.add('active-section');
-        }
-        // 3. Reload data
-        loadData();
-    }
-
-    // --- DATA MANAGEMENT ---
-    function loadData() {
-        // Prayers
-        const pList = JSON.parse(localStorage.getItem('church_prayers')) || [];
-        document.getElementById('prayerTable').innerHTML = pList.map((p, i) => 
-            `<tr><td>${p.name}</td><td>${p.message}</td><td><button class="btn btn-danger" onclick="del('church_prayers',${i})">Delete</button></td></tr>`).join('');
-
-        // Members
-        const mList = JSON.parse(localStorage.getItem('church_members_list')) || [];
-        document.getElementById('membersTable').innerHTML = mList.map((m, i) => 
-            `<tr><td>${m.fullName || m.fullname}</td><td>${m.phone}</td><td><button class="btn btn-danger" onclick="del('church_members_list',${i})">Delete</button></td></tr>`).join('');
-
-        // Activities
-        const aList = JSON.parse(localStorage.getItem('church_activities')) || [];
-        document.getElementById('activitiesTable').innerHTML = aList.map((a, i) => 
-            `<tr><td>${a.day}</td><td>${a.title}</td><td>
-                <button class="btn btn-edit" onclick="editAct(${i})">Edit</button>
-                <button class="btn btn-danger" onclick="del('church_activities',${i})">Delete</button>
-            </td></tr>`).join('');
-
-        // Gallery
-        const gList = JSON.parse(localStorage.getItem('church_gallery')) || [];
-        document.getElementById('galleryTable').innerHTML = gList.map((g, i) => 
-            `<tr><td>${g.name}</td><td>Photo</td><td><button class="btn btn-danger" onclick="del('church_gallery',${i})">Delete</button></td></tr>`).join('');
-    }
-
-    function del(key, index) {
-        if(confirm("Are you sure?")) {
-            let data = JSON.parse(localStorage.getItem(key));
-            data.splice(index, 1);
-            localStorage.setItem(key, JSON.stringify(data));
-            loadData();
-        }
-    }
-
-    function saveActivity() {
-        const day = document.getElementById('actDay').value;
-        const title = document.getElementById('actTitle').value;
-        const index = document.getElementById('actIndex').value;
-        let data = JSON.parse(localStorage.getItem('church_activities')) || [];
-
-        if(index === "") { data.push({day, title}); } 
-        else { data[index] = {day, title}; document.getElementById('actIndex').value = ""; }
-
-        localStorage.setItem('church_activities', JSON.stringify(data));
-        document.getElementById('actDay').value = ""; document.getElementById('actTitle').value = "";
-        loadData();
-    }
-
-    function editAct(i) {
-        const data = JSON.parse(localStorage.getItem('church_activities'));
-        document.getElementById('actDay').value = data[i].day;
-        document.getElementById('actTitle').value = data[i].title;
-        document.getElementById('actIndex').value = i;
-        document.getElementById('saveActBtn').innerText = "Update Now";
-    }
-
-    function uploadMedia() {
-        const name = document.getElementById('mediaTitle').value;
-        const url = document.getElementById('mediaUrl').value;
-        let data = JSON.parse(localStorage.getItem('church_gallery')) || [];
-        data.push({name, url});
-        localStorage.setItem('church_gallery', JSON.stringify(data));
-        document.getElementById('mediaTitle').value = ""; document.getElementById('mediaUrl').value = "";
-        loadData();
-    }
-
-    // Initial load
-    window.onload = loadData;
+  function sendWhatsApp() {
+    const msg = document.getElementById('waMessage').value;
+    const phone = "2349024301199"; // Your number
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
 </script>
 
 </body>
