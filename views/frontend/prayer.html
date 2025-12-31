@@ -19,7 +19,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background-color: var(--bg); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
 
-    /* --- NOTIFICATION SYSTEM --- */
     .top-announcement {
       background: var(--accent);
       color: var(--primary);
@@ -32,7 +31,6 @@
       z-index: 2000;
     }
 
-    /* --- NAVIGATION --- */
     nav {
       background: var(--primary);
       padding: 20px 8%;
@@ -46,7 +44,6 @@
     .nav-menu a { color: white; text-decoration: none; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
     .nav-menu a:hover { color: var(--accent); }
 
-    /* --- PRAYER CONTENT --- */
     .prayer-container {
       max-width: 900px;
       margin: 60px auto;
@@ -99,7 +96,6 @@
     }
     .btn-submit:hover { background: var(--accent); color: var(--primary); transform: translateY(-2px); }
 
-    /* Toast Notification Style */
     #toast-notification {
       position: fixed; bottom: 20px; right: 20px; background: white; padding: 20px;
       border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
@@ -109,15 +105,10 @@
     }
     #toast-notification.show { transform: translateX(0); }
 
-    footer { 
-      background: #1e1e2f; 
-      color: #aaa; 
-      text-align: center; 
-      padding: 40px 20px; 
-      margin-top: auto; 
-    }
-    .dev-credit { color: white; margin-top: 10px; font-size: 0.9rem; }
-    .dev-name { color: var(--accent); font-weight: 600; }
+    footer { background: #1e1e2f; color: #aaa; text-align: center; padding: 40px 20px; margin-top: auto; }
+    .bottom-bar { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px; }
+    .dev-tag { font-size: 0.75rem; color: #64748b; margin-top: 10px;}
+    .dev-tag b { color: var(--accent); }
   </style>
 </head>
 <body>
@@ -182,73 +173,41 @@
     </div>
 </div>
 
-<<footer>
-  <div class="footer-grid">
-    <div class="footer-col">
-      <h4>Our Vision</h4>
-      <p>Manifesting the liberty of Christ through the power of the Holy Spirit to transform our community.</p>
-      <div class="social-links">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-        <a href="https://wa.me/2349024301199"><i class="fab fa-whatsapp"></i></a>
-      </div>
-    </div>
-
-    <div class="footer-col">
-      <h4>Contact Us</h4>
-      <ul>
-        <li><i class="fa fa-map-marker-alt" style="color:var(--accent)"></i> Oke Ureje, Ado-Ekiti</li>
-        <li><i class="fa fa-phone" style="color:var(--accent)"></i> +234 902 430 1199</li>
-        <li><i class="fa fa-envelope" style="color:var(--accent)"></i> info@powersanctuary.org</li>
-      </ul>
-    </div>
-
-    <div class="footer-col">
-      <h4>Newsletter</h4>
-      <p style="font-size: 0.8rem">Subscribe for spiritual updates.</p>
-      <div style="display: flex; margin-top: 10px;">
-        <input type="email" placeholder="Email" style="background: rgba(255,255,255,0.05); border: 1px solid #334155; padding: 10px; color: white; width: 100%; border-radius: 4px 0 0 4px; outline: none;">
-        <button style="background: var(--accent); border: none; padding: 0 15px; border-radius: 0 4px 4px 0; cursor: pointer;"><i class="fa fa-paper-plane"></i></button>
-      </div>
-    </div>
-  </div>
-
+<footer>
   <div class="bottom-bar">
-    <div class="copyright">
-      &copy; 2025 RCCG Power Sanctuary Area HQ.
-    </div>
-    <div class="dev-tag">
-      System developed: <b>Oluwarotimi Sunday Temitope</b>
-    </div>
+    <div class="copyright">&copy; 2025 RCCG Power Sanctuary Area HQ.</div>
+    <div class="dev-tag">System developed: <b>Oluwarotimi Sunday Temitope</b></div>
   </div>
 </footer>
 
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
 <script>
-  // 1. VISITOR PULSE: Tracks active users on Admin Dashboard
+  // 1. FIREBASE CONFIG
+  const firebaseConfig = {
+    apiKey: "AIzaSyDew-adannENogn9S01WB5QY10Q11eJAy0",
+    authDomain: "rccgpowersanctuaryarea.firebaseapp.com",
+    projectId: "rccgpowersanctuaryarea",
+    storageBucket: "rccgpowersanctuaryarea.firebasestorage.app",
+    messagingSenderId: "189635943022",
+    appId: "1:189635943022:web:daa6cace786eb3de9a247f"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 2. VISITOR PULSE (Cloud)
   function sendPulse() {
-      if (!sessionStorage.getItem('visitor_id')) {
-          sessionStorage.setItem('visitor_id', 'user_' + Math.random().toString(36).substr(2, 9));
-      }
-      const vID = sessionStorage.getItem('visitor_id');
-      let visitorData = JSON.parse(localStorage.getItem('online_visitors')) || {};
-      visitorData[vID] = Date.now(); 
-      localStorage.setItem('online_visitors', JSON.stringify(visitorData));
+      let sessionId = sessionStorage.getItem('ps_user_id') || 'User-' + Math.floor(Math.random() * 10000);
+      sessionStorage.setItem('ps_user_id', sessionId);
+      db.collection("online_visitors").doc(sessionId).set({ lastSeen: Date.now() }, { merge: true });
   }
-  setInterval(sendPulse, 5000);
+  setInterval(sendPulse, 8000);
   sendPulse();
 
-  // 2. BANNER SYNC: Syncs top announcement from Admin Dashboard
-  function syncAnnouncement() {
-      const banner = document.getElementById('prayerBanner');
-      const msg = localStorage.getItem('live_announcement');
-      if (msg && banner) {
-          banner.innerHTML = `<i class="fa fa-bullhorn"></i> ${msg}`;
-      }
-  }
-  setInterval(syncAnnouncement, 3000);
-
-  // 3. PRAYER SUBMISSION: Sends data to Admin Dashboard 
-  document.getElementById('prayerForm').addEventListener('submit', function(e) {
+  // 3. PRAYER SUBMISSION (Cloud)
+  document.getElementById('prayerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const btn = document.getElementById('submitBtn');
@@ -258,49 +217,32 @@
     const nameVal = document.getElementById('pName').value || "Anonymous";
     const urgencyVal = document.getElementById('pUrgency').value;
     const messageVal = document.getElementById('pMessage').value;
-    const timeVal = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString();
 
-    // Data for "Live Alerts" feed
-    const alertData = {
-      type: 'Prayer',
-      name: nameVal,
-      message: `[${urgencyVal}] ${messageVal}`,
-      time: new Date().toLocaleTimeString()
-    };
+    try {
+      // Send to the shared Cloud Database
+      await db.collection("church_prayers").add({
+        name: nameVal,
+        request: `[${urgencyVal}] ${messageVal}`,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
-    // Data for the permanent "Prayer Inbox" table
-    const fullPrayerEntry = {
-      name: nameVal,
-      request: `(${urgencyVal}) ${messageVal}`,
-      date: timeVal
-    };
+      // Feedback for User
+      document.getElementById('toast-notification').classList.add('show');
+      this.reset();
+      
+      setTimeout(() => {
+          document.getElementById('toast-notification').classList.remove('show');
+      }, 5000);
 
-    // Push to church_alerts (for the sidebar notification feed)
-    let alerts = JSON.parse(localStorage.getItem('church_alerts')) || [];
-    alerts.push(alertData);
-    localStorage.setItem('church_alerts', JSON.stringify(alerts));
-
-    // Push to church_prayers (for the dashboard table)
-    let prayers = JSON.parse(localStorage.getItem('church_prayers')) || [];
-    prayers.unshift(fullPrayerEntry); // Add to top
-    localStorage.setItem('church_prayers', JSON.stringify(prayers));
-
-    // Show visual feedback
-    setTimeout(() => {
-        document.getElementById('toast-notification').classList.add('show');
-        btn.innerText = "SUBMIT PRAYER REQUEST";
-        btn.disabled = false;
-        this.reset();
-        
-        setTimeout(() => {
-            document.getElementById('toast-notification').classList.remove('show');
-        }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error("Error: ", error);
+      alert("Submission failed. Check your connection.");
+    } finally {
+      btn.innerText = "SUBMIT PRAYER REQUEST";
+      btn.disabled = false;
+    }
   });
-
-  window.onload = syncAnnouncement;
 </script>
 
 </body>
-</html>
-
+  </html>
