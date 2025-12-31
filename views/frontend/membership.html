@@ -12,6 +12,7 @@
       --primary: #050a18; 
       --accent: #c5a059;  
       --bg: #f4f7fa;
+      --footer-bg: #03070f;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background-color: var(--bg); display: flex; flex-direction: column; min-height: 100vh; }
@@ -31,8 +32,17 @@
     .btn-join { background: var(--primary); color: var(--accent); width: 100%; padding: 15px; border: none; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
     .btn-join:hover { background: var(--accent); color: var(--primary); }
 
-    #success-toast { position: fixed; bottom: 20px; right: 20px; background: #22c55e; color: white; padding: 15px 25px; border-radius: 10px; display: none; animation: slideIn 0.5s ease; }
+    #success-toast { position: fixed; bottom: 20px; right: 20px; background: #22c55e; color: white; padding: 15px 25px; border-radius: 10px; display: none; animation: slideIn 0.5s ease; z-index: 3000; }
     @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+    /* Footer Styles to match Index */
+    footer { background: var(--footer-bg); color: #ffffff; padding: 60px 8% 30px; margin-top: 40px; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px; }
+    .footer-col h4 { color: var(--accent); font-family: 'Playfair Display', serif; margin-bottom: 20px; }
+    .footer-col p, .footer-col li { color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px; list-style: none; }
+    .social-links { display: flex; gap: 12px; margin-top: 15px; }
+    .social-links a { color: var(--accent); text-decoration: none; font-size: 1.2rem; margin-right: 10px; }
+    .bottom-bar { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px; display: flex; justify-content: space-between; font-size: 0.75rem; color: #64748b; }
   </style>
 </head>
 <body>
@@ -73,8 +83,7 @@
 </div>
 
 <div id="success-toast">Welcome! Application sent to HQ.</div>
-</section>
-  
+
 <footer>
   <div class="footer-grid">
     <div class="footer-col">
@@ -90,78 +99,91 @@
     <div class="footer-col">
       <h4>Contact Us</h4>
       <ul>
-        <li><i class="fa fa-map-marker-alt" style="color:var(--accent)"></i> Oke Ureje, Ado-Ekiti</li>
-        <li><i class="fa fa-phone" style="color:var(--accent)"></i> +234 902 430 1199</li>
-        <li><i class="fa fa-envelope" style="color:var(--accent)"></i> info@powersanctuary.org</li>
+        <li><i class="fa fa-map-marker-alt"></i> Oke Ureje, Ado-Ekiti</li>
+        <li><i class="fa fa-phone"></i> +234 902 430 1199</li>
       </ul>
-    </div>
-
-    <div class="footer-col">
-      <h4>Newsletter</h4>
-      <p style="font-size: 0.8rem">Subscribe for spiritual updates.</p>
-      <div style="display: flex; margin-top: 10px;">
-        <input type="email" placeholder="Email" style="background: rgba(255,255,255,0.05); border: 1px solid #334155; padding: 10px; color: white; width: 100%; border-radius: 4px 0 0 4px; outline: none;">
-        <button style="background: var(--accent); border: none; padding: 0 15px; border-radius: 0 4px 4px 0; cursor: pointer;"><i class="fa fa-paper-plane"></i></button>
-      </div>
     </div>
   </div>
 
   <div class="bottom-bar">
-    <div class="copyright">
-      &copy; 2025 RCCG Power Sanctuary Area HQ.
-    </div>
-    <div class="dev-tag">
-      System developed: <b>Oluwarotimi Sunday Temitope</b>
-    </div>
+    <div class="copyright">&copy; 2025 RCCG Power Sanctuary Area HQ.</div>
+    <div class="dev-tag">System developed: <b>Oluwarotimi Sunday Temitope</b></div>
   </div>
 </footer>
 
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
 <script>
-  document.getElementById('membershipForm').addEventListener('submit', function(e) {
+  // 1. FIREBASE CONFIG
+  const firebaseConfig = {
+    apiKey: "AIzaSyDew-adannENogn9S01WB5QY10Q11eJAy0",
+    authDomain: "rccgpowersanctuaryarea.firebaseapp.com",
+    projectId: "rccgpowersanctuaryarea",
+    storageBucket: "rccgpowersanctuaryarea.firebasestorage.app",
+    messagingSenderId: "189635943022",
+    appId: "1:189635943022:web:daa6cace786eb3de9a247f"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 2. CLOUD PULSE (Tracks active members)
+  function sendPulse() {
+      let sessionId = sessionStorage.getItem('ps_user_id') || 'User-' + Math.floor(Math.random() * 10000);
+      sessionStorage.setItem('ps_user_id', sessionId);
+      db.collection("online_visitors").doc(sessionId).set({ lastSeen: Date.now() }, { merge: true });
+  }
+  setInterval(sendPulse, 8000);
+  sendPulse();
+
+  // 3. MEMBERSHIP CLOUD SUBMISSION
+  document.getElementById('membershipForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const btn = document.getElementById('submitBtn');
     btn.innerText = "PROCESSING...";
     btn.disabled = true;
 
-    // Prepare data for the Admin Dashboard Registry
-    const newMember = {
-      fullName: document.getElementById('mName').value,
-      phone: document.getElementById('mPhone').value,
-      dept: document.getElementById('mDept').value,
-      date: new Date().toLocaleDateString()
-    };
+    const nameVal = document.getElementById('mName').value;
+    const phoneVal = document.getElementById('mPhone').value;
+    const deptVal = document.getElementById('mDept').value;
 
-    // 1. Save to the main membership list for the Dashboard table
-    let memberList = JSON.parse(localStorage.getItem('church_members')) || [];
-    memberList.unshift(newMember);
-    localStorage.setItem('church_members', JSON.stringify(memberList));
+    try {
+      // Send to Permanent Member List
+      await db.collection("church_members").add({
+        fullName: nameVal,
+        phone: phoneVal,
+        department: deptVal,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
-    // 2. Also send a notification alert to the dashboard sidebar
-    let alerts = JSON.parse(localStorage.getItem('church_alerts')) || [];
-    alerts.push({
-      type: 'Member',
-      name: newMember.fullName,
-      message: `New interest in ${newMember.dept} department`,
-      time: new Date().toLocaleTimeString()
-    });
-    localStorage.setItem('church_alerts', JSON.stringify(alerts));
+      // Send a Live Alert to Dashboard Sidebar
+      await db.collection("church_alerts").add({
+        type: 'Member',
+        name: nameVal,
+        message: `New interest in ${deptVal}`,
+        time: new Date().toLocaleTimeString(),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
-    // Feedback
-    setTimeout(() => {
+      // Show Success
       document.getElementById('success-toast').style.display = 'block';
-      btn.innerText = "SUBMIT APPLICATION";
-      btn.disabled = false;
       this.reset();
       
       setTimeout(() => {
         document.getElementById('success-toast').style.display = 'none';
       }, 4000);
-    }, 1500);
+
+    } catch (error) {
+      console.error("Error: ", error);
+      alert("Registration failed. Please check your internet.");
+    } finally {
+      btn.innerText = "SUBMIT APPLICATION";
+      btn.disabled = false;
+    }
   });
 </script>
 
 </body>
-</html>
-
-
+                                                </html>
