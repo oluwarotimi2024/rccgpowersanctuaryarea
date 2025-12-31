@@ -18,15 +18,11 @@
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-    /* --- PROFESSIONAL TOP MENU BAR --- */
+    /* --- TOP MENU BAR --- */
     .top-nav {
-      background: var(--card);
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      z-index: 1000;
+      background: var(--card); padding: 15px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border); z-index: 1000;
     }
     .logo { font-weight: 800; color: var(--accent); font-size: 0.9rem; letter-spacing: 1px; }
     .nav-links { display: flex; gap: 20px; }
@@ -41,19 +37,14 @@
     .now-playing h2 { font-size: 1rem; color: var(--accent); }
     .now-playing p { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
 
-    /* --- GOSPEL CHANNELS LIST (FOOTER SECTION) --- */
+    /* --- CHANNELS LIST --- */
     .channel-section { background: var(--bg); flex: 1; overflow-y: auto; padding-bottom: 20px; }
     .section-label { padding: 20px; font-size: 0.7rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 2px; }
     
     .channel-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--border); }
     .channel-card { 
-      background: var(--card); 
-      padding: 15px 20px; 
-      display: flex; 
-      align-items: center; 
-      gap: 15px; 
-      cursor: pointer; 
-      transition: 0.3s;
+      background: var(--card); padding: 15px 20px; 
+      display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;
     }
     .channel-card:active { background: rgba(197, 160, 89, 0.1); }
     .channel-card.active { border-left: 4px solid var(--accent); background: rgba(197, 160, 89, 0.05); }
@@ -62,7 +53,6 @@
     .ch-info h4 { font-size: 0.9rem; margin-bottom: 2px; }
     .ch-info p { font-size: 0.7rem; color: #64748b; }
 
-    /* --- BOTTOM PROFESSIONAL FOOTER --- */
     footer { padding: 20px; background: #000; text-align: center; border-top: 1px solid var(--border); }
     .architect-line { font-size: 0.7rem; color: #475569; }
     .architect-name { color: var(--accent); font-weight: 700; }
@@ -75,44 +65,38 @@
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="live.html" class="active">Live</a>
-      <a href="community.html">Chat</a>
+      <a href="prayer.html">Prayer</a>
       <a href="giving.html">Giving</a>
     </div>
   </nav>
 
   <main class="broadcast-container">
-    <div class="main-screen">
-      <iframe id="tvFrame" src="https://www.youtube.com/embed/live_stream?channel=UC8pAnVToO8R_jS2M7OidG8A" 
-      style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
+    <div class="main-screen" id="player-area">
+      <iframe id="tvFrame" src="" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
     </div>
 
     <div class="now-playing">
-      <h2 id="currentChannelName">Power Sanctuary Live</h2>
-      <p id="currentStatus">● Currently Broadcasting</p>
+      <h2 id="currentChannelName">Loading Stream...</h2>
+      <p id="currentStatus">● Live Connection Established</p>
     </div>
 
     <section class="channel-section">
       <div class="section-label">Select Gospel Channel</div>
       <div class="channel-grid">
         
-        <div class="channel-card active" onclick="switchChannel('Power Sanctuary', 'UC8pAnVToO8R_jS2M7OidG8A', this)">
+        <div id="main-ps-channel" class="channel-card active" onclick="loadCloudStream()">
           <div class="ch-thumb">PS HQ</div>
-          <div class="ch-info"><h4>Power Sanctuary TV</h4><p>Main Area Broadcast</p></div>
+          <div class="ch-info"><h4>Power Sanctuary TV</h4><p>Main Church Broadcast</p></div>
         </div>
 
-        <div class="channel-card" onclick="switchChannel('Dove TV', 'UCmE-u0n8R2m6S_n2mY0n1mQ', this)">
+        <div class="channel-card" onclick="switchChannel('Dove TV', 'UCmE-u0n8R2m6S_n2mY0n1mQ', this, true)">
           <div class="ch-thumb">DOVE</div>
           <div class="ch-info"><h4>RCCG Dove TV</h4><p>Redemption Camp Live</p></div>
         </div>
 
-        <div class="channel-card" onclick="switchChannel('Dunamis TV', 'UC70fLq48uXqDshfTndB5U2w', this)">
+        <div class="channel-card" onclick="switchChannel('Dunamis TV', 'UC70fLq48uXqDshfTndB5U2w', this, true)">
           <div class="ch-thumb">DTRD</div>
           <div class="ch-info"><h4>Dunamis TV</h4><p>Gospel Highway</p></div>
-        </div>
-
-        <div class="channel-card" onclick="switchChannel('Hillsong Channel', 'UCp47p0A1L_wQ78z9X6zYw9w', this)">
-          <div class="ch-thumb">HILL</div>
-          <div class="ch-info"><h4>Hillsong Worship</h4><p>Global Praise 24/7</p></div>
         </div>
 
       </div>
@@ -124,23 +108,58 @@
     <p class="architect-line">Designed by <span class="architect-name">Oluwarotimi Sunday Temitope</span></p>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
   <script>
-    function switchChannel(name, channelId, element) {
-      // Update Video
+    const firebaseConfig = {
+      apiKey: "AIzaSyDew-adannENogn9S01WB5QY10Q11eJAy0",
+      authDomain: "rccgpowersanctuaryarea.firebaseapp.com",
+      projectId: "rccgpowersanctuaryarea",
+      storageBucket: "rccgpowersanctuaryarea.firebasestorage.app",
+      messagingSenderId: "189635943022",
+      appId: "1:189635943022:web:daa6cace786eb3de9a247f"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let currentCloudID = "";
+
+    // LISTEN FOR LIVE UPDATES FROM DASHBOARD
+    db.collection("church_settings").doc("stream").onSnapshot(doc => {
+        if (doc.exists) {
+            currentCloudID = doc.data().youtubeId;
+            // Only update iframe if Power Sanctuary channel is active
+            if(document.getElementById('main-ps-channel').classList.contains('active')) {
+                loadCloudStream();
+            }
+        }
+    });
+
+    function loadCloudStream() {
+        const iframe = document.getElementById('tvFrame');
+        // Check if the ID is a full channel ID or a specific Video ID
+        const src = currentCloudID.startsWith('UC') 
+            ? `https://www.youtube.com/embed/live_stream?channel=${currentCloudID}&autoplay=1`
+            : `https://www.youtube.com/embed/${currentCloudID}?autoplay=1`;
+        
+        iframe.src = src;
+        document.getElementById('currentChannelName').innerText = "Power Sanctuary Live";
+        document.querySelectorAll('.channel-card').forEach(c => c.classList.remove('active'));
+        document.getElementById('main-ps-channel').classList.add('active');
+    }
+
+    function switchChannel(name, id, element, isChannelID) {
       const iframe = document.getElementById('tvFrame');
-      iframe.src = `https://www.youtube.com/embed/live_stream?channel=${channelId}`;
+      iframe.src = isChannelID 
+        ? `https://www.youtube.com/embed/live_stream?channel=${id}&autoplay=1`
+        : `https://www.youtube.com/embed/${id}?autoplay=1`;
       
-      // Update UI Text
       document.getElementById('currentChannelName').innerText = name;
-      
-      // Update Active State
       document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('active'));
       element.classList.add('active');
-      
-      // Scroll to top of video
-      window.scrollTo({top: 0, behavior: 'smooth'});
     }
   </script>
-
 </body>
-</html>
+            </html>
