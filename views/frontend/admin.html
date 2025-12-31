@@ -15,18 +15,12 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: var(--primary); color: white; min-height: 100vh; overflow-x: hidden; }
 
-    #login-view {
-      height: 100vh; display: flex; justify-content: center; align-items: center;
-      background: linear-gradient(rgba(5,10,24,0.9), rgba(5,10,24,0.9)), url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1000&q=80');
-      background-size: cover;
-    }
-    .login-card {
-      background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
-      padding: 40px; border-radius: 20px; border: 1px solid rgba(197, 160, 89, 0.3);
-      width: 100%; max-width: 400px; text-align: center;
-    }
+    /* Login Screen */
+    #login-view { height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(rgba(5,10,24,0.9), rgba(5,10,24,0.9)), url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=1000&q=80'); background-size: cover; }
+    .login-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 40px; border-radius: 20px; border: 1px solid rgba(197, 160, 89, 0.3); width: 100%; max-width: 400px; text-align: center; }
     input, select, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; }
 
+    /* Dashboard Layout */
     #dashboard-view { display: none; background: var(--bg); color: #333; min-height: 100vh; }
     .sidebar { width: var(--sidebar-w); background: var(--primary); color: white; height: 100vh; position: fixed; padding: 20px; overflow-y: auto; }
     .nav-item { padding: 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #94a3b8; transition: 0.3s; margin-bottom: 5px; }
@@ -35,107 +29,98 @@
     .section { display: none; }
     .section.active { display: block; }
     
+    /* UI Components */
     .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
     .stat-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid var(--accent); }
-    .stat-card h4 { font-size: 0.7rem; text-transform: uppercase; color: #64748b; }
-    
     .panel { background: white; padding: 25px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .panel h3 { margin-bottom: 15px; font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .btn-push { background: var(--primary); color: var(--accent); padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; width: 100%; transition: 0.3s; margin-top: 10px; }
+    .btn-push:disabled { opacity: 0.5; cursor: not-allowed; }
     
-    table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; padding: 12px; background: #f1f5f9; font-size: 0.75rem; }
+    /* Upload Box */
+    .upload-zone { border: 2px dashed #ddd; padding: 20px; text-align: center; border-radius: 12px; margin-bottom: 15px; transition: 0.3s; cursor: pointer; }
+    .upload-zone:hover { border-color: var(--accent); background: #fcf9f2; }
+    .divider { text-align: center; margin: 15px 0; color: #999; font-size: 0.8rem; position: relative; }
+    .divider::before, .divider::after { content: ""; position: absolute; top: 50%; width: 40%; height: 1px; background: #eee; }
+    .divider::before { left: 0; } .divider::after { right: 0; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th { text-align: left; padding: 12px; background: #f8fafc; font-size: 0.75rem; }
     td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.85rem; }
-    
-    .btn-push { background: var(--primary); color: var(--accent); padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; width: 100%; transition: 0.3s; }
-    .btn-push:hover { opacity: 0.9; transform: scale(0.98); }
-    .btn-danger { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 0.8rem; }
-    
-    /* Upload Styles */
-    .file-input-wrapper { border: 2px dashed #ddd; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 15px; cursor: pointer; }
-    .file-input-wrapper:hover { border-color: var(--accent); }
-    #upload-status { font-size: 0.8rem; color: var(--primary); margin-top: 5px; font-weight: bold; }
+    .action-btn { padding: 6px 10px; border-radius: 6px; text-decoration: none; font-size: 0.75rem; font-weight: bold; margin-right: 5px; cursor: pointer; border: none; }
+    .dl-btn { background: #e0f2fe; color: #0369a1; }
+    .del-btn { background: #fee2e2; color: #dc2626; }
   </style>
 </head>
 <body>
 
   <div id="login-view">
     <div class="login-card">
-      <img src="https://upload.wikimedia.org/wikipedia/en/b/ba/RCCG_Logo.png" width="60" style="margin-bottom: 20px;">
-      <h2 style="color: var(--accent); margin-bottom: 10px;">Executive Login</h2>
+      <h2 style="color: var(--accent); margin-bottom: 20px;">Executive Access</h2>
       <input type="email" id="adminEmail" placeholder="Email Address">
       <input type="password" id="adminPass" placeholder="Password">
-      <button class="btn-push" onclick="attemptLogin()">AUTHORIZE ACCESS</button>
+      <button class="btn-push" onclick="attemptLogin()">AUTHORIZE</button>
     </div>
   </div>
 
   <div id="dashboard-view">
     <aside class="sidebar">
-      <h2 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 30px;">PS ADMIN</h2>
-      <div class="nav-item active" onclick="showSection('broadcast')"><i class="fa fa-chart-line"></i> <span>Analytics</span></div>
-      <div class="nav-item" onclick="showSection('livestream')"><i class="fa fa-video"></i> <span>Live Stream</span></div>
-      <div class="nav-item" onclick="showSection('prayers')"><i class="fa fa-hands-praying"></i> <span>Prayer Inbox</span></div>
-      <div class="nav-item" onclick="showSection('members')"><i class="fa fa-users"></i> <span>Membership</span></div>
-      <div class="nav-item" onclick="showSection('gallery')"><i class="fa fa-image"></i> <span>Gallery Feed</span></div>
-      <div class="nav-item" onclick="showSection('events')"><i class="fa fa-calendar-day"></i> <span>Events</span></div>
-      <div class="nav-item" style="margin-top: 30px; color: var(--danger);" onclick="logout()"><i class="fa fa-sign-out-alt"></i> <span>Logout</span></div>
+      <h2 style="color: var(--accent); margin-bottom: 30px;">PS ADMIN</h2>
+      <div class="nav-item active" onclick="showSection('broadcast')"><i class="fa fa-chart-line"></i> Analytics</div>
+      <div class="nav-item" onclick="showSection('gallery')"><i class="fa fa-image"></i> Gallery & Media</div>
+      <div class="nav-item" onclick="showSection('livestream')"><i class="fa fa-video"></i> Live Stream</div>
+      <div class="nav-item" onclick="showSection('prayers')"><i class="fa fa-hands-praying"></i> Prayers</div>
+      <div class="nav-item" onclick="logout()" style="color:var(--danger); margin-top:20px;"><i class="fa fa-sign-out-alt"></i> Logout</div>
     </aside>
 
     <main class="main-content">
       
       <div id="broadcast" class="section active">
-        <h2>HQ Command Center</h2>
+        <h2>System Overview</h2>
         <div class="stat-grid">
-            <div class="stat-card"><h4>Active Now</h4><h2 id="active-count">0</h2></div>
-            <div class="stat-card"><h4>Prayers</h4><h2 id="pray-count-stat">0</h2></div>
-            <div class="stat-card"><h4>Members</h4><h2 id="mem-count-stat">0</h2></div>
-            <div class="stat-card"><h4>Photos</h4><h2 id="gal-count-stat">0</h2></div>
+            <div class="stat-card"><h4>Active</h4><h2 id="active-count">0</h2></div>
+            <div class="stat-card"><h4>Gallery</h4><h2 id="gal-count-stat">0</h2></div>
         </div>
       </div>
 
       <div id="gallery" class="section">
-        <h2>Gallery Manager</h2>
+        <h2>Media Manager</h2>
         <div class="panel">
-          <h3>Upload Photo from Device</h3>
-          <div class="file-input-wrapper" onclick="document.getElementById('fileInput').click()">
-            <i class="fa fa-cloud-upload-alt" style="font-size: 2rem; color: #ccc;"></i>
-            <p>Click to select image from phone/gallery</p>
-            <input type="file" id="fileInput" hidden accept="image/*" onchange="uploadToImgBB(this)">
-            <div id="upload-status"></div>
+          <h3>Option 1: Upload from Device (ImgBB)</h3>
+          <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+            <i class="fa fa-file-image" style="font-size: 2rem; color: #ccc;"></i>
+            <p id="up-text">Click to pick photo from Phone/PC</p>
+            <input type="file" id="fileInput" hidden accept="image/*" onchange="handleDeviceUpload(this)">
           </div>
-          <input type="text" id="imgCap" placeholder="Enter Photo Caption">
-          <input type="hidden" id="uploadedUrl">
-          <button class="btn-push" id="pubBtn" onclick="saveToFirebase()" disabled>PUBLISH TO WEBSITE</button>
+
+          <div class="divider">OR</div>
+
+          <h3>Option 2: Google Drive / Direct Link</h3>
+          <input type="text" id="manualUrl" placeholder="Paste Google Drive or Web Link">
+          
+          <input type="text" id="imgCap" placeholder="Service / Event Name" style="background:white; color:#333; border: 1px solid #ddd;">
+          <button class="btn-push" id="pubBtn" onclick="publishMedia()">PUBLISH TO GALLERY</button>
         </div>
-        <div class="panel"><table><tbody id="gallery-list-table"></tbody></table></div>
+
+        <div class="panel">
+          <h3>Live Media Feed</h3>
+          <table>
+            <thead><tr><th>Preview</th><th>Caption</th><th>Actions</th></tr></thead>
+            <tbody id="gallery-list-table"></tbody>
+          </table>
+        </div>
       </div>
 
       <div id="livestream" class="section">
-        <h2>Live Stream Control</h2>
+        <h2>Stream Control</h2>
         <div class="panel">
-            <input type="text" id="ytId" placeholder="YouTube Video ID">
-            <button class="btn-push" onclick="updateLive()">UPDATE BROADCAST</button>
+          <input type="text" id="ytId" placeholder="YouTube Video ID">
+          <button class="btn-push" onclick="updateLive()">Go Live</button>
         </div>
       </div>
 
       <div id="prayers" class="section">
-        <h2>Prayer Inbox</h2>
+        <h2>Prayers</h2>
         <div class="panel"><table id="prayer-table"></table></div>
-      </div>
-
-      <div id="members" class="section">
-        <h2>Membership Registry</h2>
-        <div class="panel"><table id="member-table"></table></div>
-      </div>
-
-      <div id="events" class="section">
-        <h2>Special Events</h2>
-        <div class="panel">
-            <input type="text" id="evTitle" placeholder="Program Title">
-            <input type="text" id="evFlyer" placeholder="Flyer Link">
-            <input type="date" id="evDate">
-            <input type="text" id="evTime" placeholder="Start Time">
-            <button class="btn-push" onclick="updateEvent()">UPDATE COUNTDOWN</button>
-        </div>
       </div>
 
     </main>
@@ -153,76 +138,75 @@
       messagingSenderId: "189635943022",
       appId: "1:189635943022:web:daa6cace786eb3de9a247f"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // --- NEW: UPLOAD FROM DEVICE LOGIC ---
-    async function uploadToImgBB(input) {
-      const status = document.getElementById('upload-status');
-      const pubBtn = document.getElementById('pubBtn');
-      if (!input.files[0]) return;
+    let autoDetectedUrl = "";
 
-      status.innerText = "⏳ Uploading to cloud... please wait";
+    // DEVICE UPLOAD LOGIC
+    async function handleDeviceUpload(input) {
+      if(!input.files[0]) return;
+      const text = document.getElementById('up-text');
+      text.innerText = "⏳ Uploading to Cloud...";
       
       const formData = new FormData();
       formData.append("image", input.files[0]);
 
       try {
-        // Using a free API key for ImgBB
         const res = await fetch("https://api.imgbb.com/1/upload?key=67675f9175f82243d964726d97f5f922", {
-          method: "POST",
-          body: formData
+          method: "POST", body: formData
         });
         const data = await res.json();
-        
         if(data.success) {
-          document.getElementById('uploadedUrl').value = data.data.url;
-          status.innerHTML = "✅ Uploaded Ready!";
-          status.style.color = "#22c55e";
-          pubBtn.disabled = false;
+          autoDetectedUrl = data.data.url;
+          text.innerText = "✅ File Ready!";
+          text.style.color = "#22c55e";
         }
-      } catch (err) {
-        status.innerText = "❌ Upload failed. Try again.";
-        console.error(err);
-      }
+      } catch (e) { alert("Upload failed"); }
     }
 
-    async function saveToFirebase() {
-      const url = document.getElementById('uploadedUrl').value;
+    async function publishMedia() {
+      const manual = document.getElementById('manualUrl').value;
+      const finalUrl = manual || autoDetectedUrl;
       const cap = document.getElementById('imgCap').value || "Power Sanctuary Update";
-      
+
+      if(!finalUrl) return alert("Please upload a file or paste a link");
+
       await db.collection("church_gallery").add({
-        url: url,
+        url: finalUrl,
         cap: cap,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
-      
-      alert("Photo is now live on the website!");
+      alert("Published successfully!");
       location.reload();
     }
 
-    // --- REST OF THE FUNCTIONS ---
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
+    // LOAD GALLERY WITH DOWNLOAD OPTION
     db.collection("church_gallery").orderBy("timestamp", "desc").onSnapshot(snap => {
       document.getElementById('gal-count-stat').innerText = snap.size;
       let html = '';
       snap.forEach(doc => {
         const g = doc.data();
-        html += `<tr><td><img src="${g.url}" width="40" height="40" style="object-fit:cover; border-radius:5px"></td><td>${g.cap}</td><td><button class="btn-danger" onclick="deleteDoc('church_gallery','${doc.id}')">Remove</button></td></tr>`;
+        html += `
+          <tr>
+            <td><img src="${g.url}" width="50" height="40" style="border-radius:4px; object-fit:cover;"></td>
+            <td>${g.cap}</td>
+            <td>
+              <a href="${g.url}" target="_blank" download class="action-btn dl-btn"><i class="fa fa-download"></i></a>
+              <button onclick="deleteDoc('church_gallery','${doc.id}')" class="action-btn del-btn"><i class="fa fa-trash"></i></button>
+            </td>
+          </tr>`;
       });
       document.getElementById('gallery-list-table').innerHTML = html;
     });
 
-    // Synchronize counts
-    db.collection("church_prayers").onSnapshot(s => document.getElementById('pray-count-stat').innerText = s.size);
-    db.collection("church_members").onSnapshot(s => document.getElementById('mem-count-stat').innerText = s.size);
-
+    // Helper Functions
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+    function deleteDoc(col, id) { if(confirm("Delete?")) db.collection(col).doc(id).delete(); }
     function attemptLogin() {
       if(document.getElementById('adminEmail').value === "admin@powersanctuary.com" && document.getElementById('adminPass').value === "admin123password") {
         document.getElementById('login-view').style.display = 'none';
@@ -230,8 +214,6 @@
         localStorage.setItem('ps_session', 'active');
       }
     }
-
-    function deleteDoc(col, id) { if(confirm("Delete forever?")) db.collection(col).doc(id).delete(); }
     if(localStorage.getItem('ps_session') === 'active') {
       document.getElementById('login-view').style.display = 'none';
       document.getElementById('dashboard-view').style.display = 'block';
@@ -239,4 +221,4 @@
     function logout() { localStorage.removeItem('ps_session'); location.reload(); }
   </script>
 </body>
-  </html>
+          </html>
