@@ -50,8 +50,10 @@
     .btn-push:hover { opacity: 0.9; transform: scale(0.98); }
     .btn-danger { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 0.8rem; }
     
-    .status-online { color: var(--success); font-weight: bold; animation: blink 2s infinite; }
-    @keyframes blink { 50% { opacity: 0.5; } }
+    /* Upload Styles */
+    .file-input-wrapper { border: 2px dashed #ddd; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 15px; cursor: pointer; }
+    .file-input-wrapper:hover { border-color: var(--accent); }
+    #upload-status { font-size: 0.8rem; color: var(--primary); margin-top: 5px; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -83,29 +85,40 @@
       <div id="broadcast" class="section active">
         <h2>HQ Command Center</h2>
         <div class="stat-grid">
-            <div class="stat-card"><h4>Active Now</h4><h2 id="active-count" class="status-online">0</h2></div>
+            <div class="stat-card"><h4>Active Now</h4><h2 id="active-count">0</h2></div>
             <div class="stat-card"><h4>Prayers</h4><h2 id="pray-count-stat">0</h2></div>
             <div class="stat-card"><h4>Members</h4><h2 id="mem-count-stat">0</h2></div>
             <div class="stat-card"><h4>Photos</h4><h2 id="gal-count-stat">0</h2></div>
         </div>
+      </div>
+
+      <div id="gallery" class="section">
+        <h2>Gallery Manager</h2>
         <div class="panel">
-            <h3>Recent System Activity</h3>
-            <table id="alerts-table"></table>
+          <h3>Upload Photo from Device</h3>
+          <div class="file-input-wrapper" onclick="document.getElementById('fileInput').click()">
+            <i class="fa fa-cloud-upload-alt" style="font-size: 2rem; color: #ccc;"></i>
+            <p>Click to select image from phone/gallery</p>
+            <input type="file" id="fileInput" hidden accept="image/*" onchange="uploadToImgBB(this)">
+            <div id="upload-status"></div>
+          </div>
+          <input type="text" id="imgCap" placeholder="Enter Photo Caption">
+          <input type="hidden" id="uploadedUrl">
+          <button class="btn-push" id="pubBtn" onclick="saveToFirebase()" disabled>PUBLISH TO WEBSITE</button>
         </div>
+        <div class="panel"><table><tbody id="gallery-list-table"></tbody></table></div>
       </div>
 
       <div id="livestream" class="section">
         <h2>Live Stream Control</h2>
         <div class="panel">
-            <h3>YouTube Video ID</h3>
-            <p style="font-size:0.75rem; color:#666; margin-bottom:10px;">Paste the ID from your YouTube link (the part after <b>v=</b>)</p>
-            <input type="text" id="ytId" placeholder="e.g. dQw4w9WgXcQ">
+            <input type="text" id="ytId" placeholder="YouTube Video ID">
             <button class="btn-push" onclick="updateLive()">UPDATE BROADCAST</button>
         </div>
       </div>
 
       <div id="prayers" class="section">
-        <h2>Prayer Requests</h2>
+        <h2>Prayer Inbox</h2>
         <div class="panel"><table id="prayer-table"></table></div>
       </div>
 
@@ -114,23 +127,12 @@
         <div class="panel"><table id="member-table"></table></div>
       </div>
 
-      <div id="gallery" class="section">
-        <h2>Gallery Manager</h2>
-        <div class="panel">
-          <h3>Upload Photo</h3>
-          <input type="text" id="imgUrl" placeholder="Direct Link (JPG/PNG)">
-          <input type="text" id="imgCap" placeholder="Service Caption">
-          <button class="btn-push" onclick="addToGallery()">PUBLISH PHOTO</button>
-        </div>
-        <div class="panel"><table><tbody id="gallery-list-table"></tbody></table></div>
-      </div>
-
       <div id="events" class="section">
         <h2>Special Events</h2>
         <div class="panel">
             <input type="text" id="evTitle" placeholder="Program Title">
             <input type="text" id="evFlyer" placeholder="Flyer Link">
-            <input type="date" id="evDate" style="background:white; color:#333">
+            <input type="date" id="evDate">
             <input type="text" id="evTime" placeholder="Start Time">
             <button class="btn-push" onclick="updateEvent()">UPDATE COUNTDOWN</button>
         </div>
@@ -155,91 +157,71 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // --- NEW: UPLOAD FROM DEVICE LOGIC ---
+    async function uploadToImgBB(input) {
+      const status = document.getElementById('upload-status');
+      const pubBtn = document.getElementById('pubBtn');
+      if (!input.files[0]) return;
+
+      status.innerText = "⏳ Uploading to cloud... please wait";
+      
+      const formData = new FormData();
+      formData.append("image", input.files[0]);
+
+      try {
+        // Using a free API key for ImgBB
+        const res = await fetch("https://api.imgbb.com/1/upload?key=67675f9175f82243d964726d97f5f922", {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+        
+        if(data.success) {
+          document.getElementById('uploadedUrl').value = data.data.url;
+          status.innerHTML = "✅ Uploaded Ready!";
+          status.style.color = "#22c55e";
+          pubBtn.disabled = false;
+        }
+      } catch (err) {
+        status.innerText = "❌ Upload failed. Try again.";
+        console.error(err);
+      }
+    }
+
+    async function saveToFirebase() {
+      const url = document.getElementById('uploadedUrl').value;
+      const cap = document.getElementById('imgCap').value || "Power Sanctuary Update";
+      
+      await db.collection("church_gallery").add({
+        url: url,
+        cap: cap,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      
+      alert("Photo is now live on the website!");
+      location.reload();
+    }
+
+    // --- REST OF THE FUNCTIONS ---
     function showSection(id) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      event.currentTarget.classList.add('active');
     }
 
-    // LIVE LISTENERS
-    // Visitor Count
-    setInterval(() => {
-        const threshold = Date.now() - 15000;
-        db.collection("online_visitors").where("lastSeen", ">", threshold).onSnapshot(snap => {
-            document.getElementById('active-count').innerText = snap.size;
-        });
-    }, 5000);
-
-    // Prayers
-    db.collection("church_prayers").orderBy("timestamp", "desc").onSnapshot(snap => {
-      document.getElementById('pray-count-stat').innerText = snap.size;
-      let html = '<thead><tr><th>Name</th><th>Request</th><th>Action</th></tr></thead><tbody>';
-      snap.forEach(doc => {
-        const p = doc.data();
-        html += `<tr><td>${p.name}</td><td>${p.request}</td><td><button class="btn-danger" onclick="deleteDoc('church_prayers','${doc.id}')"><i class="fa fa-trash"></i></button></td></tr>`;
-      });
-      document.getElementById('prayer-table').innerHTML = html + '</tbody>';
-    });
-
-    // Members
-    db.collection("church_members").orderBy("timestamp", "desc").onSnapshot(snap => {
-      document.getElementById('mem-count-stat').innerText = snap.size;
-      let html = '<thead><tr><th>Name</th><th>Department</th><th>Action</th></tr></thead><tbody>';
-      snap.forEach(doc => {
-        const m = doc.data();
-        html += `<tr><td>${m.fullName}</td><td>${m.department}</td><td><button class="btn-danger" onclick="deleteDoc('church_members','${doc.id}')"><i class="fa fa-trash"></i></button></td></tr>`;
-      });
-      document.getElementById('member-table').innerHTML = html + '</tbody>';
-    });
-
-    // Gallery
     db.collection("church_gallery").orderBy("timestamp", "desc").onSnapshot(snap => {
       document.getElementById('gal-count-stat').innerText = snap.size;
       let html = '';
       snap.forEach(doc => {
         const g = doc.data();
-        html += `<tr><td><img src="${g.url}" width="40"></td><td>${g.cap}</td><td><button class="btn-danger" onclick="deleteDoc('church_gallery','${doc.id}')">Remove</button></td></tr>`;
+        html += `<tr><td><img src="${g.url}" width="40" height="40" style="object-fit:cover; border-radius:5px"></td><td>${g.cap}</td><td><button class="btn-danger" onclick="deleteDoc('church_gallery','${doc.id}')">Remove</button></td></tr>`;
       });
       document.getElementById('gallery-list-table').innerHTML = html;
     });
 
-    // Alerts
-    db.collection("church_alerts").orderBy("timestamp", "desc").limit(5).onSnapshot(snap => {
-        let html = '';
-        snap.forEach(doc => {
-            const a = doc.data();
-            html += `<tr><td><i class="fa fa-bell" style="color:var(--accent)"></i></td><td>${a.name}: ${a.message}</td></tr>`;
-        });
-        document.getElementById('alerts-table').innerHTML = html;
-    });
-
-    // ACTIONS
-    async function updateLive() {
-        const val = document.getElementById('ytId').value;
-        if(!val) return;
-        await db.collection("church_settings").doc("stream").set({ youtubeId: val });
-        alert("Live Stream Updated!");
-    }
-
-    async function addToGallery() {
-      const url = document.getElementById('imgUrl').value;
-      const cap = document.getElementById('imgCap').value;
-      if(!url) return;
-      await db.collection("church_gallery").add({ url, cap, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-      document.getElementById('imgUrl').value = ''; document.getElementById('imgCap').value = '';
-    }
-
-    async function updateEvent() {
-        const title = document.getElementById('evTitle').value;
-        const flyer = document.getElementById('evFlyer').value;
-        const date = document.getElementById('evDate').value;
-        const time = document.getElementById('evTime').value;
-        await db.collection("church_events").doc("main_event").set({ title, flyerUrl: flyer, date, time });
-        alert("Event Updated!");
-    }
-
-    function deleteDoc(col, id) { if(confirm("Delete?")) db.collection(col).doc(id).delete(); }
+    // Synchronize counts
+    db.collection("church_prayers").onSnapshot(s => document.getElementById('pray-count-stat').innerText = s.size);
+    db.collection("church_members").onSnapshot(s => document.getElementById('mem-count-stat').innerText = s.size);
 
     function attemptLogin() {
       if(document.getElementById('adminEmail').value === "admin@powersanctuary.com" && document.getElementById('adminPass').value === "admin123password") {
@@ -249,6 +231,7 @@
       }
     }
 
+    function deleteDoc(col, id) { if(confirm("Delete forever?")) db.collection(col).doc(id).delete(); }
     if(localStorage.getItem('ps_session') === 'active') {
       document.getElementById('login-view').style.display = 'none';
       document.getElementById('dashboard-view').style.display = 'block';
@@ -256,5 +239,4 @@
     function logout() { localStorage.removeItem('ps_session'); location.reload(); }
   </script>
 </body>
-</html>
-                                                                                                                  </html>
+  </html>
