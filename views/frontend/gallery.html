@@ -62,7 +62,7 @@
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 30px;
       padding: 60px 8%;
-      flex: 1; /* Pushes footer down */
+      flex: 1;
     }
     .gallery-item {
       background: white;
@@ -159,7 +159,7 @@
   </header>
 
   <div class="gallery-grid" id="galleryContainer">
-    </div>
+      </div>
 
   <footer>
     <div class="footer-content">
@@ -181,8 +181,8 @@
       </div>
       <div class="footer-box">
         <h3>Location</h3>
-        <p><i class="fa fa-map-marker-alt" style="color:var(--accent)"></i> Power Sanctuary Area HQ,<br>Render Cloud City.</p>
-        <p><i class="fa fa-phone" style="color:var(--accent); margin-top:10px;"></i> Contact HQ: +234-XXX-XXXX</p>
+        <p><i class="fa fa-map-marker-alt" style="color:var(--accent)"></i> Power Sanctuary Area HQ,<br>Oke Ureje, Ado-Ekiti.</p>
+        <p><i class="fa fa-phone" style="color:var(--accent); margin-top:10px;"></i> Contact HQ: +234 902 430 1199</p>
       </div>
     </div>
     <div class="footer-bottom">
@@ -191,36 +191,68 @@
     </div>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
   <script>
+    // 1. FIREBASE CONFIG
+    const firebaseConfig = {
+      apiKey: "AIzaSyDew-adannENogn9S01WB5QY10Q11eJAy0",
+      authDomain: "rccgpowersanctuaryarea.firebaseapp.com",
+      projectId: "rccgpowersanctuaryarea",
+      storageBucket: "rccgpowersanctuaryarea.firebasestorage.app",
+      messagingSenderId: "189635943022",
+      appId: "1:189635943022:web:daa6cace786eb3de9a247f"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 2. LIVE GALLERY LOAD
     function loadGallery() {
       const container = document.getElementById('galleryContainer');
-      const photos = JSON.parse(localStorage.getItem('church_gallery')) || [];
+      
+      // Listen to the cloud database collection
+      db.collection("church_gallery").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+        if(snapshot.empty) {
+          container.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+              <i class="fa fa-image" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
+              <p style="color: #666;">The gallery is currently being updated. Check back soon!</p>
+            </div>
+          `;
+          return;
+        }
 
-      if(photos.length === 0) {
-        container.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
-            <i class="fa fa-image" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
-            <p style="color: #666;">The gallery is currently being updated. Check back soon!</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = photos.map(photo => `
-        <div class="gallery-item">
-          <img src="${photo.url}" alt="${photo.cap}" onerror="this.src='https://placehold.co/600x400?text=Image+Unavailable'">
-          <div class="item-footer">
-            <span>${photo.cap}</span>
-            <a href="${photo.url}" target="_blank" download="PS_Gallery" class="btn-dl" title="Download Image">
-              <i class="fa fa-download"></i>
-            </a>
-          </div>
-        </div>
-      `).join('');
+        container.innerHTML = snapshot.docs.map(doc => {
+          const photo = doc.data();
+          return `
+            <div class="gallery-item">
+              <img src="${photo.url}" alt="${photo.cap}" onerror="this.src='https://placehold.co/600x400?text=Image+Unavailable'">
+              <div class="item-footer">
+                <span>${photo.cap || 'Power Sanctuary'}</span>
+                <a href="${photo.url}" target="_blank" class="btn-dl" title="View Full Image">
+                  <i class="fa fa-expand"></i>
+                </a>
+              </div>
+            </div>
+          `;
+        }).join('');
+      });
     }
 
-    // Initialize gallery on load
-    window.onload = loadGallery;
+    // 3. VISITOR PULSE
+    function sendPulse() {
+      let sessionId = sessionStorage.getItem('ps_user_id') || 'User-' + Math.floor(Math.random() * 10000);
+      sessionStorage.setItem('ps_user_id', sessionId);
+      db.collection("online_visitors").doc(sessionId).set({ lastSeen: Date.now() }, { merge: true });
+    }
+
+    window.onload = () => {
+      loadGallery();
+      sendPulse();
+      setInterval(sendPulse, 8000);
+    };
   </script>
 </body>
   </html>
