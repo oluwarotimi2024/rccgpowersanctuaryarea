@@ -21,7 +21,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--primary); line-height: 1.6; }
 
-    /* --- NAVIGATION --- */
     nav { 
       background: var(--primary); padding: 18px 6%; display: flex; 
       justify-content: space-between; align-items: center; 
@@ -30,9 +29,7 @@
     .logo-text h1 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.1rem; margin: 0; letter-spacing: 1px; }
     .nav-menu { display: flex; list-style: none; gap: 15px; align-items: center; }
     .nav-menu a { color: white; text-decoration: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
-    .admin-link { border: 1px solid var(--accent); padding: 6px 14px; border-radius: 4px; color: var(--accent) !important; }
 
-    /* --- PAGE HEADER --- */
     .page-header {
       background: var(--primary);
       padding: 60px 8% 40px;
@@ -43,92 +40,75 @@
     .page-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; }
     .page-header p { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
 
-    /* --- WEEKLY TIMELINE --- */
     .schedule-container { padding: 40px 6%; max-width: 900px; margin: -30px auto 0; }
     
-    .timeline-item {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 25px;
-      margin-bottom: 20px;
-      display: flex;
-      gap: 20px;
-      box-shadow: 0 10px 30px rgba(5, 10, 24, 0.04);
-      border: 1px solid rgba(0,0,0,0.03);
-      position: relative;
-      overflow: hidden;
-      transition: 0.3s ease;
+    /* --- SPECIAL EVENT STYLING --- */
+    #specialEventSection { margin-bottom: 40px; }
+    .event-card {
+        background: white; border-radius: 20px; overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--accent-soft);
+        display: flex; flex-direction: column;
     }
-    .timeline-item:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .event-flyer { width: 100%; max-height: 400px; object-fit: cover; background: #eee; }
+    .event-details { padding: 30px; text-align: center; }
+    .event-details h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
+    
+    /* Countdown Timer */
+    .countdown-timer {
+        display: flex; justify-content: center; gap: 15px; margin-top: 20px;
+    }
+    .timer-box {
+        background: var(--primary); color: var(--accent);
+        padding: 10px; min-width: 70px; border-radius: 10px;
+    }
+    .timer-box b { display: block; font-size: 1.5rem; }
+    .timer-box span { font-size: 0.6rem; text-transform: uppercase; color: white; }
 
+    /* Weekly Activities */
+    .timeline-item {
+      background: var(--white); border-radius: 16px; padding: 25px; margin-bottom: 20px;
+      display: flex; gap: 20px; box-shadow: 0 10px 30px rgba(5, 10, 24, 0.04);
+      border: 1px solid rgba(0,0,0,0.03); transition: 0.3s ease;
+    }
     .day-marker {
-      background: var(--primary);
-      color: var(--accent);
-      min-width: 65px;
-      height: 65px;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      background: var(--primary); color: var(--accent); min-width: 65px; height: 65px;
+      border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
     .day-marker span { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
     .day-marker b { font-size: 1.3rem; font-family: 'Playfair Display', serif; }
+    .content-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--primary); }
+    .content-box .time { color: var(--accent); font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; }
 
-    .content-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 5px; color: var(--primary); }
-    .content-box .time { color: var(--accent); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
-    .content-box p { font-size: 0.9rem; color: var(--text-muted); }
-
-    /* --- SPECIAL PROGRAMS BANNER --- */
-    .special-banner {
-      background: linear-gradient(rgba(5, 10, 24, 0.9), rgba(5, 10, 24, 0.9)), url('https://images.unsplash.com/photo-1510133760520-21390469035e?auto=format&fit=crop&w=800&q=80');
-      background-size: cover; padding: 40px; margin: 40px 6%; border-radius: 20px; color: white; text-align: center; border: 1px solid var(--accent);
-    }
-    .special-banner h4 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.5rem; margin-bottom: 10px; }
-
-    /* --- FOOTER --- */
-    footer { 
-      background: var(--primary); color: white; padding: 60px 8% 30px; margin-top: 60px; text-align: center;
-      border-top: 4px solid var(--accent);
-    }
-    .f-logo { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.4rem; margin-bottom: 20px; display: block; }
+    footer { background: var(--primary); color: white; padding: 60px 8% 30px; margin-top: 60px; text-align: center; border-top: 4px solid var(--accent); }
     .copyright { font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; }
-    .dev-tag { font-size: 0.8rem; margin-top: 10px; color: var(--text-muted); }
-    .dev-tag b { color: var(--accent); }
-
-    @media (max-width: 600px) {
-      .timeline-item { padding: 20px; }
-      .day-marker { min-width: 55px; height: 55px; }
-      .page-header h2 { font-size: 2rem; }
-    }
   </style>
 </head>
 <body>
 
   <nav>
-    <div class="logo-box">
-      <div class="logo-text"><h1>POWER SANCTUARY</h1></div>
-    </div>
+    <div class="logo-text"><h1>POWER SANCTUARY</h1></div>
     <ul class="nav-menu">
       <li><a href="index.html">Home</a></li>
       <li><a href="live.html">Live</a></li>
-      <li><a href="login.html" class="admin-link">Admin Access</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="prayer.html">Prayer</a></li>
     </ul>
   </nav>
 
   <header class="page-header">
     <p>The Divine Calendar</p>
-    <h2>Weekly Activities</h2>
+    <h2>Events & Schedule</h2>
   </header>
 
   <main class="schedule-container">
     
+    <div id="specialEventSection">
+        </div>
+
+    <h4 style="margin: 40px 0 20px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); font-size: 0.8rem;">Weekly Activities</h4>
+
     <div class="timeline-item">
-      <div class="day-marker">
-        <span>Lord's Day</span>
-        <b>SUN</b>
-      </div>
+      <div class="day-marker"><span>Lord's Day</span><b>SUN</b></div>
       <div class="content-box">
         <div class="time"><i class="fa fa-clock"></i> 8:00 AM — 11:30 AM</div>
         <h3>Sunday Celebration Service</h3>
@@ -137,10 +117,7 @@
     </div>
 
     <div class="timeline-item">
-      <div class="day-marker">
-        <span>Study</span>
-        <b>TUE</b>
-      </div>
+      <div class="day-marker"><span>Study</span><b>TUE</b></div>
       <div class="content-box">
         <div class="time"><i class="fa fa-clock"></i> 5:30 PM — 7:00 PM</div>
         <h3>Digging Deep</h3>
@@ -149,35 +126,94 @@
     </div>
 
     <div class="timeline-item">
-      <div class="day-marker">
-        <span>Warfare</span>
-        <b>THU</b>
-      </div>
+      <div class="day-marker"><span>Warfare</span><b>THU</b></div>
       <div class="content-box">
         <div class="time"><i class="fa fa-clock"></i> 5:30 PM — 7:00 PM</div>
         <h3>Faith Clinic</h3>
-        <p>A specialized prayer meeting for deliverance, healing, and breakthroughs.</p>
+        <p>A specialized prayer meeting for deliverance and breakthroughs.</p>
       </div>
-    </div>
-
-    <div class="special-banner">
-      <h4>Power Night (Vigil)</h4>
-      <p style="font-size: 0.85rem; opacity: 0.9;">Every Last Friday of the Month | 10:00 PM Sharp</p>
-      <hr style="width: 40px; border: 1px solid var(--accent); margin: 15px auto;">
-      <p style="font-size: 0.8rem; color: var(--accent);">Join us for a night of intense apostolic prayers.</p>
     </div>
 
   </main>
 
   <footer>
-    <span class="f-logo">Power Sanctuary HQ</span>
-    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px;">Raising a generation of liberated and empowered believers.</p>
-    
+    <span style="font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.4rem;">Power Sanctuary HQ</span>
     <div class="copyright">
-      &copy; 2025 RCCG Power Sanctuary Area HQ. All Rights Reserved.
-      <div class="dev-tag">System Architect: <b>Oluwarotimi Sunday Temitope</b></div>
+      &copy; 2025 RCCG Power Sanctuary Area HQ.
+      <div style="margin-top:10px;">System Architect: <b style="color:var(--accent)">Oluwarotimi Sunday Temitope</b></div>
     </div>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    // 1. FIREBASE CONFIG
+    const firebaseConfig = {
+      apiKey: "AIzaSyDew-adannENogn9S01WB5QY10Q11eJAy0",
+      authDomain: "rccgpowersanctuaryarea.firebaseapp.com",
+      projectId: "rccgpowersanctuaryarea",
+      storageBucket: "rccgpowersanctuaryarea.firebasestorage.app",
+      messagingSenderId: "189635943022",
+      appId: "1:189635943022:web:daa6cace786eb3de9a247f"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 2. LIVE EVENT SYNC
+    db.collection("church_events").orderBy("timestamp", "desc").limit(1).onSnapshot(snapshot => {
+        const container = document.getElementById('specialEventSection');
+        if (snapshot.empty) {
+            container.innerHTML = "";
+            return;
+        }
+
+        const event = snapshot.docs[0].data();
+        const eventDate = new Date(event.date).getTime();
+
+        container.innerHTML = `
+            <div class="event-card">
+                <img src="${event.flyerUrl}" class="event-flyer" alt="Event Flyer" onerror="this.style.display='none'">
+                <div class="event-details">
+                    <p style="color:var(--accent); font-weight:800; text-transform:uppercase; font-size:0.7rem;">Upcoming Special Program</p>
+                    <h3>${event.title}</h3>
+                    <p style="color:#666; font-size:0.9rem;"><i class="fa fa-calendar-alt"></i> ${event.date} | ${event.time}</p>
+                    
+                    <div class="countdown-timer" id="timer">
+                        <div class="timer-box"><b id="days">00</b><span>Days</span></div>
+                        <div class="timer-box"><b id="hours">00</b><span>Hours</span></div>
+                        <div class="timer-box"><b id="mins">00</b><span>Mins</span></div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Start Countdown Logic
+        const timerInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                document.getElementById('timer').innerHTML = "<h4 style='color:var(--accent)'>EVENT IN PROGRESS</h4>";
+                return;
+            }
+
+            document.getElementById('days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('mins').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        }, 1000);
+    });
+
+    // 3. VISITOR PULSE
+    function sendPulse() {
+      let sessionId = sessionStorage.getItem('ps_user_id') || 'User-' + Math.floor(Math.random() * 10000);
+      sessionStorage.setItem('ps_user_id', sessionId);
+      db.collection("online_visitors").doc(sessionId).set({ lastSeen: Date.now() }, { merge: true });
+    }
+    setInterval(sendPulse, 8000);
+    sendPulse();
+  </script>
 </body>
 </html>
