@@ -1,515 +1,184 @@
- <!DOCTYPE html>
-
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Media Gallery | Power Sanctuary</title>
-
   
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   
-
   <style>
-
     :root {
-
       --primary: #050a18; 
-
       --accent: #c5a059;  
-
       --white: #ffffff;
-
       --bg: #f4f7fa;
-
       --footer-bg: #0a0f1d;
-
     }
-
-
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--primary); display: flex; flex-direction: column; min-height: 100vh; }
 
-
-
-    /* --- NAVIGATION BAR --- */
-
+    /* --- NAVIGATION --- */
     nav {
-
-      background: var(--primary);
-
-      padding: 20px 8%;
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      border-bottom: 2px solid var(--accent);
-
-      position: sticky;
-
-      top: 0;
-
-      z-index: 1000;
-
+      background: var(--primary); padding: 20px 8%;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 1000;
     }
-
     .logo-text h1 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.4rem; letter-spacing: 1px; }
-
     .nav-menu { display: flex; list-style: none; gap: 20px; }
-
-    .nav-menu a { 
-
-      color: white; 
-
-      text-decoration: none; 
-
-      font-size: 0.8rem; 
-
-      font-weight: 600; 
-
-      text-transform: uppercase; 
-
-      transition: 0.3s; 
-
-    }
-
+    .nav-menu a { color: white; text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
     .nav-menu a:hover, .nav-menu a.active { color: var(--accent); }
 
-
-
     /* --- GALLERY HEADER --- */
-
     .gallery-header {
-
-      text-align: center;
-
-      padding: 60px 20px;
-
+      text-align: center; padding: 60px 20px;
       background: linear-gradient(rgba(5, 10, 24, 0.8), rgba(5, 10, 24, 0.8)), url('https://images.unsplash.com/photo-1444212477490-ca407925329e?auto=format&fit=crop&w=1500&q=80');
-
-      background-size: cover;
-
-      background-position: center;
-
-      color: white;
-
+      background-size: cover; background-position: center; color: white;
     }
-
     .gallery-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; }
 
-    .gallery-header p { font-size: 1rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
-
-
-
     /* --- GALLERY GRID --- */
-
     .gallery-grid {
-
-      display: grid;
-
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-
-      gap: 30px;
-
-      padding: 60px 8%;
-
-      flex: 1;
-
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px; padding: 60px 8%; flex: 1;
     }
-
     .gallery-item {
-
-      background: white;
-
-      border-radius: 12px;
-
-      overflow: hidden;
-
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-
-      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
+      background: white; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: 0.4s;
     }
-
-    .gallery-item:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-
-    .gallery-item img {
-
-      width: 100%;
-
-      height: 250px;
-
-      object-fit: cover;
-
-      display: block;
-
-    }
+    .gallery-item:hover { transform: translateY(-10px); }
+    .gallery-item img { width: 100%; height: 250px; object-fit: cover; display: block; cursor: pointer; }
 
     .item-footer {
-
-      padding: 15px 20px;
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      background: white;
-
+      padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
     }
+    .item-footer span { font-weight: 600; font-size: 0.9rem; color: var(--primary); }
 
-    .item-footer span { font-weight: 600; font-size: 0.95rem; color: var(--primary); }
-
-    .btn-dl {
-
-      background: var(--bg);
-
-      color: var(--primary);
-
-      width: 40px;
-
-      height: 40px;
-
-      border-radius: 50%;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      text-decoration: none;
-
-      transition: 0.3s;
-
+    /* --- ACTION BUTTONS --- */
+    .btn-group { display: flex; gap: 8px; }
+    .btn-action {
+      background: var(--bg); color: var(--primary);
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; transition: 0.3s; border: none; cursor: pointer;
     }
+    .btn-action:hover { background: var(--accent); color: white; }
 
-    .btn-dl:hover { background: var(--accent); color: var(--primary); }
-
-
-
-    /* --- PROFESSIONAL FOOTER --- */
-
-    footer {
-
-      background: var(--footer-bg);
-
-      color: #94a3b8;
-
-      padding: 60px 8% 20px;
-
-      margin-top: 40px;
-
+    /* --- LIGHTBOX POPUP --- */
+    #lightbox {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9); display: none; justify-content: center;
+      align-items: center; z-index: 2000; flex-direction: column;
     }
+    #lightbox img { max-width: 90%; max-height: 80%; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+    #lightbox .close-btn { position: absolute; top: 20px; right: 30px; color: white; font-size: 2rem; cursor: pointer; }
 
-    .footer-content {
-
-      display: grid;
-
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
-      gap: 40px;
-
-      padding-bottom: 40px;
-
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-
-    }
-
-    .footer-box h3 { color: var(--accent); font-family: 'Playfair Display', serif; margin-bottom: 20px; }
-
-    .footer-box p { font-size: 0.9rem; line-height: 1.8; }
-
-    .social-links { display: flex; gap: 15px; margin-top: 20px; }
-
-    .social-links a { 
-
-      color: white; background: rgba(255,255,255,0.05); 
-
-      width: 35px; height: 35px; border-radius: 50%; 
-
-      display: flex; align-items: center; justify-content: center; 
-
-      text-decoration: none; transition: 0.3s;
-
-    }
-
-    .social-links a:hover { background: var(--accent); color: var(--primary); }
-
-    
-
-    .footer-bottom {
-
-      text-align: center;
-
-      padding-top: 20px;
-
-      font-size: 0.8rem;
-
-    }
-
-    .dev-credit { color: white; margin-top: 5px; }
-
-    .dev-name { color: var(--accent); font-weight: 600; }
-
-
-
-    @media (max-width: 768px) {
-
-      nav { padding: 15px 5%; flex-direction: column; gap: 15px; }
-
-      .nav-menu { gap: 10px; font-size: 0.7rem; }
-
-      .gallery-header h2 { font-size: 1.8rem; }
-
-    }
-
+    footer { background: var(--footer-bg); color: #94a3b8; padding: 40px 8%; text-align: center; }
   </style>
-
 </head>
-
 <body>
 
-
-
   <nav>
-
     <div class="logo-text"><h1>POWER SANCTUARY</h1></div>
-
     <ul class="nav-menu">
-
       <li><a href="index.html">Home</a></li>
-
       <li><a href="live.html">Live</a></li>
-
-      <li><a href="membership.html">Membership</a></li>
-
       <li><a href="gallery.html" class="active">Gallery</a></li>
-
       <li><a href="prayer.html">Prayer</a></li>
-
     </ul>
-
   </nav>
 
-
-
   <header class="gallery-header">
-
     <h2>Church Media Gallery</h2>
-
-    <p>Capturing the moments of worship, fellowship, and the move of God at Power Sanctuary.</p>
-
+    <p>View and download moments from our services.</p>
   </header>
 
+  <div class="gallery-grid" id="galleryContainer"></div>
 
-
-  <div class="gallery-grid" id="galleryContainer">
-
-      </div>
-
-
+  <div id="lightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <img id="lightboxImg" src="">
+    <p id="lightboxCap" style="color: white; margin-top: 15px; font-weight: 600;"></p>
+  </div>
 
   <footer>
-
-    <div class="footer-content">
-
-      <div class="footer-box">
-
-        <h3>Power Sanctuary</h3>
-
-        <p>A House of Prayer for all Nations. Join us as we experience the undeniable power of God through worship and word.</p>
-
-        <div class="social-links">
-
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-
-          <a href="#"><i class="fab fa-instagram"></i></a>
-
-          <a href="#"><i class="fab fa-youtube"></i></a>
-
-          <a href="#"><i class="fab fa-twitter"></i></a>
-
-        </div>
-
-      </div>
-
-      <div class="footer-box">
-
-        <h3>Quick Links</h3>
-
-        <p><a href="membership.html" style="color:inherit; text-decoration:none;">Join a Department</a></p>
-
-        <p><a href="prayer.html" style="color:inherit; text-decoration:none;">Request Prayer</a></p>
-
-        <p><a href="live.html" style="color:inherit; text-decoration:none;">Watch Live Stream</a></p>
-
-      </div>
-
-      <div class="footer-box">
-
-        <h3>Location</h3>
-
-        <p><i class="fa fa-map-marker-alt" style="color:var(--accent)"></i> Power Sanctuary Area HQ,<br>Oke Ureje, Ado-Ekiti.</p>
-
-        <p><i class="fa fa-phone" style="color:var(--accent); margin-top:10px;"></i> Contact HQ: +234 902 430 1199</p>
-
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-
-      <p>&copy; 2025 Power Sanctuary Area HQ. All Rights Reserved.</p>
-
-      <p class="dev-credit">Architected by <span class="dev-name">Oluwarotimi Sunday Temitope</span></p>
-
-    </div>
-
+    <p>&copy; 2025 Power Sanctuary Area HQ. All Rights Reserved.</p>
   </footer>
 
-
-
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-
-
   <script>
-
-    // 1. FIREBASE CONFIG
-
     const firebaseConfig = {
-
       apiKey: "AIzaSyDew-adannENogn9S01WB5QY10Q11eJAy0",
-
       authDomain: "rccgpowersanctuaryarea.firebaseapp.com",
-
       projectId: "rccgpowersanctuaryarea",
-
       storageBucket: "rccgpowersanctuaryarea.firebasestorage.app",
-
       messagingSenderId: "189635943022",
-
       appId: "1:189635943022:web:daa6cace786eb3de9a247f"
-
     };
-
-
 
     firebase.initializeApp(firebaseConfig);
-
     const db = firebase.firestore();
 
+    // 1. LIGHTBOX FUNCTIONS
+    function openLightbox(url, cap) {
+      document.getElementById('lightboxImg').src = url;
+      document.getElementById('lightboxCap').innerText = cap;
+      document.getElementById('lightbox').style.display = 'flex';
+    }
+    function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
 
+    // 2. DOWNLOAD FUNCTION
+    async function triggerDownload(url, title) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `PS-${title || 'Image'}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (e) { window.open(url, '_blank'); }
+    }
 
-    // 2. LIVE GALLERY LOAD
-
+    // 3. LOAD GALLERY
     function loadGallery() {
-
       const container = document.getElementById('galleryContainer');
-
-      
-
-      // Listen to the cloud database collection
-
       db.collection("church_gallery").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-
         if(snapshot.empty) {
-
-          container.innerHTML = `
-
-            <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
-
-              <i class="fa fa-image" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
-
-              <p style="color: #666;">The gallery is currently being updated. Check back soon!</p>
-
-            </div>
-
-          `;
-
+          container.innerHTML = `<p style="text-align:center; grid-column:1/-1;">No images found.</p>`;
           return;
-
         }
 
-
-
         container.innerHTML = snapshot.docs.map(doc => {
-
           const photo = doc.data();
-
+          const cap = photo.cap || 'Power Sanctuary';
           return `
-
             <div class="gallery-item">
-
-              <img src="${photo.url}" alt="${photo.cap}" onerror="this.src='https://placehold.co/600x400?text=Image+Unavailable'">
-
+              <img src="${photo.url}" onclick="openLightbox('${photo.url}', '${cap}')" onerror="this.src='https://placehold.co/600x400?text=Reloading+Image...'">
               <div class="item-footer">
-
-                <span>${photo.cap || 'Power Sanctuary'}</span>
-
-                <a href="${photo.url}" target="_blank" class="btn-dl" title="View Full Image">
-
-                  <i class="fa fa-expand"></i>
-
-                </a>
-
+                <span>${cap}</span>
+                <div class="btn-group">
+                   <button class="btn-action" onclick="openLightbox('${photo.url}', '${cap}')" title="View Image">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                  <button class="btn-action" onclick="triggerDownload('${photo.url}', '${cap}')" title="Download">
+                    <i class="fa fa-download"></i>
+                  </button>
+                </div>
               </div>
-
             </div>
-
           `;
-
         }).join('');
-
       });
-
     }
 
-
-
-    // 3. VISITOR PULSE
-
-    function sendPulse() {
-
-      let sessionId = sessionStorage.getItem('ps_user_id') || 'User-' + Math.floor(Math.random() * 10000);
-
-      sessionStorage.setItem('ps_user_id', sessionId);
-
-      db.collection("online_visitors").doc(sessionId).set({ lastSeen: Date.now() }, { merge: true });
-
-    }
-
-
-
-    window.onload = () => {
-
-      loadGallery();
-
-      sendPulse();
-
-      setInterval(sendPulse, 8000);
-
-    };
-
+    window.onload = loadGallery;
   </script>
-
 </body>
-
-             </html>
+</html>
